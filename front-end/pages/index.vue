@@ -1,6 +1,7 @@
 <template>
   <div>
-      <NuxtPage />
+    <h1>Welcome to Nuxt 3</h1>
+    <nuxt-link to="/register">Go to Register</nuxt-link>
   </div>
 </template>
 

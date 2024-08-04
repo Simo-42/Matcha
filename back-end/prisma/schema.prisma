@@ -5,8 +5,10 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
+
 
 datasource db {
   provider = "postgresql"
@@ -14,10 +16,10 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement()) // Clé primaire, auto-incrémentée pour chaque nouvel enregistrement
+  email     String   @unique // Champ email, doit être unique
+  password  String // Champ mot de passe, stocke le mot de passe haché de l'utilisateur  
+  verified  Boolean  @default(false) // Indique si l'utilisateur a vérifié son compte par e-mail, valeur par défaut est false
+  createdAt DateTime @default(now()) // Date et heure de création, valeur par défaut est la date et l'heure actuelles
+  updatedAt DateTime @updatedAt // Date et heure de la dernière mise à jour, mise à jour automatique à chaque modification de l'enregistrement
 }

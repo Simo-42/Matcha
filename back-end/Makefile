@@ -33,18 +33,22 @@ restart: down up
 
 # Commande pour lancer Prisma Studio
 studio:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) exec $(APP_SERVICE) npx prisma studio
+	docker-compose -f $(DOCKER_COMPOSE_FILE) exec $(APP_SERVICE) npx prisma studio --port 5555
+
+# Commande pour réinitialiser la base de données et appliquer les migrations
+reset:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) exec $(APP_SERVICE) npx prisma migrate reset --force --skip-seed
 
 # Commande pour afficher les aides
 help:
 	@echo "Usage:"
-	@echo "  make start              - Build and start the containers in detached mode"
-	@echo "  make stop            - Stop and remove the containers"
-	@echo "  make migrate         - Run Prisma migrations"
-	@echo "  make generate        - Generate Prisma client"
-	@echo "  make migrate-generate- Run Prisma migrations and generate Prisma client"
-	@echo "  make status          - Show the status of the containers"
-	@echo "  make logs            - Follow the logs of the containers"
-	@echo "  make restart         - Restart the containers"
-	@echo "  make studio          - Launch Prisma Studio"
-	@echo "  make help            - Show this help message"
+	@echo "  make start       - Build and start the containers in detached mode"
+	@echo "  make stop        - Stop and remove the containers"
+	@echo "  make migrate     - Run Prisma migrations"
+	@echo "  make generate    - Generate Prisma client"
+	@echo "  make status      - Show the status of the containers"
+	@echo "  make logs        - Follow the logs of the containers"
+	@echo "  make restart     - Restart the containers"
+	@echo "  make studio      - Launch Prisma Studio"
+	@echo "  make reset       - Reset the database and apply migrations"
+	@echo "  make help        - Show this help message"

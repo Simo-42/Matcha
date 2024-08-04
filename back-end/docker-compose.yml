@@ -21,8 +21,8 @@ services:
     environment:
       DATABASE_URL: postgres://root:12345@db:5432/Matcha_db
     ports:
-      - "${POSTGRE_PORT}:${POSTGRE_PORT}"  # Exposer le port de Prisma Studio
-      - "${PRISMA_PORT}:${PRISMA_PORT}"  # Exposer le port de Prisma Studio
+      - "3000:3000"  # Exposer le port de l'application
+      - "5555:5555"  # Exposer le port de Prisma Studio
     depends_on:
       - db
     volumes:

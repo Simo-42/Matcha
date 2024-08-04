@@ -1,6 +1,6 @@
 <template>
   <div>
-      <NuxtPage />
+    <RegisterForm />
   </div>
 </template>
 
