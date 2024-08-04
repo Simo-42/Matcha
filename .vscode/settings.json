@@ -1,0 +1,19 @@
+{
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"front-end/.gitignore": true,
+		"front-end/README.md": true,
+		"front-end/package.json": true,
+		"front-end/package-lock.json": true,
+		"front-end/.nuxt": true,
+		"back-end/node_modules": true,
+		"back-end/package-lock.json": true,
+		"back-end/package.json": true
+	},
+	"explorerExclude.backup": {}
+}
