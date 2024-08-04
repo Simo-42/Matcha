@@ -4,6 +4,9 @@ node_modules/
 # Environment variables
 .env
 
+# Prisma
+prisma/migrations/
+
 # Logs
 logs/
 *.log
@@ -43,3 +46,7 @@ bower_components/
 .idea/
 *.sublime-workspace
 *.sublime-project
+
+# Docker specific
+docker-compose.override.yml
+docker-compose.override.yaml
