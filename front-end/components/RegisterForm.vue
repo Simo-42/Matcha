@@ -1,90 +1,64 @@
-<template> 
-  <div class="register-form">
-    <h2>Register</h2>
-    <form @submit.prevent="register">
-          <div>
-        <label for="email">Email:</label>
-        <input type="email" v-model="email" required />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" v-model="password" maxlength="20" required />
-        <small v-if="password.length >= 20" class="text-red-500">Password cannot exceed 20 characters.</small>
-      </div>
-      <button type="submit">Register</button>
-    </form>
-    <p v-if="message">{{ message }}</p>
+<template>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Register</h2>
+      <form @submit.prevent="register" class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+          <input type="email" v-model="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
+          <input type="password" v-model="password" maxlength="20" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          <small v-if="password.length > 20" class="text-red-500">Password cannot exceed 20 characters.</small>
+        </div>
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
+          <input type="text" v-model="username" maxlength="20" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          <small v-if="username.length > 20" class="text-red-500">Username cannot exceed 20 characters.</small>
+        </div>
+        <div>
+          <label for="firstname" class="block text-sm font-medium text-gray-700">First name:</label>
+          <input type="text" v-model="firstname" maxlength="30" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          <small v-if="firstname.length > 30" class="text-red-500">First name cannot exceed 30 characters.</small>
+        </div>
+        <div>
+          <label for="lastname" class="block text-sm font-medium text-gray-700">Last name:</label>
+          <input type="text" v-model="lastname" maxlength="30" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+          <small v-if="lastname.length > 30" class="text-red-500">Last name cannot exceed 30 characters.</small>
+        </div>
+        <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Register</button>
+        </div>
+      </form>
+      <p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios'
+import axios from 'axios';
 
-const email = ref(''); // recup la valeur avec value
+const email = ref('');
 const password = ref('');
+const username = ref('');
+const firstname = ref('');
+const lastname = ref('');
 const message = ref('');
 
-const register = async () => { // Ici la fonction pour axios 
-	message.value = "Registration logic will be implemented here.";
-  	if (password.value.length > 25) {
-    	message.value = 'Password cannot exceed 20 characters.';
-    	return;
-  	}
-	try 
-	{
-		const response = await axios.post('http://localhost:3000/api/auth/register', {
-			email : email.value,
-			password: password.value
-		});
-		message.value = response.data.message;
-	} catch (error)
-	{
-		message.value = error.reponse.data.error || 'Registration failed';
-	}
-  
+const register = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/auth/register', {
+      email: email.value,
+      password: password.value,
+      username: username.value,
+      firstname: firstname.value,
+      lastname: lastname.value
+    });
+    message.value = response.data.message;
+  } catch (error) {
+    message.value = error.response.data.error || 'Registration failed';
+  }
 };
-
-
-
 </script>
-
-<style scoped>
-.register-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.register-form div {
-  margin-bottom: 1em;
-}
-.register-form label {
-  margin-bottom: .5em;
-  color: #333333;
-  display: block;
-}
-.register-form input {
-  border: 1px solid #CCCCCC;
-  padding: .5em;
-  font-size: 1em;
-  width: 100%;
-  box-sizing: border-box;
-}
-.register-form button {
-  padding: 0.7em;
-  color: #fff;
-  background-color: #007BFF;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.register-form button:hover {
-  background-color: #0056b3;
-}
-.register-form p {
-  margin-top: 1em;
-  color: green;
-}
-</style>

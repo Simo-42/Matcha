@@ -24,7 +24,8 @@
 		"front-end/tailwind.config.js": true,
 		"front-end/store": true,
 		"front-end/.vscode": true,
-		"front-end/node_modules": true
+		"front-end/node_modules": true,
+		".vscode": true
 	},
 	"explorerExclude.backup": {}
 }

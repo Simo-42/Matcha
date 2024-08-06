@@ -25,23 +25,51 @@ const check_mail_user_exist = async (email) => {
 	}
 };
 
-
-const createUser = async (userInfo) => {
-	const { email, password } = userInfo;
+const check_username_user_exist = async (username) => {
+	try {
+	  const query = 'SELECT * FROM users WHERE username = $1';
+	  const values = [username];
   
-	try 
-	{
-	  const query = 'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *';
-	  const values = [email, password];
-  
-	  const res = await pool.query(query, values); // Execute la requete
-	  return res.rows[0]; // Retourne l'utilisateur créé
-	} 
+	  const res = await pool.query(query, values);
+	  if (res.rows.length > 0) 
+	  {	
+		  console.log('User username exists:', res.rows[0]);
+		  return true ; // User existe ne peut pas s'inscrire
+	  } 
+	  else 
+	  {
+		  console.log('User username does not exist he can register');
+		  return false ; // user existe  peut s'inscrire 
+	  }
+  } 
 	catch (err) 
-	{
+	  {
+	  console.error('Error executing query', err.stack);
+	  return false ; 
+	  }
+  };
+
+  const createUser = async (userInfo) => {
+	const { email, password, username, firstname, lastname } = userInfo;
+	
+	try {
+	  const query = `
+		INSERT INTO users (email, password, username, firstname, lastname)
+		VALUES ($1, $2, $3, $4, $5)
+		RETURNING *`;
+	  
+	  // Les valeurs à insérer dans la requête SQL
+	  const values = [email, password, username, firstname, lastname];
+	
+	  // Exécution de la requête SQL
+	  const res = await pool.query(query, values);
+	  
+	  // Retourne l'utilisateur créé
+	  return res.rows[0];
+	} catch (err) {
 	  console.error('Error executing query', err.stack);
 	  throw err; // Lève une erreur si la requête échoue
 	}
-};
+  };
 
-module.exports = { check_mail_user_exist, createUser };
+module.exports = { check_mail_user_exist, check_username_user_exist , createUser };

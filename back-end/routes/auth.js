@@ -3,26 +3,35 @@ const bcrypt = require('bcryptjs');
 
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
-const { check_mail_user_exist, createUser } = require('../queries/UserQueries.js');
+const { check_mail_user_exist, createUser, check_username_user_exist } = require('../queries/UserQueries.js');
 const { send_email } = require('../utils/send_mail.js');
 
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username, firstname, lastname } = req.body;
   
   // Hachage du mot de passe
   const hashed_password = await bcrypt.hash(password, 10);
   const info = {
     email: email,
-    password: hashed_password
+    password: hashed_password,
+    username: username,
+    firstname: firstname,
+    lastname: lastname,
+    
   };
   
   try {
     // Vérifier si cet email est déjà enregistré dans la DB
-    const existingUser = await check_mail_user_exist(email);
-    
-    if (existingUser) {
+    if (await check_mail_user_exist(email) == true) 
+    {
       return res.status(400).json({ error: 'Email is already registered.' });
     }
+    else if (await check_username_user_exist(username) == true)
+    {
+      return res.status(400).json({ error: 'This username is already taken.' });
+    }
+    
+
     const user = await createUser(info);
     if (!user) {
         return res.status(500).json({ error: 'Error creating user' });
