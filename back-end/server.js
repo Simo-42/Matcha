@@ -9,9 +9,9 @@ app.use(express.json()); // Middleware pour parser le corps des requêtes JSON
 app.use(cors()); // Utiliser le middleware CORS pour autoriser toutes les origines
 
 // Importation des routes
-// const authRouter = require('./routes/auth');
+const authRouter = require('./routes/auth');
 
-// app.use('/api/auth', authRouter); // Utilisation du routeur
+app.use('/api/auth', authRouter); // Utilisation du routeur
 
 // Définir le port et démarrer le serveur
 const port = process.env.PORT || 3000;
