@@ -1,14 +1,25 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
+const pool = require('../db.js');  // Importez la connexion depuis db.js
 
 const send_email = async (email, user_id) => {
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: process.env.MAIL_VERIF, // Utilise la variable d'environnement pour l'adresse email
-            pass: process.env.MAIL_MDP,   // Utilise la variable d'environnement pour le mot de passe
-        },
-    });
+    console.log(process.env.MAIL_VERIF);
+    console.log(process.env.MAIL_MDP);
+    console.log("im here");
 
+
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.office365.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: process.env.MAIL_VERIF,
+            pass: process.env.MAIL_MDP,
+        },
+        tls: {
+            ciphers: 'SSLv3'
+        }
+    });
     const mailOptions = {
         from: process.env.MAIL_VERIF,   // Adresse email de l'expéditeur
         to: email,                      // Adresse email du destinataire (utilisateur)
@@ -28,4 +39,40 @@ const send_email = async (email, user_id) => {
     });
 };
 
-module.exports = { send_email };
+const sendResetEmail = async (email, resetToken) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.office365.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_VERIF,
+        pass: process.env.MAIL_MDP,
+      },
+      tls: {
+        ciphers: 'SSLv3'
+      }
+    });
+  
+    const resetUrl = `http://localhost:3000/api/password/verify_password/${resetToken}`;
+    const mailOptions = {
+      from: process.env.MAIL_VERIF,
+      to: email,
+      subject: 'Password Reset',
+      text: `You requested a password reset. Please click the following link to reset your password: ${resetUrl}`,
+    };
+  
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log('Error sending email:', error);
+          return reject(new Error('Failed to send reset email'));
+        }
+        console.log('Email sent: ' + info.response);
+        resolve(info);
+      });
+    });
+  };
+
+
+
+module.exports = { send_email, sendResetEmail };

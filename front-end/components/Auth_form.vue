@@ -1,12 +1,4 @@
 <template>
-  <!--
-    This example requires updating your template:
-
-    ```
-    <html class="h-full bg-white">
-    <body class="h-full">
-    ```
-  -->
   <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
@@ -14,11 +6,11 @@
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
+      <form @submit.prevent="authentification" class="space-y-6">
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+          <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
           <div class="mt-2">
-            <input id="email" name="email" type="email" autocomplete="email" required="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            <input id="username" v-model="username" name="username" type="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 
@@ -26,11 +18,11 @@
           <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
             <div class="text-sm">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+              <nuxt-link to="/forgot_password"class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</nuxt-link>
             </div>
           </div>
           <div class="mt-2">
-            <input id="password" name="password" type="password" autocomplete="current-password" required="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            <input id="password" v-model="password" name="password" type="password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 
@@ -39,6 +31,34 @@
         </div>
       </form>
 
+      <p class="mt-10 text-center text-sm text-gray-500">
+        Not a member?
+        <nuxt-link to="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">You can register here</nuxt-link>
+      </p>
+
+      <p v-if="message" class="mt-2 text-center text-sm text-red-500">{{ message }}</p>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+const username = ref('');
+const password = ref('');
+const message = ref('');
+
+const authentification = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/auth/authentification', {
+      username: username.value,
+      password: password.value,
+    });
+    message.value = response.data.message;
+    navigateTo('/welcome');
+} catch (error) {
+    message.value = error.response.data.error || 'Authentication failed';
+  }
+};
+</script>

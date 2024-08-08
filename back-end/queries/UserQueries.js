@@ -25,6 +25,30 @@ const check_mail_user_exist = async (email) => {
 	}
 };
 
+const check_verif_user = async (verified) => {
+	try {
+	  const query = 'SELECT * FROM users WHERE verified = $1';
+	  const values = [verified];
+  
+	  const res = await pool.query(query, values);
+	  if (res.rows.length > 0) 
+	  {	
+		  console.log('User is verified ', res.rows[0]);
+		  return true ; 
+	  } 
+	  else 
+	  {
+		  console.log('User is not verified need to be verified');
+		  return false ; 
+	  }
+  } 
+	catch (err) 
+	  {
+	  console.error('Error executing query', err.stack);
+	  return false ; 
+	  }
+};
+
 const check_username_user_exist = async (username) => {
 	try {
 	  const query = 'SELECT * FROM users WHERE username = $1';
@@ -72,4 +96,4 @@ const check_username_user_exist = async (username) => {
 	}
   };
 
-module.exports = { check_mail_user_exist, check_username_user_exist , createUser };
+module.exports = { check_mail_user_exist, check_username_user_exist , createUser, check_verif_user };

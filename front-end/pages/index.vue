@@ -8,3 +8,10 @@
 <script setup>
 import RegisterForm from '~/components/RegisterForm.vue';
 </script>
+
+<style scoped>
+html, body {
+  height: 100%;
+  background-color: white;
+}
+</style>

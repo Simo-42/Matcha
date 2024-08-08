@@ -10,8 +10,10 @@ app.use(cors()); // Utiliser le middleware CORS pour autoriser toutes les origin
 
 // Importation des routes
 const authRouter = require('./routes/auth');
+const passwordForgotRouter = require('./routes/pass_forgot');
 
-app.use('/api/auth', authRouter); // Utilisation du routeur
+app.use('/api/auth', authRouter);
+app.use('/api/password', passwordForgotRouter);
 
 // Définir le port et démarrer le serveur
 const port = process.env.PORT || 3000;
