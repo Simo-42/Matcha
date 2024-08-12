@@ -51,14 +51,19 @@ const message = ref('');
 
 const authentification = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/api/auth/authentification', {
+    const response = await axios.post('http://localhost:3005/api/auth/authentification', {
       username: username.value,
       password: password.value,
+    }, {
+      withCredentials: true,
+      // console.log(withCredentials);
     });
+      console.log('Token reçu:', response.data.token); // Affiche le token dans la console==[========================[[==[[[=[[[]]]]]]]]
     message.value = response.data.message;
     navigateTo('/welcome');
-} catch (error) {
+  } catch (error) {
     message.value = error.response.data.error || 'Authentication failed';
   }
 };
+
 </script>

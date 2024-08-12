@@ -1,5 +1,6 @@
 // userQueries.js
 const pool = require('../db.js');  // Importez la connexion depuis db.js
+const bcrypt = require('bcryptjs');
 
 const check_mail_user_exist = async (email) => {
   try {
@@ -65,7 +66,7 @@ const check_username_user_exist = async (username) => {
 		  console.log('User username does not exist he can register');
 		  return false ; // user existe  peut s'inscrire 
 	  }
-  } 
+  	} 
 	catch (err) 
 	  {
 	  console.error('Error executing query', err.stack);
@@ -96,4 +97,36 @@ const check_username_user_exist = async (username) => {
 	}
   };
 
-module.exports = { check_mail_user_exist, check_username_user_exist , createUser, check_verif_user };
+  const check_same_password = async (username, new_password) => {
+	try {
+	  const query = 'SELECT password FROM users WHERE username = $1';
+	  const values = [username];
+  
+	  // Exécute la requête pour récupérer le mot de passe actuel de l'utilisateur
+	  const res = await pool.query(query, values);
+  
+	  if (res.rows.length > 0) {
+		const existingPassword = res.rows[0].password;
+  
+		// Compare le mot de passe actuel avec le nouveau mot de passe
+		const passwordMatch = await bcrypt.compare(new_password, existingPassword);
+  
+		if (passwordMatch) {
+		  console.log('The new password is the same as the current password.');
+		  return true; // Le nouveau mot de passe est identique à l'actuel
+		} else {
+		  console.log('The new password is different from the current password.');
+		  return false; // Le nouveau mot de passe est différent de l'actuel
+		}
+	  } else {
+		console.log('User not found.');
+		return false; // L'utilisateur n'a pas été trouvé
+	  }
+	} catch (err) {
+	  console.error('Error executing query', err.stack);
+	  return false;
+	}
+  };
+
+
+module.exports = { check_mail_user_exist, check_username_user_exist , createUser, check_verif_user, check_same_password };

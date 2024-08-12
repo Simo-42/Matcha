@@ -24,7 +24,7 @@ const send_email = async (email, user_id) => {
         from: process.env.MAIL_VERIF,   // Adresse email de l'expéditeur
         to: email,                      // Adresse email du destinataire (utilisateur)
         subject: 'Account Verification',
-        text: `Please verify your account by clicking the link: http://localhost:3000/api/auth/verify/${user_id}`,
+        text: `Please verify your account by clicking the link: http://localhost:3005/api/auth/verify/${user_id}`,
     };
 
     return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ const sendResetEmail = async (email, resetToken) => {
       }
     });
   
-    const resetUrl = `http://localhost:3000/api/password/verify_password/${resetToken}`;
+    const resetUrl = `http://localhost:3000/verify_password/${resetToken}`;
     const mailOptions = {
       from: process.env.MAIL_VERIF,
       to: email,

@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "again": "^0.0.1",
     "axios": "^1.7.3",
+    "cookie-universal-nuxt": "^2.2.2",
+    "jwt-decode": "^4.0.0",
     "nuxt": "^3.12.4",
     "vue": "latest"
   },

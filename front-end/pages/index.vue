@@ -1,12 +1,11 @@
 <template>
   <div>
-    <h1>Welcome to Nuxt 3</h1>
-    <nuxt-link to="/register">Go to Register</nuxt-link>
+    <Auth_form />
   </div>
 </template>
 
 <script setup>
-import RegisterForm from '~/components/RegisterForm.vue';
+import Auth_form from '~/components/Auth_form.vue';
 </script>
 
 <style scoped>

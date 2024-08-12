@@ -10,8 +10,10 @@
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
           <input type="password" v-model="password" maxlength="20" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-          <small v-if="password.length > 30" class="text-red-500">Password cannot exceed 30 characters.</small>
-          <small v-if="!isPasswordComplex" class="text-red-500">Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.</small>
+          <small v-if="password.length > 40" class="text-red-500">Password cannot exceed 40 characters.</small>
+          <small :class="isPasswordComplex ? 'text-green-500' : 'text-red-500'">
+            Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.
+          </small>        
         </div>
         <div>
           <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
@@ -62,7 +64,7 @@ const isFormValid = computed(() => {
 
 const register = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/api/auth/register', {
+    const response = await axios.post('http://localhost:3005/api/auth/register', {
       email: email.value,
       password: password.value,
       username: username.value,
@@ -70,6 +72,9 @@ const register = async () => {
       lastname: lastname.value
     });
     message.value = response.data.message;
+    setTimeout(() => {
+       navigateTo('/auth');
+    }, 3000);
   } catch (error) {
     message.value = error.response.data.error || 'Registration failed';
   }

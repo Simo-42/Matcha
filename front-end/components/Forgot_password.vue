@@ -32,7 +32,7 @@ const isFormValid = computed(() => {
 
 const passwordForget = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/api/password/forgot_password', {
+    const response = await axios.post('http://localhost:3005/api/password/forgot_password', {
       email: email.value,
     });
     message.value = response.data.message;

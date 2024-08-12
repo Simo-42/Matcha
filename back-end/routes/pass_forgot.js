@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../db.js');  // Importez la connexion depuis db.js
-const { check_mail_user_exist, createUser, check_username_user_exist } = require('../queries/UserQueries.js');
+const { check_mail_user_exist, createUser, check_username_user_exist, check_same_password } = require('../queries/UserQueries.js');
 const { sendResetEmail } = require('../utils/send_mail.js');
 const { generateResetToken } = require('../utils/send_password_reset.js');
 
@@ -10,14 +10,11 @@ require('dotenv').config(); // Charge les variables d'environnement depuis le fi
 const router = express.Router();
 
 router.post('/forgot_password', async (req, res) => {
-  const { email } = req.body;
+  const { email, username } = req.body;
   
   try {
     // Vérifier si cet email est déjà enregistré dans la DB
-    if (await check_mail_user_exist(email) == false) 
-    {
-      return res.status(400).json({ error: 'Email is not registered yet.' });
-    }
+
 
     const reset_token = await generateResetToken(email);
     await sendResetEmail(email, reset_token);
@@ -36,7 +33,24 @@ router.post('/reset/:token', async (req, res) => { // Ajout du slash manquant
   const { newPassword } = req.body;
 
   try {
+
+    const queryForUsername = `
+    SELECT username FROM users WHERE reset_token = $1 AND reset_token_expires > NOW()
+  `;
+  const usernameResult = await pool.query(queryForUsername, [token]);
+
+  if (usernameResult.rows.length === 0) {
+    return res.status(400).json({ error: 'Invalid or expired token' });
+  }
+
+  const username = usernameResult.rows[0].username;
+
+    if (await check_same_password(username, newPassword) == true) {
+      return res.status(400).json({ error: 'Same password as before.' });
+    }
+    
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
     const query = `
       UPDATE users
       SET password = $1, reset_token = NULL, reset_token_expires = NULL
