@@ -5,7 +5,14 @@
   </div>
 </template>
 
+
 <script setup>
-import logout from '~/components/logout.vue';
+
+definePageMeta({
+  middleware: ["auth"]
+})
+
+import logout from '~/components/Logout.vue';
 import Welcome from '~/components/Welcome.vue';
 </script>
+

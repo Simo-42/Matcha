@@ -10,9 +10,13 @@ CREATE TABLE users (
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     verified BOOLEAN DEFAULT FALSE,
-    reset_token VARCHAR(255),
-    reset_token_expires TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    gender VARCHAR(255),  -- Nouvelle colonne pour le genre
+    sexual_preference VARCHAR(255),  -- Nouvelle colonne pour la préférence sexuelle
+    biography TEXT,  -- 
+    interests JSON,-- Tableau JSON pour les intérêts
+    reset_token_expires TIMESTAMP, -- pour email forget
+    reset_token VARCHAR(255), -- pour email forget
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

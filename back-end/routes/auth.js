@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
 
 		const user = await createUser(info);
 		if (!user) {
-				return res.status(500).json({ error: 'Error creating user' });
+			return res.status(500).json({ error: 'Error creating user' });
 		}
 
 		await send_email(email, user.id);
@@ -84,6 +84,7 @@ const {username, password} = req.body;
 					maxAge: 24 * 60 * 60 * 1000, // 1 jour en millisecondes
 
 				});
+				console.log('User authenticated successfully');
 				return res.status(200).json({ message: 'Authentication successful', token });
 			} 
 			else 
@@ -110,7 +111,7 @@ router.get('/verify/:id', async (req, res) => {
 		const result = await pool.query(query, values); // fais la requete 
 
 		if (result.rows.length > 0) {
-			res.redirect(`http://localhost:3001/verify/${userId}`);
+			res.redirect(`http://localhost:3000/verify/${userId}`);
 		} else {
 			res.status(400).send('Email verification failed');
 		}
@@ -119,12 +120,5 @@ router.get('/verify/:id', async (req, res) => {
 		res.status(400).send('Email verification failed');
 	}
 });
-
-router.post('/logout', (req, res) => {
-	res.clearCookie('token');
-    res.status(200).json({ message: 'Logout successful' });
-});
-
-
 
 module.exports = router;

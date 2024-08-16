@@ -19,10 +19,12 @@ app.use(cookieParser()); // Pour gérer les cookies
 const authRouter = require('./routes/auth');
 const passwordForgotRouter = require('./routes/pass_forgot');
 const jwtRouter = require('./routes/jwt');
+const afterAuthRouter = require('./routes/after_auth');
 
 app.use('/api/auth', authRouter);
 app.use('/api/password', passwordForgotRouter);
 app.use('/api/jwt', jwtRouter);
+app.use('/api/after_auth', afterAuthRouter);
 
 // Définir le port et démarrer le serveur
 const port = process.env.PORT || 3005;

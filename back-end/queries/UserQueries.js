@@ -4,15 +4,15 @@ const bcrypt = require('bcryptjs');
 
 const check_mail_user_exist = async (email) => {
   try {
-    const query = 'SELECT * FROM users WHERE email = $1';
-    const values = [email];
+	const query = 'SELECT * FROM users WHERE email = $1';
+	const values = [email];
 
-    const res = await pool.query(query, values);
-    if (res.rows.length > 0) 
+	const res = await pool.query(query, values);
+	if (res.rows.length > 0) 
 	{	
 		console.log('User email exists:', res.rows[0]);
 		return true ; 
-    } 
+	} 
 	else 
 	{
 		console.log('User email does not exist he can register');
@@ -21,7 +21,7 @@ const check_mail_user_exist = async (email) => {
 } 
   catch (err) 
 	{
-    console.error('Error executing query', err.stack);
+	console.error('Error executing query', err.stack);
 	return false ; 
 	}
 };
@@ -97,6 +97,32 @@ const check_username_user_exist = async (username) => {
 	}
   };
 
+  const update_user_spec = async (userId, userInfo) => {
+	const { gender, sexual_preference, biography, interests } = userInfo;
+	try {
+	  const query = `
+		UPDATE users
+		SET gender = $1,
+			sexual_preference = $2,
+			biography = $3,
+			interests = $4,
+			updated_at = CURRENT_TIMESTAMP
+		WHERE id = $5
+		RETURNING *`;
+  
+	  const values = [gender, sexual_preference, biography, JSON.stringify(interests), userId];
+	  // Note: JSON.stringify est utilisé pour s'assurer que 'interests' est stocké correctement en tant que JSON
+  
+	  const res = await pool.query(query, values);
+	  return res.rows[0]; // Retourne l'utilisateur mis à jour
+	} catch (err) {
+	  console.error('Error executing query', err.stack);
+	  throw err; // Lève une erreur si la requête échoue
+	}
+  };
+  
+
+
   const check_same_password = async (username, new_password) => {
 	try {
 	  const query = 'SELECT password FROM users WHERE username = $1';
@@ -129,4 +155,4 @@ const check_username_user_exist = async (username) => {
   };
 
 
-module.exports = { check_mail_user_exist, check_username_user_exist , createUser, check_verif_user, check_same_password };
+module.exports = { check_mail_user_exist, check_username_user_exist , createUser, check_verif_user, check_same_password, update_user_spec };

@@ -22,8 +22,8 @@ import axios from 'axios';
 
 const logout = async () => {
   try {
-    await axios.post('http://localhost:3005/api/auth/logout'); // Remplacez par la route de votre serveur
-    router.push('/auth'); // Redirige vers la page de connexion après la déconnexion
+    await axios.post('http://localhost:3005/api/jwt/logout'); // Remplacez par la route de votre serveur
+    router.push('/auth'); 
   } catch (error) {
     console.error('Failed to log out:', error);
   }
@@ -31,5 +31,4 @@ const logout = async () => {
 </script>
 
 <style scoped>
-/* Vous pouvez ajouter des styles supplémentaires ici si nécessaire */
 </style>

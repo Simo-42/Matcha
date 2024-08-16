@@ -91,7 +91,7 @@ router.get('/verify_password/:token', async (req, res) => { // Ajout du slash ma
       return res.status(400).json({ error: 'Invalid or expired token' });
     }
 
-    res.redirect(`http://localhost:3001/verify_password/${token}`);
+    res.redirect(`http://localhost:3000/verify_password/${token}`);
     
 
   } catch (error) {
