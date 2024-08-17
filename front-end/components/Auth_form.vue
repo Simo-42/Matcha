@@ -56,10 +56,7 @@ const authentification = async () => {
       password: password.value,
     }, {
       withCredentials: true,
-      // console.log(withCredentials);
     });
-      console.log('Token reçu:', response.data.token); // Affiche le token dans la console==[========================[[==[[[=[[[]]]]]]]]
-    message.value = response.data.message;
     navigateTo('/welcome');
   } catch (error) {
     message.value = error.response.data.error || 'Authentication failed';

@@ -114,7 +114,9 @@ const check_username_user_exist = async (username) => {
 	  // Note: JSON.stringify est utilisé pour s'assurer que 'interests' est stocké correctement en tant que JSON
   
 	  const res = await pool.query(query, values);
+	 console.log('res :) ', res.rows[0]); 
 	  return res.rows[0]; // Retourne l'utilisateur mis à jour
+	  
 	} catch (err) {
 	  console.error('Error executing query', err.stack);
 	  throw err; // Lève une erreur si la requête échoue
