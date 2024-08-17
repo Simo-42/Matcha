@@ -1,7 +1,7 @@
 <template>
   <div>
     <logout />
-    <Welcome />
+    <After_auth_form />
   </div>
 </template>
 
@@ -13,6 +13,6 @@ definePageMeta({
 })
 
 import logout from '~/components/Logout.vue';
-import Welcome from '~/components/Welcome.vue';
+import After_auth_form from '~/components/After_auth_form.vue';
 </script>
 

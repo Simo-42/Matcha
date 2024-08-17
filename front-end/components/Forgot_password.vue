@@ -36,7 +36,6 @@ const passwordForget = async () => {
       email: email.value,
     });
     message.value = response.data.message;
-    // navigateTo('/welcome');
   } catch (error) {
     message.value = error.response.data.error || 'Password reset failed';
   }

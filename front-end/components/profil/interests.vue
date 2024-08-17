@@ -42,8 +42,9 @@
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   selectedInterests: {
@@ -52,7 +53,11 @@ const props = defineProps({
   }
 });
 
-const choices = ref(['#vegan', '#geek', '#piercing', '#sports', '#music', '#art', '#league of legends', '#E-sport', '#MonkeyType', '#Nuxt3Js']);
+const choices = ref([
+  '#vegan', '#geek', '#piercing', '#sports', '#music', '#art', 
+  '#league of legends', '#E-sport', '#MonkeyType', '#Nuxt3Js'
+]);
+
 const selectedTags = ref(props.selectedInterests || []);
 const newTag = ref('');
 
@@ -72,10 +77,10 @@ const addTag = () => {
   if (tag && !tag.startsWith('#')) {
     tag = `#${tag}`;
   }
-  if (tag && !selectedTags.value.includes(tag) && !choices.value.includes(tag)) {
+  if (tag && !selectedTags.value.includes(tag)) {
     selectedTags.value.push(tag);
-    newTag.value = '';
   }
+  newTag.value = '';  // Réinitialiser le champ après ajout
 };
 
 const removeTag = (tag) => {

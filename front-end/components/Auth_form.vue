@@ -57,7 +57,7 @@ const authentification = async () => {
     }, {
       withCredentials: true,
     });
-    navigateTo('/welcome');
+    navigateTo('/after_auth_form');
   } catch (error) {
     message.value = error.response.data.error || 'Authentication failed';
   }

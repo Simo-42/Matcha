@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 class="text-2xl font-semibold text-center">User modification</h1>
+	  <Logout />
+    <user_form />
   </div>
 </template>
 
@@ -9,5 +10,7 @@ definePageMeta({
   middleware: ["auth"]
 })
 
+import { ref } from 'vue';
+import axios from 'axios';
 import user_form from '~/components/User_form.vue';
 </script>

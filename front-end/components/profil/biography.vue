@@ -1,9 +1,9 @@
 <template>
   <div class="p-4">
-    <label for="SelectedBio" class="block text-sm font-medium text-gray-700">Your Biography</label>
+    <label for="bio" class="block text-sm font-medium text-gray-700">Your Biography</label>
     <textarea
-      id="SelectedBio"
-      v-model="Localbio"
+      id="bio"
+      v-model="localBio"
       :maxlength="maxLength"
       rows="6"
       placeholder="Write about yourself..."
@@ -14,37 +14,35 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
-  Bio: {
+  bio: {
     type: String,
     default: ''
   }
 });
 
+const localBio = ref(props.bio || ''); // Initialisation directe
+
 const maxLength = 100;
 
-
-const Localbio = ref(props.Bio || '');
-
 const remainingChars = computed(() => {
-  return maxLength - (Localbio.value ? Localbio.value.length : 0);
+  return maxLength - localBio.value.length;
 });
 
 const emit = defineEmits(['updateBio']);
 
-const emitBio = () => {
-  emit('updateBio', Localbio.value);
-};
-
-watch(() => props.Bio, (newVal) => {
-  Localbio.value = newVal || '';
+watch(() => props.bio, (newVal) => {
+  if (newVal !== localBio.value) {
+    localBio.value = newVal || '';
+  }
 });
 
-// Watch Localbio and emit changes to the parent
-watch(Localbio, () => {
-  emitBio();
+// Émission des changements de localBio
+watch(localBio, () => {
+  emit('updateBio', localBio.value);
+  console.log(localBio.value);
 });
 
 </script>
