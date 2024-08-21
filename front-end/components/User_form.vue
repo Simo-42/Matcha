@@ -4,9 +4,6 @@
       <Gender_select :selectedGender="selectedGender" @updateGender="updateGender" />
       <Sexual_pref :selectedSexualPref="selectedSexualPref" @updateSexualPref="updateSexualPref" />
       <Biography_form :SelectedBio="SelectedBio" @updateBio="updateBio" />
-	  <p> {{ SelectedBio }} </p>
-	  <p> {{ selectedInterests }} </p>
-
       <Interests_select :selectedInterests="selectedInterests" @updateInterests="updateInterests" />
       <button 
         type="submit" 
@@ -52,7 +49,7 @@ const updateInterests = (newInterests) => {
 // Fonction pour récupérer les informations de profil au chargement de la page
 const fetchProfileData = async () => {
   try {
-    const response = await axios.get('http://localhost:3005/api/after_auth/profil/info', {
+    const response = await axios.get('http://localhost:3005/api/after_auth/profil/spec_info', {
       withCredentials: true,
     });
     const data = response.data.result;

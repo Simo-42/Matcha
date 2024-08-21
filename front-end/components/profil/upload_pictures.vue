@@ -16,14 +16,14 @@
 
 		<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
 			<div
-				v-for="n in 4"
-				:key="n"
-				@click="selectImage(n + 1)"
+				v-for="(image, index) in images.slice(1)"
+				:key="index"
+				@click="selectImage(index + 1)"
 				class="relative w-48 h-64 bg-white border-2 border-gray-300 flex items-center justify-center rounded-md shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:shadow-2xl"
 			>
-				<div v-if="images[n + 1]" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
-					<img :src="images[n+1]" alt="Photo secondaire" class="w-full h-full object-cover" />
-					<button @click.stop="deleteImage(n+1)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
+				<div v-if="image" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
+					<img :src="image" alt="Photo secondaire" class="w-full h-full object-cover" />
+					<button @click.stop="deleteImage(index + 1)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
 				</div>
 				<div v-else class="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-md">
 					<span class="text-gray-500 text-xl font-bold">+</span>
@@ -67,7 +67,12 @@ const selectImage = (index) => {
 					alert('This image is already added.');
 					return;
 				}
-				images.value[index] = imageSrc;
+				const firstEmptyIndex = images.value.findIndex(img => img === null);
+                if (firstEmptyIndex !== -1) {
+                    images.value[firstEmptyIndex] = imageSrc;
+                } else {
+                    alert('All slots are full.');
+                }
 			};
 			reader.readAsDataURL(file);
 		}
@@ -80,7 +85,11 @@ const deleteImage = (index) => {
 };
 
 const submitImages = async () => {
-	if (images.value.filter((img) => img !== null).length < 2) {
+	if(images[0] === null) {
+		alert('You must select a main photo before submitting.');
+		return;
+	}
+	else if (images.value.filter((img) => img !== null).length < 2) {
 		alert('You must select at least 2 photos before submitting.');
 		return;
 	}
@@ -96,7 +105,7 @@ const submitImages = async () => {
 			}
 		);
 		message.value = response.data.message;
-		navigateTo('/usermod');
+		navigateTo('/gps');
 	} 
 	catch (error) 
 	{

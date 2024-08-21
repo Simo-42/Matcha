@@ -39,12 +39,17 @@
       </p>
       <p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
     </div>
+    <div v-if="showAnimation" class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
+      <LottieAnimation :animationData="animationData" :loop="false" :autoplay="true" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import LottieAnimation from '~/components/lotie/lotie_animation.vue';  // Remplacez par le bon chemin vers votre fichier JSON
+import animationData from '~/assets/lottie/email_send.json';  // Remplacez par le bon chemin vers votre fichier JSON
 
 const email = ref('');
 const password = ref('');
@@ -52,6 +57,7 @@ const username = ref('');
 const firstname = ref('');
 const lastname = ref('');
 const message = ref('');
+const showAnimation = ref(false); 
 
 const isPasswordComplex = computed(() => {
   const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // regle defini pour le mdp verifie l'integralite de la chaine de char
@@ -72,6 +78,8 @@ const register = async () => {
       lastname: lastname.value
     });
     message.value = response.data.message;
+    
+    showAnimation.value = true;
     setTimeout(() => {
        navigateTo('/auth');
     }, 3000);

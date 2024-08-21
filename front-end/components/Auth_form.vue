@@ -18,7 +18,7 @@
           <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
             <div class="text-sm">
-              <nuxt-link to="/forgot_password"class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</nuxt-link>
+              <nuxt-link to="/forgot_password" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</nuxt-link>
             </div>
           </div>
           <div class="mt-2">
@@ -39,15 +39,22 @@
       <p v-if="message" class="mt-2 text-center text-sm text-red-500">{{ message }}</p>
     </div>
   </div>
+  
+  <div v-if="showAnimation" class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-60">
+    <LottieAnimation :animationData="animationData" :loop="false" :autoplay="true" />
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import LottieAnimation from '~/components/lotie/lotie_animation.vue';  // Remplacez par le bon chemin vers votre fichier JSON
+import animationData from '~/assets/lottie/valide.json';  // Remplacez par le bon chemin vers votre fichier JSON
 
 const username = ref('');
 const password = ref('');
 const message = ref('');
+const showAnimation = ref(false); // Nouvelle variable pour contrôler l'animation
 
 const authentification = async () => {
   try {
@@ -57,10 +64,13 @@ const authentification = async () => {
     }, {
       withCredentials: true,
     });
-    navigateTo('/after_auth_form');
+    
+    showAnimation.value = true; // Déclenche l'animation
+    setTimeout(() => {
+      navigateTo('/after_auth_form');
+    }, 2000); // Attendre 2 secondes avant de naviguer pour laisser le temps à l'animation de se jouer
   } catch (error) {
     message.value = error.response.data.error || 'Authentication failed';
   }
 };
-
 </script>

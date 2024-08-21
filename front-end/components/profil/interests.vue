@@ -48,7 +48,7 @@ import { ref, watch } from 'vue';
 
 const props = defineProps({
   selectedInterests: {
-    type: Array,
+    type: [Array, String],  // Accepte un tableau ou une chaîne de caractères
     default: () => []
   }
 });
@@ -58,7 +58,18 @@ const choices = ref([
   '#league of legends', '#E-sport', '#MonkeyType', '#Nuxt3Js'
 ]);
 
-const selectedTags = ref(props.selectedInterests || []);
+// Initialisation de selectedTags avec transformation en tableau si nécessaire
+const selectedTags = ref([]);
+if (Array.isArray(props.selectedInterests)) {
+  selectedTags.value = props.selectedInterests;
+} else {
+  try {
+    selectedTags.value = JSON.parse(props.selectedInterests);
+  } catch (e) {
+    selectedTags.value = [];
+  }
+}
+
 const newTag = ref('');
 
 const toggleSelection = (choice) => {
@@ -94,7 +105,15 @@ const emitInterests = () => {
 };
 
 watch(() => props.selectedInterests, (newVal) => {
-  selectedTags.value = newVal || [];
+  if (Array.isArray(newVal)) {
+    selectedTags.value = newVal;
+  } else {
+    try {
+      selectedTags.value = JSON.parse(newVal);
+    } catch (e) {
+      selectedTags.value = [];
+    }
+  }
 });
 
 watch(selectedTags, () => {

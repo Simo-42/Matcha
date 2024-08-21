@@ -27,7 +27,7 @@
 		"nuxt.config.ts": true,
 		".vscode": false,
 		".nuxt": false,
-		"package-lock.json": true,
+		"package-lock.json": false,
 		"package.json": true,
 		"tailwind.config.js": true,
 		"app.vue": true,

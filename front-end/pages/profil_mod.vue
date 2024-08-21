@@ -1,10 +1,8 @@
 <template>
-  <div>
   
-	  <Logout />
-    <usermod />
-    <!-- <user_form /> -->
-  </div>
+	<Logout />
+    <!-- <user_mod /> -->
+    <user_form />
 </template>
 
 <script setup lang="ts">
@@ -15,5 +13,5 @@ definePageMeta({
 import { ref } from 'vue';
 import axios from 'axios';
 import user_form from '~/components/User_form.vue';
-import usermod from '~/components/User_mod.vue';
+import user_mod from '~/components/User_mod.vue';
 </script>
