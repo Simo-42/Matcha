@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const userQueries = require('../queries/index.js'); // importe index.js depuis le dossier queries
 
 
 router.get('/verify-auth', (req, res) => {
@@ -24,4 +25,4 @@ router.get('/verify-auth', (req, res) => {
 });
 
 
-  module.exports = router;
+module.exports = router;

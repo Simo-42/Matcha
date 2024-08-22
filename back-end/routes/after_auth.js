@@ -6,9 +6,8 @@ const authenticateToken = require('../middleware/authMiddleware.js');
 
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
-const { update_user_spec, insert_new_pictures, get_profil_spec_by_id, insert_location, get_profil_personal_by_id, 
-	update_user_info, check_mail_user_exist, check_username_user_exist, 
-	getUserByEmail, getUserByUsername, update_verification_status } = require('../queries/UserQueries.js');
+
+const userQueries = require('../queries/index.js'); // importe index.js depuis le dossier queries
 
 const { send_email } = require('../utils/send_mail.js');
 
@@ -29,7 +28,7 @@ router.post('/profil/update', authenticateToken, async (req, res) => {
 
 	try 
 	{
-		const user = await update_user_spec(userId, info);
+		const user = await userQueries.update_user_spec(userId, info);
 		if (!user) 
 		{
 			return res.status(500).json({ error: 'Error updating user information' });
@@ -48,7 +47,6 @@ router.post('/profil/update_profil', authenticateToken, async (req, res) => {
     const { email, username, firstname, lastname } = req.body;
     const userId = req.user.id;
 
-    console.log('POST /register after auth called');
 
     const info = {
         email: email,
@@ -57,10 +55,9 @@ router.post('/profil/update_profil', authenticateToken, async (req, res) => {
         lastname: lastname,
     };
 
-    console.log('Info:', info);
 
     try {
-        if (await check_mail_user_exist(email) == true) {
+        if (await userQueries.check_mail_user_exist(email) == true) { // Vérifiez si l'e-mail existe déjà
             const existingEmailUser = await getUserByEmail(email);
             if (existingEmailUser && existingEmailUser.id !== userId) 
 			{
@@ -68,24 +65,29 @@ router.post('/profil/update_profil', authenticateToken, async (req, res) => {
             }
         }
         // Vérification du nom d'utilisateur
-        if (await check_username_user_exist(username)) {
-            const existingUsernameUser = await getUserByUsername(username);
+        if (await userQueries.check_username_user_exist(username)) {
+            const existingUsernameUser = await userQueries.getUserByUsername(username);
             if (existingUsernameUser && existingUsernameUser.id !== userId) { // Vérifiez si l'utilisateur existe déjà et s'il n'est pas l'utilisateur actuel
                 return res.status(400).json({ error: 'Username already taken' });
             }
         }
-
-        const user = await update_user_info(userId, info);
+		const user_profil = await userQueries.get_profil_personal_by_id(userId)
+		const email_check = user_profil.email;
+		if (email !== email_check.email) // Si l'e-mail a été modifié renvoyer un mail de vérification
+		{
+			console.log("email changed");
+			await userQueries.update_verification_status(userId);
+			await userQueries.send_email(email, userId);
+			const user = await userQueries.update_user_info(userId, info);
+			if (!user) 
+				return res.status(500).json({ error: 'Error updating user information' });
+			return res.status(200).json({ message: 'Don\'t forget to verify your mail again. Mail has been sent to you', user });
+		}
+		
+        const user = await userQueries.update_user_info(userId, info);
         if (!user) {
             return res.status(500).json({ error: 'Error updating user information' });
         }
-		if (email !== user.email)
-		{
-			await update_verification_status(userId);
-			await send_email(email, userId);
-			return res.status(200).json({ message: 'Don\'t forget to verify your mail again. Mail has been sent to you', user });
-		}
-        console.log('User spec updated successfully:', user);
         return res.status(200).json({ message: 'User spec updated successfully', user });
     } catch (error) {
         console.log('Error updating user:', error);
@@ -102,7 +104,7 @@ router.post('/pictures', authenticateToken, async (req, res) => {
   
 	try 
 	{
-		const user = await insert_new_pictures(userId, pictures);
+		const user = await userQueries.insert_new_pictures(userId, pictures);
 		if (!user) 
 		{
 			return res.status(500).json({ error: 'Error updating user information' });
@@ -122,7 +124,7 @@ router.get('/profil/spec_info', authenticateToken, async (req, res) => {
 	console.log('User ID:', userId); 
   
 	try {
-		const result = await get_profil_spec_by_id(userId);
+		const result = await userQueries.get_profil_spec_by_id(userId);
 		if (!result) {
 			return res.status(404).json({ error: 'User not found' });
 		}
@@ -141,7 +143,7 @@ router.post('/profil/location', authenticateToken, async (req, res) => {
   
 	try 
 	{
-		const user = await insert_location(userId, latitude, longitude);
+		const user = await userQueries.insert_location(userId, latitude, longitude);
 		if (!user) 
 		{
 			return res.status(500).json({ error: 'Error updating user information' });
@@ -161,7 +163,7 @@ router.get('/profil/id_info', authenticateToken, async (req, res) => {
 	console.log('User ID:', userId); 
   
 	try {
-		const result = await get_profil_personal_by_id(userId);
+		const result = await userQueries.get_profil_personal_by_id(userId);
 		if (!result) {
 			return res.status(404).json({ error: 'User not found' });
 		}

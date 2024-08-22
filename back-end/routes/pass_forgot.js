@@ -2,21 +2,17 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../db.js');  // Importez la connexion depuis db.js
-const { check_mail_user_exist, createUser, check_username_user_exist, check_same_password } = require('../queries/UserQueries.js');
 const { sendResetEmail } = require('../utils/send_mail.js');
 const { generateResetToken } = require('../utils/send_password_reset.js');
-
+const userQueries = require('../queries/index.js'); // importe index.js depuis le dossier queries
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
 
 router.post('/forgot_password', async (req, res) => {
-  const { email, username } = req.body;
+  const { email } = req.body;
   
   try {
-    // Vérifier si cet email est déjà enregistré dans la DB
-
-
-    const reset_token = await generateResetToken(email);
+    const reset_token = await userQueries.generateResetToken(email);
     await sendResetEmail(email, reset_token);
     
     res.status(201).json({ message: 'Reset password email has been sent to you! Check your spam' });
@@ -45,7 +41,7 @@ router.post('/reset/:token', async (req, res) => { // Ajout du slash manquant
 
   const username = usernameResult.rows[0].username;
 
-    if (await check_same_password(username, newPassword) == true) {
+    if (await userQueries.check_same_password(username, newPassword) == true) {
       return res.status(400).json({ error: 'Same password as before.' });
     }
     

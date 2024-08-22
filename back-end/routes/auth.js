@@ -2,12 +2,10 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../db.js');  // Importez la connexion depuis db.js
 const jwt = require('jsonwebtoken'); // Pour generer le token JWT
+const userQueries = require('../queries/index.js'); // importe index.js depuis le dossier queries
 
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
-const { check_mail_user_exist, createUser, check_username_user_exist } = require('../queries/UserQueries.js');
-const { send_email, sendResetEmail } = require('../utils/send_mail.js');
-const { generateResetToken } = require('../utils/send_password_reset.js');
 
 
 router.post('/register', async (req, res) => {
@@ -26,22 +24,22 @@ router.post('/register', async (req, res) => {
 	
 	try {
 		// Vérifier si cet email est déjà enregistré dans la DB
-		if (await check_mail_user_exist(email) == true) 
+		if (await userQueries.check_mail_user_exist(email) == true) 
 		{
 			return res.status(400).json({ error: 'Email is already registered.' });
 		}
-		else if (await check_username_user_exist(username) == true)
+		else if (await userQueries.check_username_user_exist(username) == true)
 		{
 			return res.status(400).json({ error: 'This username is already taken.' });
 		}
 		
 
-		const user = await createUser(info);
+		const user = await userQueries.createUser(info);
 		if (!user) {
 			return res.status(500).json({ error: 'Error creating user' });
 		}
 
-		await send_email(email, user.id);
+		await userQueries.send_email(email, user.id);
 		
 		res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
 	
@@ -57,7 +55,7 @@ const {username, password} = req.body;
 
 	try 
 	{
-		if (await (check_username_user_exist(username)) == false)
+		if (await (userQueries.check_username_user_exist(username)) == false)
 				return res.status(400).json({ error: 'Username doesn\'t exist'});
 
 			const query = 'SELECT * FROM users WHERE username = $1';
@@ -72,7 +70,7 @@ const {username, password} = req.body;
 					return res.status(400).json({ error: 'Incorrect password' });
 				if (!user.verified)
 				{
-					await send_email(user.email, user.id);
+					await userQueries.send_email(user.email, user.id);
 					return res.status(400).json({ error: 'Email not verified. Verification email resent.'}); 
 				}
 				const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });

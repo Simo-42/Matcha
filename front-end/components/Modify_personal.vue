@@ -99,7 +99,7 @@ const modify_profil = async () => {
     });
 
 
-    message.value = "Profile modified";
+    message.value = response.data.message;
     showAnimation.value = true;
     setTimeout(() => {
       showAnimation.value = false; // Cache l'animation après 3 secondes
