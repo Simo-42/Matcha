@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+    <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Select your gender</label>
     <select 
       id="gender" 
       v-model="localGender" 
@@ -23,7 +23,7 @@ const props = defineProps({
 const emit = defineEmits(['updateGender']);
 
 const localGender = ref(props.selectedGender);
-const genders = ['Homme', 'Femme', 'Autre'];
+const genders = ['Man', 'Women', 'Other'];
 
 const emitGender = () => {
   emit('updateGender', localGender.value);

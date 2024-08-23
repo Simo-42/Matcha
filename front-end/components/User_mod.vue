@@ -23,6 +23,11 @@
             Photos
           </NuxtLink>
         </li>
+         <li>
+          <NuxtLink to="/security" class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
+            Security
+          </NuxtLink>
+        </li>
       </ul>
     </nav>
   </div>

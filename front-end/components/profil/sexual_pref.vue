@@ -28,13 +28,9 @@ const emit = defineEmits(['updateSexualPref']); // Envoie l'orientation au paren
 const localOrientation = ref(props.selectedSexualPref || ''); // Initialize with prop or empty string
 const sex_pref = [
   { value: 'Heterosexual', label: 'Heterosexual' },
-  { value: 'Homosexual', label: 'Homosexual' },
-  { value: 'Bisexual-binary', label: 'Bisexual' },
-  { value: 'Asexual', label: 'Asexual' },
-  { value: 'Pansexual', label: 'Pansexual' },
-  { value: 'Queer', label: 'Queer' },
-  { value: 'Demisexual', label: 'Demisexual' },
-  { value: 'others', label: 'others' }
+  { value: 'Gay', label: 'Gay' },
+  { value: 'Bisexual', label: 'Bisexual' },
+  { value: 'Other', label: 'other' }
 ];
 
 // Le genre sélectionné

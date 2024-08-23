@@ -64,13 +64,30 @@ const authentification = async () => {
     }, {
       withCredentials: true,
     });
-    
-    showAnimation.value = true; // Déclenche l'animation
-    setTimeout(() => {
-      navigateTo('/after_auth_form');
-    }, 2000); // Attendre 2 secondes avant de naviguer pour laisser le temps à l'animation de se jouer
+
+    // Vérification si le profil est complet
+
+    // Si le profil est complet, redirige vers la page connectée
+    if (response.data.profile_complete == true) 
+    {
+      console.log("Profile is complete");
+      showAnimation.value = true; // Déclenche l'animation
+      setTimeout(() => {
+        navigateTo('/connected');
+      }, 2000);
+    } else 
+    {
+      console.log("response.data.profile_complete", response.data.profile_complete);
+      console.log("Profile is not complete");
+      showAnimation.value = true; // Déclenche l'animation
+      setTimeout(() => {
+        navigateTo('/after_auth_form');
+      }, 2000); // Attendre 2 secondes avant de naviguer pour laisser le temps à l'animation de se jouer
+    }
+
   } catch (error) {
-    message.value = error.response.data.error || 'Authentication failed';
+    // Gestion des erreurs d'authentification
+    message.value = error.response?.data?.error || 'Authentication failed';
   }
 };
 </script>
