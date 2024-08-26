@@ -12,7 +12,7 @@ router.post('/forgot_password', async (req, res) => {
   const { email } = req.body;
   
   try {
-    const reset_token = await userQueries.generateResetToken(email);
+    const reset_token = await generateResetToken(email);
     await sendResetEmail(email, reset_token);
     
     res.status(201).json({ message: 'Reset password email has been sent to you! Check your spam' });

@@ -109,8 +109,7 @@ const search_location = async () => {
 const submit_location = async () => {
   try {
     const response = await axios.post('http://localhost:3005/api/after_auth/profil/location', {
-      latitude: latitude.value,
-      longitude: longitude.value
+      location : city.value
     }
     , {
       withCredentials: true

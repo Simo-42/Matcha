@@ -20,7 +20,10 @@
     "leaflet": "^1.9.4",
     "lottie-web": "^5.12.2",
     "nuxt": "^3.12.4",
-    "vue": "latest"
+    "nuxt-swiper": "^1.2.2",
+    "swiper": "^8.4.7",
+    "vue": "latest",
+    "vue-awesome-swiper": "^5.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

@@ -14,12 +14,12 @@
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/modify_personal" class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
+          <NuxtLink to="/personal_mod" class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
             Données Personnelles
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="#photos" class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
+          <NuxtLink to="/photos_mod" class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
             Photos
           </NuxtLink>
         </li>

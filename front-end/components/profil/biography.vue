@@ -42,7 +42,5 @@ watch(() => props.bio, (newVal) => {
 // Émission des changements de localBio
 watch(localBio, () => {
   emit('updateBio', localBio.value);
-  console.log(localBio.value);
 });
-
 </script>

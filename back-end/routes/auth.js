@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const pool = require('../db.js');  // Importez la connexion depuis db.js
 const jwt = require('jsonwebtoken'); // Pour generer le token JWT
 const userQueries = require('../queries/index.js'); // importe index.js depuis le dossier queries
-
+const { send_email } = require('../utils/send_mail.js');
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
 
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
 			return res.status(500).json({ error: 'Error creating user' });
 		}
 
-		await userQueries.send_email(email, user.id);
+		await send_email(email, user.id);
 		
 		res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
 	
@@ -51,47 +51,50 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/authentification', async (req, res) => {
-const {username, password} = req.body;
+	const { username, password } = req.body;
 
-	try 
-	{
-		if (await (userQueries.check_username_user_exist(username)) == false)
-				return res.status(400).json({ error: 'Username doesn\'t exist'});
+	try {
+		if (!(await userQueries.check_username_user_exist(username))) {
+			return res.status(400).json({ error: "Username doesn't exist" });
+		}
 
-			const query = 'SELECT * FROM users WHERE username = $1';
-			const values = [username];
-			const result = await pool.query(query,values); 
+		const query = 'SELECT * FROM users WHERE username = $1';
+		const values = [username];
+		const result = await pool.query(query, values);
 
-			if (result.rows.length > 0) 
-			{
-				const user = result.rows[0];
-				const passwordMatch = await bcrypt.compare(password, user.password);
-				if (!passwordMatch)
-					return res.status(400).json({ error: 'Incorrect password' });
-				if (!user.verified)
-				{
-					await userQueries.send_email(user.email, user.id);
-					return res.status(400).json({ error: 'Email not verified. Verification email resent.'}); 
-				}
-				const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
-				res.cookie('token', token, 
-				{
-					httpOnly: true,    // Protection XSS / empeche d'avoir le token avec du javascript
-					secure: false,      // Assure que le cookie est transmis uniquement sur HTTPS
-					sameSite: 'Strict', // Empêche l'envoi du cookie à partir de sites externes
-					maxAge: 24 * 60 * 60 * 1000, // 1 jour en millisecondes
-
-				});
-				console.log('User authenticated successfully');
-				return res.status(200).json({ message: 'Authentication successful', token });
-			} 
-			else 
-			{
-				return res.status(400).json({ error: 'User doesn\'t exist' });
+		if (result.rows.length > 0) {
+			const user = result.rows[0];
+			const passwordMatch = await bcrypt.compare(password, user.password);
+			if (!passwordMatch) {
+				return res.status(400).json({ error: 'Incorrect password' });
 			}
-	} 
-	catch (error) 
-	{
+			if (!user.verified) {
+				await send_email(user.email, user.id);
+				return res
+					.status(400)
+					.json({ error: 'Email not verified. Verification email resent.' });
+			}
+			const token = jwt.sign(
+				{ id: user.id, username: user.username },
+				process.env.JWT_SECRET,
+				{ expiresIn: process.env.JWT_EXPIRATION }
+			);
+			res.cookie('token', token, {
+				httpOnly: true,
+				secure: false,
+				sameSite: 'Strict',
+				maxAge: 24 * 60 * 60 * 1000,
+			});
+			console.log('User authenticated successfully');
+			return res.status(200).json({
+				message: 'Authentication successful',
+				token,
+				profile_complete: user.profile_complete,
+			});
+		} else {
+			return res.status(400).json({ error: "User doesn't exist" });
+		}
+	} catch (error) {
 		console.log('Error authenticating user:', error);
 		return res.status(500).json({ error: 'Internal server error' });
 	}

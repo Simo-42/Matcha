@@ -46,18 +46,17 @@ const insert_new_pictures = async (userId, photos) => {
 		throw err; // Lève une erreur si la requête échoue
 	}
 };
-const insert_location = async (userId, latitude, longitude) => {
+const insert_location = async (userId, location) => {
 	try {
 		const query = `
 			UPDATE users
 			SET 
-				latitude = $1,
-				longitude = $2,
+				location = $1,
 				updated_at = CURRENT_TIMESTAMP
-			WHERE id = $3
+			WHERE id = $2
 			RETURNING *`;
 
-		const values = [latitude, longitude, userId];
+		const values = [location, userId];
 		const res = await pool.query(query, values);
 		console.log('Updated user:', res.rows[0]);
 		return res.rows[0]; 

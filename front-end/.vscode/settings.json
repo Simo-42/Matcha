@@ -24,7 +24,7 @@
 		"**/*.js": false,
 		"**/node_modules": false,
 		"node_modules": true,
-		"nuxt.config.ts": true,
+		"nuxt.config.ts": false,
 		".vscode": true,
 		".nuxt": true,
 		"package-lock.json": false,

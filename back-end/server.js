@@ -2,7 +2,6 @@
 const express = require('express');
 const cors = require('cors'); // Importer le middleware CORS
 const cookieParser = require('cookie-parser'); // Importer cookie-parser pour gérer les cookies
-const bodyParser = require('body-parser');
 require('dotenv').config(); // Charger les variables d'environnement depuis le fichier .env
 const app = express(); // Initialisation de l'application express
 

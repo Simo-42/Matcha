@@ -60,6 +60,7 @@ const modify_profil = async () => {
   }
 };
 
+
 const isPasswordComplex = computed(() => {
   const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   return regex.test(new_password.value);
