@@ -1,20 +1,20 @@
 <template>
-  <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
+  <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
     <Swiper
       :slides-per-view="1"
       :loop="true"
       :pagination="{ clickable: true }"
-      class="relative h-64"
+      class="relative h-96"
     >
       <SwiperSlide v-for="(photo, index) in photos.filter(photo => photo)" :key="index"> 
-      <!-- Filtre les photos en gardant que celle non nul  -->
         <img :src="photo" alt="Profile Picture" class="w-full h-full object-cover">
       </SwiperSlide>
     </Swiper>
 
     <div class="p-6">
       <h2 class="text-2xl font-bold text-gray-900">{{ firstname }} {{ lastname }}</h2>
-      <p class="text-gray-600 mt-4">{{ biography }}</p>
+      <span class="text-gray-600 font-medium">My Biography:</span>
+      <p class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">{{ biography }}</p>
 
       <div class="mt-4">
         <div class="flex items-center">

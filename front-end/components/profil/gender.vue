@@ -23,7 +23,7 @@ const props = defineProps({
 const emit = defineEmits(['updateGender']);
 
 const localGender = ref(props.selectedGender);
-const genders = ['Man', 'Women', 'Other'];
+const genders = ['Man', 'Women'];
 
 const emitGender = () => {
   emit('updateGender', localGender.value);

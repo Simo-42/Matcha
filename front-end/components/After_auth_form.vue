@@ -56,7 +56,7 @@ const submitForm = async () => {
 		const response = await axios.post('http://localhost:3005/api/after_auth/profil/update', 
 		{
 			gender: selectedGender.value,
-			sex_pref: selectedSexualPref.value,
+			sexual_preference: selectedSexualPref.value,
 			biography: SelectedBio.value,
 			interests: JSON.stringify(selectedInterests.value),  // Conversion en JSON
 		}, 

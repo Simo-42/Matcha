@@ -34,7 +34,7 @@
 		"static": true,
 		"server/tsconfig.json": true,
 		"public/favicon.ico": true,
-		"public": true,
+		"public": false,
 		"plugins": true,
 		"server": true
 	},

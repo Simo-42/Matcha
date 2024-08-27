@@ -20,12 +20,13 @@ const authRouter = require('./routes/auth');
 const passwordForgotRouter = require('./routes/pass_forgot');
 const jwtRouter = require('./routes/jwt');
 const afterAuthRouter = require('./routes/after_auth');
+const SwipeRouter = require('./routes/swipe');
 
 app.use('/api/auth', authRouter);
 app.use('/api/password', passwordForgotRouter);
 app.use('/api/jwt', jwtRouter);
 app.use('/api/after_auth', afterAuthRouter);
-
+app.use('/api/swipe', SwipeRouter);
 // Définir le port et démarrer le serveur
 const port = process.env.PORT || 3005;
 app.listen(port, () => {
