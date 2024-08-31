@@ -64,7 +64,8 @@ const submitForm = async () => {
 			withCredentials: true, //!! Ultra important pour que les cookies soient envoyés
 		});    
 		message.value = response.data.message;
-		navigateTo('/pictures');
+		navigateTo('/age');
+
 
 	} catch (error) {
 		console.log(message.value);

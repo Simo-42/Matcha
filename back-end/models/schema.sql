@@ -7,6 +7,7 @@ CREATE TABLE users (
     username VARCHAR(255) UNIQUE NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
+    age INTEGER ,
     verified BOOLEAN DEFAULT FALSE,
     profile_complete BOOLEAN DEFAULT FALSE,
     gender VARCHAR(255),  -- Nouvelle colonne pour le genre
@@ -39,11 +40,13 @@ CREATE TABLE likes (
     id SERIAL PRIMARY KEY,
     user_id_from INT NOT NULL,
     user_id_to INT NOT NULL,
+    liked BOOLEAN NOT NULL,  -- true for like, false for dislike
     liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id_from) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id_to) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(user_id_from, user_id_to) -- Prevent duplicate likes
 );
+
 -- One to many relation between users for messages
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,  -- Identifiant unique pour chaque message

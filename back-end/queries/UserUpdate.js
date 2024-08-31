@@ -26,6 +26,22 @@ const update_user_spec = async (userId, userInfo) => {
 		throw err; // Lève une erreur si la requête échoue
 	}
 };
+// Dans votre fichier userQueries.js
+// Dans votre fichier userQueries.js
+const update_user_age = async (username, age) => {
+    try {
+        const query = 'UPDATE users SET age = $1 WHERE username = $2 RETURNING *';
+        const values = [age, username];
+
+        const res = await pool.query(query, values);
+        return res.rows[0];
+    } catch (err) {
+        console.error('Error updating age:', err);
+        throw err;
+    }
+};
+
+
 
 const update_profile_complete = async (userId) => {
 	try {
@@ -112,4 +128,4 @@ const update_verification_status = async (userId) => {
 	}
 }
 
-module.exports = { update_user_spec, update_user_info, update_verification_status, update_profile_complete, update_user_password };
+module.exports = { update_user_spec, update_user_info, update_verification_status, update_profile_complete, update_user_password, update_user_age};

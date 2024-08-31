@@ -187,6 +187,30 @@ router.post('/profil/change_password', authenticateToken, async (req, res) => {
 });
 
 
+router.post('/profil/update_birthdate', authenticateToken, async (req, res) => {
+    const { age } = req.body;
+    const username = req.user.username;
+
+    try {
+        const user = await userQueries.update_user_age(username, age);
+        
+        if (!user) {
+            return res.status(500).json({ error: 'Error updating user information' });
+        }
+
+        console.log('User age updated successfully:', user);
+        return res.status(200).json({ message: 'Your age has been updated successfully.', user });
+
+    } catch (error) {
+        console.log('Error updating user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
+
+
 router.get('/profil/id_info', authenticateToken, async (req, res) => {
     const userId = req.user.id;  // Utilisation de `req.user` pour accéder à l'ID utilisateur
     console.log('User ID:', userId); 
