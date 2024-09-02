@@ -99,7 +99,7 @@ const get_profil_complete = async (id) => {
 const get_my_profil_info = async (id) => {
 	try {
 		const query = `
-			SELECT email, username, firstname, lastname, gender, biography, interests, sexual_preference, location, photos, profile_complete
+			SELECT email, username, firstname, lastname, gender, biography, interests, age,  sexual_preference, location, photos, profile_complete
 			FROM users 
 			WHERE id = $1
 		`;

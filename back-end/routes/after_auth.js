@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const pool = require('../db.js');  // Importez la connexion depuis db.js
 const jwt = require('jsonwebtoken'); // Pour generer le token JWT
 const authenticateToken = require('../middleware/authMiddleware.js');
-
 require('dotenv').config(); // Charge les variables d'environnement depuis le fichier .env
 const router = express.Router();
 
@@ -92,32 +91,7 @@ router.post('/profil/update_profil', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/pictures', authenticateToken, async (req, res) => {
-	const { pictures } = req.body;
-	const userId = req.user.id;  // Utilisez `req.user` pour accéder aux informations de l'utilisateur
-	console.log('Received pictures:', req.body.pictures); // Ajoutez ceci pour déboguer
-	console.log('User ID:', req.user.id); // Assurez-vous que le middleware `authenticateToken` fonctionne correctement
-  
-	try 
-	{
-		const user = await userQueries.insert_new_pictures(userId, pictures);
-		if (!user) 
-		{
-			return res.status(500).json({ error: 'Error updating user information' });
-	  	}
-		console.log('User spec updated successfully:', user);
-		const update_user = userQueries.update_profile_complete(userId); // Mettre a true le profile complete
-		if (!update_user)
-			return res.status(500).json({ error: 'Error updating user information' });
-	  	
-		return res.status(200).json({ message: 'User spec updated successfully', user });
-	} 
-	catch (error) 
-	{
-	  console.log('Error updating user:', error);
-	  return res.status(500).json({ error: 'Internal server error' });
-	}
-});
+
 
 router.get('/profil/spec_info', authenticateToken, async (req, res) => {
 	const userId = req.user.id;  // Utilisation de `req.user` pour accéder à l'ID utilisateur
@@ -138,7 +112,6 @@ router.get('/profil/spec_info', authenticateToken, async (req, res) => {
 router.post('/profil/location', authenticateToken, async (req, res) => {
 	const { location } = req.body;
 	const userId = req.user.id;  // Utilisez `req.user` pour accéder aux informations de l'utilisateur
-	console.log('Received pictures:', req.body.pictures); // Ajoutez ceci pour déboguer
 	console.log('User ID:', req.user.id); // Assurez-vous que le middleware `authenticateToken` fonctionne correctement
   
 	try 

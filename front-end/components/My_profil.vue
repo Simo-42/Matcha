@@ -7,12 +7,13 @@
       class="relative h-96"
     >
       <SwiperSlide v-for="(photo, index) in photos.filter(photo => photo)" :key="index"> 
-        <img :src="photo" alt="Profile Picture" class="w-full h-full object-cover">
+        <img :src="`http://localhost:3005/${photo}`" alt="User Photo" class="w-full h-full object-cover">
       </SwiperSlide>
     </Swiper>
 
     <div class="p-6">
-      <h2 class="text-2xl font-bold text-gray-900">{{ firstname }} {{ lastname }}</h2>
+      <h2 class="text-2xl font-bold text-gray-900">{{ firstname }} {{ lastname }} </h2>
+      <h2 class="text-2xl font-bold text-gray-900"> Age :  {{ age }}</h2>
       <span class="text-gray-600 font-medium">My Biography:</span>
       <p class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">{{ biography }}</p>
 
@@ -50,8 +51,10 @@ import axios from 'axios';
 const photos = ref([]); 
 const firstname = ref(''); 
 const lastname = ref(''); 
+const age = ref(''); 
 const biography = ref('');
 const gender = ref(''); 
+
 const sexual_preference = ref(''); 
 const interests = ref([]); 
 const location = ref('');
@@ -63,22 +66,24 @@ const fetchProfileData = async () => {
     });
 
     const data = response.data.result;
-    const parsed_photos = JSON.parse(data.photos); 
-    if (Array.isArray(parsed_photos)) {
-      photos.value = parsed_photos.slice(0, 5);
-    }
     firstname.value = data.firstname;
     lastname.value = data.lastname;
     biography.value = data.biography;
     gender.value = data.gender;
+
+    photos.value = data.photos.map(photo => `http://localhost:3005/${photo}`);
+    
+    age.value = data.age;
     sexual_preference.value = data.sexual_preference;
-    interests.value = Array.isArray(data.interests) ? data.interests : JSON.parse(data.interests); // Si c'est un tableau, on le garde tel quel, sinon on le parse
     location.value = data.location;
+    interests.value = Array.isArray(data.interests) ? data.interests : JSON.parse(data.interests);
+    console.log(photos.value); // Debugging line
 
   } catch (error) {
     console.error('Error fetching profile data:', error);
   }
 };
+
 
 onMounted(() => {
   fetchProfileData();

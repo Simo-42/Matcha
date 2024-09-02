@@ -8,17 +8,17 @@ CREATE TABLE users (
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     age INTEGER ,
+    fame_rating INTEGER DEFAULT 0,
     verified BOOLEAN DEFAULT FALSE,
     profile_complete BOOLEAN DEFAULT FALSE,
     gender VARCHAR(255),  -- Nouvelle colonne pour le genre
     sexual_preference VARCHAR(255),  -- Nouvelle colonne pour la préférence sexuelle
     biography TEXT,  -- 
     interests JSON,  -- Tableau JSON pour les intérêts
-    photos JSONB,  -- Tableau JSON pour stocker jusqu'à 5 URLs ou chemins de photos
+    photos VARCHAR(255)[],  -- Tableau pour les photos
     location VARCHAR(255),  -- Nouvelle colonne pour la localisation
     reset_token_expires TIMESTAMP,  -- pour email forget
     reset_token VARCHAR(255),  -- pour email forget
-    fame_rating INTEGER DEFAULT 0,  -- Nouvelle colonne pour la popularité
     last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Nouvelle colonne pour la dernière connexion
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

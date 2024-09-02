@@ -25,27 +25,18 @@ const createUser = async (userInfo) => {
 	}
 };
 
-const insert_new_pictures = async (userId, photos) => {
-	try {
-		const query = `
-			UPDATE users
-			SET 
-				photos = $1,  
-				updated_at = CURRENT_TIMESTAMP
-			WHERE id = $2
-			RETURNING *`;
-
-		const values = [JSON.stringify(photos), userId];
-
-		const res = await pool.query(query, values);
-		console.log('Updated user:', res.rows[0]);
-		return res.rows[0]; // Retourne l'utilisateur mis à jour
-
-	} catch (err) {
-		console.error('Error executing query', err.stack);
-		throw err; // Lève une erreur si la requête échoue
-	}
+const insert_new_pictures = async (userId, photoPaths) => {
+    const query = `
+        UPDATE users 
+        SET photos = array_cat(photos, $1::varchar[])
+        WHERE id = $2;
+    `;
+    const values = [photoPaths, userId];
+    const res = await pool.query(query, values);
+    return res.rowCount > 0;  // Retourne true si la mise à jour a été effectuée
 };
+
+
 const insert_location = async (userId, location) => {
 	try {
 		const query = `

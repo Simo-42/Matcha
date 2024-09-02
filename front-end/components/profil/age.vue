@@ -21,7 +21,7 @@
           </button>
         </div>
       </form>
-      <p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
+      <p v-if="message" class="mt-4 text-center text-sm text-red-600">{{ message }}</p>
     </div>
     <div v-if="showAnimation" class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
       <LottieAnimation :animationData="animationData" :loop="false" :autoplay="true" />
@@ -59,6 +59,10 @@ const submitBirthdate = async () => {
     message.value = 'You must be at least 18 years old.';
     return;
   }
+  else if (age > 100) {
+    message.value = 'You must be less than 100 years old.';
+    return;
+  }
 
   try {
     const response = await axios.post('http://localhost:3005/api/after_auth/profil/update_birthdate', {
@@ -67,7 +71,6 @@ const submitBirthdate = async () => {
       withCredentials: true,
     });
 
-    message.value = response.data.message;
     showAnimation.value = true;
     setTimeout(() => {
       showAnimation.value = false;

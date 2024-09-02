@@ -20,16 +20,20 @@ const SEXUAL_PREFERENCES = {
 };
 
 const getProfilesByGenderAndPreference = {
-	[`${GENDERS.MAN}_${SEXUAL_PREFERENCES.HETEROSEXUAL}`]:  userQueries.getWomenProfiles,
-	[`${GENDERS.MAN}_${SEXUAL_PREFERENCES.GAY}`]:  userQueries.getMenProfiles,
-	[`${GENDERS.MAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]:  userQueries.getBisexualProfiles,
-	[`${GENDERS.MAN}_${SEXUAL_PREFERENCES.OTHERS}`]:  userQueries.getOtherProfiles,
-	
-	[`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.HETEROSEXUAL}`]:  userQueries.getMenProfiles,
-	[`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.GAY}`]:  userQueries.getWomenProfiles,
-	[`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]:  userQueries.getBisexualProfiles,
-	[`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.OTHERS}`]:  userQueries.getOtherProfiles,
+    // Pour les hommes
+    [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.HETEROSEXUAL}`]: userQueries.getHeterosexualWomenProfiles, // Montre uniquement les femmes hétérosexuelles
+    [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.GAY}`]: userQueries.getGayMenProfiles, // Montre uniquement les hommes gays
+    [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]: userQueries.getWomenAndBisexualAndGayMenProfiles, // Montre les femmes hétéro/bisexuelles, puis les hommes bisexuels et gays
+    [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.OTHERS}`]: userQueries.getOtherProfiles,
+
+    // Pour les femmes
+    [`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.HETEROSEXUAL}`]: userQueries.getHeterosexualMenProfiles, // Montre uniquement les hommes hétérosexuels
+    [`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.GAY}`]: userQueries.getGayWomenProfiles, // Montre uniquement les femmes gays
+    [`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]: userQueries.getMenAndBisexualAndGayWomenProfiles, // Montre les hommes hétéro/bisexuels, puis les femmes bisexuelles et gays
+    [`${GENDERS.WOMAN}_${SEXUAL_PREFERENCES.OTHERS}`]: userQueries.getOtherProfiles,
 };
+
+
 
 router.get('/profil_to_match', authenticateToken, async (req, res) => {
     const userId = req.user.id;
@@ -139,6 +143,7 @@ router.post('/like_profil', authenticateToken, async (req, res) => {
 
         if (status === 'like') {
             resultat = await userQueries.UserLikeProfiles(userId, likedUserId);
+            await userQueries.addGetFameRating(likedUserId, 3);
             console.log('Resultat:', resultat);
 
             match_result = await userQueries.checkMatch(userId, likedUserId);

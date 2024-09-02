@@ -1,50 +1,52 @@
 <template>
-	<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12 px-6 overflow-hidden">
-		<div
-			@click="selectImage(0)"
-			class="relative w-48 h-64 bg-white border-2 border-gray-300 flex items-center justify-center rounded-md shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:shadow-2xl mb-6"
-		>
-			<div v-if="images[0]" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
-				<img :src="images[0]" alt="Photo principale" class="w-full h-full object-cover" />
-				<button @click.stop="deleteImage(0)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
-			</div>
-			<div v-else class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md">
-				<span class="text-gray-500 text-3xl font-bold">+</span>
-			</div>
-			<div class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded">Photo Principale</div>
-		</div>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12 px-6 overflow-hidden">
+    <!-- Section pour la photo principale -->
+    <div
+      @click="selectImage(0)"
+      class="relative w-48 h-64 bg-white border-2 border-gray-300 flex items-center justify-center rounded-md shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:shadow-2xl mb-6"
+    >
+      <div v-if="images[0]" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
+        <img :src="images[0]" alt="Photo principale" class="w-full h-full object-cover" />
+        <button @click.stop="deleteImage(0)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
+      </div>
+      <div v-else class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md">
+        <span class="text-gray-500 text-3xl font-bold">+</span>
+      </div>
+      <div class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded">Photo Principale</div>
+    </div>
 
-		<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-			<div
-				v-for="(image, index) in images.slice(1)"
-				:key="index"
-				@click="selectImage(index + 1)"
-				class="relative w-48 h-64 bg-white border-2 border-gray-300 flex items-center justify-center rounded-md shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:shadow-2xl"
-			>
-				<div v-if="image" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
-					<img :src="image" alt="Photo secondaire" class="w-full h-full object-cover" />
-					<button @click.stop="deleteImage(index + 1)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
-				</div>
-				<div v-else class="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-md">
-					<span class="text-gray-500 text-xl font-bold">+</span>
-				</div>
-			</div>
-		</div>
+    <!-- Section pour les photos secondaires -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+      <div
+        v-for="(image, index) in images.slice(1)"
+        :key="index"
+        @click="selectImage(index + 1)"
+        class="relative w-48 h-64 bg-white border-2 border-gray-300 flex items-center justify-center rounded-md shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:shadow-2xl"
+      >
+        <div v-if="image" class="relative w-full h-full overflow-hidden rounded-md transform transition duration-300 hover:scale-125">
+          <img :src="image" alt="Photo secondaire" class="w-full h-full object-cover" />
+          <button @click.stop="deleteImage(index + 1)" class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">Delete</button>
+        </div>
+        <div v-else class="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-md">
+          <span class="text-gray-500 text-xl font-bold">+</span>
+        </div>
+      </div>
+    </div>
 
-		<!-- Indication "At least 2 photos" -->
-		<div v-if="images.filter(img => img !== null).length < 2" class="mb-6 text-sm text-gray-500">
-			At least 2 photos required
-		</div>
+    <!-- Indication "At least 2 photos" -->
+    <div v-if="images.filter(img => img !== null).length < 2" class="mb-6 text-sm text-gray-500">
+      At least 2 photos required
+    </div>
 
-		<!-- Bouton Submit -->
-		<button
-			@click="submitImages"
-			class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-md shadow-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition"
-			:disabled="images.filter(img => img !== null).length < 2"
-		>
-			Submit
-		</button>
-	</div>
+    <!-- Bouton Submit -->
+    <button
+      @click="submitImages"
+      class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-md shadow-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition"
+      :disabled="images.filter(img => img !== null).length < 2"
+    >
+      Submit
+    </button>
+  </div>
 </template>
 
 <script setup>
@@ -56,7 +58,7 @@ const message = ref('');
 	
 const fetchProfileData = async () => {
   try {
-	const response = await axios.get('http://localhost:3005/api/after_auth/profil/picture_info', {
+	const response = await axios.get('http://localhost:3005/api/upload/get_pics', {
 	  withCredentials: true,
 	});
 	const data = response.data.result;
@@ -118,14 +120,21 @@ const submitImages = async () => {
 	}
 	try 
 	{
-		const response = await axios.post(
-			'http://localhost:3005/api/after_auth/pictures',
-			{
-				pictures: JSON.stringify(images.value), // Conversion en JSON
-			},
-			{
-				withCredentials: true, //!! Ultra important pour que les cookies soient envoyés
+		const formData = new FormData();
+		images.value.forEach((image, index) => {
+			if (image) {
+				formData.append(`image${index + 1}`, image);
 			}
+		});
+		const response = await axios.post(
+			'http://localhost:3005/api/upload/pictures',
+			 formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true, // Important pour que les cookies soient envoyés
+            }
 		);
 		message.value = response.data.message;
 		
