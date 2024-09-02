@@ -7,7 +7,7 @@
       class="relative h-96"
     >
       <SwiperSlide v-for="(photo, index) in photos.filter(photo => photo)" :key="index"> 
-        <img :src="`http://localhost:3005/${photo}`" alt="User Photo" class="w-full h-full object-cover">
+        <img :src="`http://localhost:3005${photo}`" alt="User Photo" class="w-full h-full object-cover">
       </SwiperSlide>
     </Swiper>
 
@@ -70,14 +70,17 @@ const fetchProfileData = async () => {
     lastname.value = data.lastname;
     biography.value = data.biography;
     gender.value = data.gender;
+    console.log("La valuer de photos", data.value); // Ligne de débogage pour vérifier les URLs des photos
 
-    photos.value = data.photos.map(photo => `http://localhost:3005/${photo}`);
-    
+    photos.value = Array.isArray(data.photos)
+      ? data.photos.map(photo => photo.replace('/app', ''))
+      : [];
     age.value = data.age;
     sexual_preference.value = data.sexual_preference;
     location.value = data.location;
     interests.value = Array.isArray(data.interests) ? data.interests : JSON.parse(data.interests);
-    console.log(photos.value); // Debugging line
+
+    console.log("La valuer de photos", photos.value); // Ligne de débogage pour vérifier les URLs des photos
 
   } catch (error) {
     console.error('Error fetching profile data:', error);
