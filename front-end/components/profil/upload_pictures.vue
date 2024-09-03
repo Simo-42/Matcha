@@ -78,7 +78,8 @@ const selectImage = (index) => {
 				// Ajoutez l'image avec un objet contenant le fichier et l'URL de prévisualisation
 				images.value[index] = { file, src: imageSrc };
 				// Debug: Affichez l'objet ajouté
-				console.log(`Image added at index ${index}:`, images.value[index]);
+				console.log(`Image added at index ${index}:`, images.value[index]); 
+				console.log('All images:');
 			};
 			// Lisez le fichier pour générer l'URL de prévisualisation
 			reader.readAsDataURL(file);
