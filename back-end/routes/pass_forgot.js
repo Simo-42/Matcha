@@ -15,11 +15,16 @@ router.post("/forgot_password", async (req, res) => {
     const reset_token = await generateResetToken(email);
     await sendResetEmail(email, reset_token);
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Reset password email has been sent to you! Check your spam",
     });
   } catch (error) {
-    console.log("Error checking existing user:", error); // Affiche une erreur si la vérification de l'utilisateur existant échoue
+    // Gestion des erreurs spécifiques
+    console.error("Error in forgot_password route:", error);
+    if (error.message === "No user found with that email address.") {
+      return res.status(404).json({ error: "Email not found" });
+    }
+
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -42,9 +47,8 @@ router.post("/reset/:token", async (req, res) => {
 
     const username = usernameResult.rows[0].username;
 
-    if (
-      (await userQueries.check_same_password(username, newPassword)) == true
-    ) {
+    // prettier-ignore
+    if ((await userQueries.check_same_password(username, newPassword)) === true) {
       return res.status(400).json({ error: "Same password as before." });
     }
 
@@ -80,7 +84,7 @@ router.get("/verify_password/:token", async (req, res) => {
   console.log("GET /verify/:token called");
 
   try {
-    const query = `
+    const query = `	
       SELECT * FROM users
       WHERE reset_token = $1 AND reset_token_expires > NOW()`;
 

@@ -9,6 +9,7 @@ CREATE TABLE users (
     lastname VARCHAR(255) NOT NULL,
     age INTEGER ,
     fame_rating INTEGER DEFAULT 0,
+	fake_account INTEGER DEFAULT 0,
     verified BOOLEAN DEFAULT FALSE,
     profile_complete BOOLEAN DEFAULT FALSE,
     gender VARCHAR(255),  -- Nouvelle colonne pour le genre

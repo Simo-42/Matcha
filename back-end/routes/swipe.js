@@ -22,10 +22,10 @@ const SEXUAL_PREFERENCES = {
 const getProfilesByGenderAndPreference = {
   // Pour les hommes
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.HETEROSEXUAL}`]:
-    userQueries.getHeterosexualWomenProfiles, // Montre uniquement les femmes hétérosexuelles
-  [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.GAY}`]: userQueries.getGayMenProfiles, // Montre uniquement les hommes gays
+    userQueries.getHeterosexualWomenProfiles, // Montre  les femmes hétérosexuelles et bisexuelles
+  [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.GAY}`]: userQueries.getGayMenProfiles, // Montre uniquement les hommes de sexe_pref gay
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]:
-    userQueries.getWomenAndBisexualAndGayMenProfiles, // Montre les femmes hétéro/bisexuelles, puis les hommes bisexuels et gays
+    userQueries.getWomenAndBisexualAndGayMenProfiles, // Montre tout les sexes_pref des femmes et les hommes 
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.OTHERS}`]: userQueries.getOtherProfiles,
 
   // Pour les femmes
@@ -72,9 +72,9 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
     let filteredProfiles = profiles.filter(
       (profile) => !likedProfileIds.includes(profile.id)
     );
-    // await Promise.all(filteredProfiles.map(async (profile) => {
-    //     profile.photos = await userQueries.get_user_pics(profile.id); // Ajouter les photos pour chaque profil
-    // }));
+    await Promise.all(filteredProfiles.map(async (profile) => {
+        profile.photos = await userQueries.get_user_pics(profile.id); // Ajouter les photos pour chaque profil
+    }));
     profiles = filterAndSortProfiles(profiles, searchCriteria);
 
     // Retourner les profils filtrés
