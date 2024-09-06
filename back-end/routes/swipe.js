@@ -25,7 +25,7 @@ const getProfilesByGenderAndPreference = {
     userQueries.getHeterosexualWomenProfiles, // Montre  les femmes hétérosexuelles et bisexuelles
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.GAY}`]: userQueries.getGayMenProfiles, // Montre uniquement les hommes de sexe_pref gay
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.BISEXUAL}`]:
-    userQueries.getWomenAndBisexualAndGayMenProfiles, // Montre tout les sexes_pref des femmes et les hommes 
+    userQueries.getWomenAndBisexualAndGayMenProfiles, // Montre tout les sexes_pref des femmes et les hommes
   [`${GENDERS.MAN}_${SEXUAL_PREFERENCES.OTHERS}`]: userQueries.getOtherProfiles,
 
   // Pour les femmes
@@ -72,9 +72,11 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
     let filteredProfiles = profiles.filter(
       (profile) => !likedProfileIds.includes(profile.id)
     );
-    await Promise.all(filteredProfiles.map(async (profile) => {
+    await Promise.all(
+      filteredProfiles.map(async (profile) => {
         profile.photos = await userQueries.get_user_pics(profile.id); // Ajouter les photos pour chaque profil
-    }));
+      })
+    );
     profiles = filterAndSortProfiles(profiles, searchCriteria);
 
     // Retourner les profils filtrés
@@ -180,12 +182,13 @@ router.post("/like_profil", authenticateToken, async (req, res) => {
 
 router.post("/match", authenticateToken, async (req, res) => {
   const { matchedUserId } = req.body;
-  console.log("Match API called");
   const userId = req.user.id;
+  console.log("Match API called");
 
   try {
     const isMatch = await userQueries.checkMatch(userId, matchedUserId);
-    if (isMatch === true) {
+    
+	if (isMatch === true) {
       console.log("Match found");
       return res.status(200).json({ message: "Match found" });
     } else {
@@ -198,4 +201,20 @@ router.post("/match", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/report_fake_profil", authenticateToken, async (req, res) => {
+  const { profile_id } = req.body;
+
+  try {
+    if (!profile_id)
+      return res.status(400).json({ error: "Missing profile_id" });
+
+    await userQueries.UserFakeProfile(profile_id);
+
+    res.status(201).json({ message: "User reported as fake profile" });
+	console.log("User reported as fake profile");
+  } catch (error) {
+    console.log("Error liking profile:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = router;

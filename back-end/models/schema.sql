@@ -1,4 +1,5 @@
-DROP TABLE IF EXISTS users, matches, likes, messages, blocks, profile_visits, reports, notifications;
+-- DROP TABLE IF EXISTS users, matches, likes, messages, blocks, profile_visits, reports, notifications;
+ALTER TABLE users ADD COLUMN fake_account INTEGER DEFAULT 0;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,

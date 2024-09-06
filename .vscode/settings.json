@@ -40,7 +40,8 @@
 		"package.json": true,
 		"package-lock.json": true,
 		"back-end/docker-compose.yml": true,
-		"back-end/Dockerfile": true
+		"back-end/Dockerfile": true,
+		"front-end/port": true
 	},
 	"explorerExclude.backup": {}
 }
