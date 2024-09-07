@@ -71,17 +71,27 @@ router.post("/authentification", async (req, res) => {
           .status(400)
           .json({ error: "Email not verified. Verification email resent." });
       }
+
       const token = jwt.sign(
         { id: user.id, username: user.username },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRATION }
       );
+
       res.cookie("token", token, {
         httpOnly: true,
         secure: false,
         sameSite: "Strict",
         maxAge: 24 * 60 * 60 * 1000,
       });
+      if ((await userQueries.UserGetNumFake(user.id)) >= 3) {
+        return res
+          .status(400)
+          .json({
+            error:
+              "Your account has been reported as a fake profile too many times. Please contact support.",
+          });
+      }
       console.log("User authenticated successfully");
       return res.status(200).json({
         message: "Authentication successful",

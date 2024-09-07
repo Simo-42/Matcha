@@ -187,8 +187,8 @@ router.post("/match", authenticateToken, async (req, res) => {
 
   try {
     const isMatch = await userQueries.checkMatch(userId, matchedUserId);
-    
-	if (isMatch === true) {
+
+    if (isMatch === true) {
       console.log("Match found");
       return res.status(200).json({ message: "Match found" });
     } else {
@@ -211,10 +211,36 @@ router.post("/report_fake_profil", authenticateToken, async (req, res) => {
     await userQueries.UserFakeProfile(profile_id);
 
     res.status(201).json({ message: "User reported as fake profile" });
-	console.log("User reported as fake profile");
+    console.log("User reported as fake profile");
   } catch (error) {
     console.log("Error liking profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.post("/set_profile_visited", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const { userIdTo } = req.body;
+  console.log("Set profile visited API called");
+  if (userId === userIdTo) {
+    return res
+      .status(400)
+      .json({ error: "You cannot visit your own profile." });
+  }
+
+  try {
+    const visit = await userQueries.SetProfileVisited(userId, userIdTo);
+
+    if (!visit) {
+      console.log("Error visiting profile");
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    res.status(201).json({ message: "Profile has been visited successfully" });
+  } catch (error) {
+    console.log("Error liking profile:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

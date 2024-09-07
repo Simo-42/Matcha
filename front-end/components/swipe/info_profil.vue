@@ -2,19 +2,25 @@
   <div class="absolute">
     <!-- Icône qui déclenche l'affichage de la bulle d'information -->
     <div class="absolute top-3 left-2 mt-2">
-      <Icon 
-        @click="openInfoBubble" 
-        name="clarity:info-standard-solid" 
-        class="text-3xl text-gray-700 hover:text-gray-900 transition-colors cursor-pointer" 
+      <Icon
+        @click="openInfoBubble"
+        name="clarity:info-standard-solid"
+        class="text-3xl text-gray-700 hover:text-gray-900 transition-colors cursor-pointer"
       />
     </div>
 
     <!-- Bulle d'information -->
-    <div v-if="isInfoOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
+    <div
+      v-if="isInfoOpen"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto"
+    >
       <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h2 class="text-2xl font-semibold mb-4 text-gray-900">Informations sur ce profil</h2>
+        <h2 class="text-2xl font-semibold mb-4 text-gray-900">
+          Informations sur ce profil
+        </h2>
         <p class="mb-4 text-gray-700">
-          Voici quelques informations supplémentaires sur le profil que vous consultez.
+          Voici quelques informations supplémentaires sur le profil que vous
+          consultez.
         </p>
         <ul class="list-disc list-inside mb-6 text-gray-700 space-y-2">
           <li><strong>Username :</strong> {{ profile.username }}</li>
@@ -22,7 +28,10 @@
           <li><strong>Âge :</strong> {{ profile.age }}</li>
           <li><strong>Fame Rating :</strong> {{ profile.fame_rating }}</li>
           <li><strong>Genre :</strong> {{ profile.gender }}</li>
-          <li><strong>Préférence sexuelle :</strong> {{ profile.sexual_preference }}</li>
+          <li>
+            <strong>Préférence sexuelle :</strong>
+            {{ profile.sexual_preference }}
+          </li>
           <li><strong>Localisation :</strong> {{ profile.location }}</li>
           <li><strong>Dernière connexion :</strong> {{ profile.last_seen }}</li>
           <li><strong>Biographie :</strong> {{ profile.biography }}</li>
@@ -49,9 +58,11 @@
             :loop="true"
             :pagination="{ clickable: true }"
             class="relative w-full aspect-w-16 aspect-h-9"
-          > 
+          >
             <SwiperSlide
-              v-for="(photo, photoIndex) in profile.photos.filter(photo => photo)"
+              v-for="(photo, photoIndex) in profile.photos.filter(
+                (photo) => photo
+              )"
               :key="photoIndex"
               class="flex justify-center items-center"
             >
@@ -68,10 +79,16 @@
 
         <!-- Boutons de fermeture et quitter -->
         <div class="flex justify-end mt-6 space-x-4">
-          <button @click="closeInfoBubble" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-colors">
+          <button
+            @click="closeInfoBubble"
+            class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+          >
             Fermer
           </button>
-          <button @click="quitProfile" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+          <button
+            @click="quitProfile"
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+          >
             Quitter
           </button>
         </div>
@@ -81,29 +98,44 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   profile: {
     type: Object,
-    required: true
+    required: true,
+  },
+});
+
+const isInfoOpen = ref(false);
+
+const openInfoBubble = async () => {
+  isInfoOpen.value = true;
+  console.log("props.profile._id", props.profile.id);
+  await visitedProfiles(props.profile.id);
+};
+
+const visitedProfiles = async (visitedUserId) => {
+  try {
+    await axios.post(
+      "http://localhost:3005/api/swipe/set_profile_visited",
+      { userIdTo: visitedUserId },  // Les données envoyées
+      { withCredentials: true }     // Options (inclut le cookie/token)
+    );
+  } catch (error) {
+    console.error(error);
   }
-})
-
-const isInfoOpen = ref(false)
-
-const openInfoBubble = () => {
-  isInfoOpen.value = true
-}
+  console.log("Profil visité enregistré.");
+};
 
 const closeInfoBubble = () => {
-  isInfoOpen.value = false
-}
+  isInfoOpen.value = false;
+};
 
 const quitProfile = () => {
-  // Logique pour quitter ou naviguer ailleurs
   isInfoOpen.value = false;
   console.log("L'utilisateur a quitté le profil.");
   // Tu peux ajouter une redirection ou une action spécifique ici
-}
+};
 </script>

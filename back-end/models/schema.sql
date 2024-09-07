@@ -1,5 +1,5 @@
 -- DROP TABLE IF EXISTS users, matches, likes, messages, blocks, profile_visits, reports, notifications;
-ALTER TABLE users ADD COLUMN fake_account INTEGER DEFAULT 0;
+-- ALTER TABLE profile_visits ADD COLUMN visit_count INTEGER DEFAULT 1;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -76,8 +76,10 @@ CREATE TABLE profile_visits (
     user_id_to INT NOT NULL,                       -- L'utilisateur dont le profil est visité
     visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- La date et l'heure de la visite
     FOREIGN KEY (user_id_from) REFERENCES users(id) ON DELETE CASCADE,  -- Relation avec l'utilisateur visiteur
-    FOREIGN KEY (user_id_to) REFERENCES users(id) ON DELETE CASCADE     -- Relation avec l'utilisateur visité
+    FOREIGN KEY (user_id_to) REFERENCES users(id) ON DELETE CASCADE,    -- Relation avec l'utilisateur visité
+    CONSTRAINT unique_visit UNIQUE (user_id_from, user_id_to)           -- Contrainte d'unicité sur la visite
 );
+
 -- One to many relation between users for reports 
 CREATE TABLE reports (
     id SERIAL PRIMARY KEY,

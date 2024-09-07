@@ -6,6 +6,7 @@ const UserGet_Gender = require("./UserGet_Gender");
 const UserMatch = require("./UserMatch");
 const UserFame = require("./UserFame");
 const UserBlock = require("./UserBlock");
+const UserVisit = require("./UserVisit");
 module.exports = {
   ...UserCheck, // Equivalent to { check_mail_user_exist, check_username_user_exist, check_verif_user, check_same_password }
   ...UserQueries, // Equivalent to { getUserByEmail, getUserByUsername, get_profil_spec_by_id, get_profil_personal_by_id }
@@ -15,4 +16,5 @@ module.exports = {
   ...UserMatch, // Equivalent to { UserLikeProfiles, UserDislikeProfiles, checkMatch, GetAllProfilesLikes }
   ...UserFame, // Equivalent to { getFame }
   ...UserBlock, // Equivalent to { UserFakeProfile }
+  ...UserVisit // Equivalent to { SetProfileVisited }
 };

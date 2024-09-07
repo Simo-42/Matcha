@@ -196,7 +196,7 @@ const fetchProfileData = async () => {
 	const response = await axios.get(
 		"http://localhost:3005/api/swipe/profil_to_match",
 	  {
-		  params: searchCriteria.value,
+		params: searchCriteria.value,
 		withCredentials: true,
 	  }
 	);
