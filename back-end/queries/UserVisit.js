@@ -22,7 +22,7 @@ const SetProfileVisited = async (userIdFrom, userIdTo) => {
 const GetProfileVisitors = async (userIdTo) => {
 	try { 
 	  const query = `
-		SELECT u.id, u.username, u.firstname, u.lastname, u.age, u.fame_rating, u.gender, u.sexual_preference, u.location,u.biography, u.photos, pv.visited_at 
+		SELECT u.id, u.username, u.firstname, u.lastname, u.interests, u.age, u.fame_rating, u.gender, u.sexual_preference, u.location,u.biography, u.photos, pv.visited_at 
 		FROM profile_visits pv
 		JOIN users u ON pv.user_id_from = u.id
 		WHERE pv.user_id_to = $1
