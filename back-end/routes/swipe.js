@@ -6,6 +6,7 @@ const authenticateToken = require("../middleware/authMiddleware.js");
 require("dotenv").config();
 const router = express.Router();
 const userQueries = require("../queries/index.js"); // Importe les fonctions depuis queries/index.js
+const { route } = require("./auth.js");
 
 const GENDERS = {
   MAN: "Man",
@@ -241,6 +242,18 @@ router.post("/set_profile_visited", authenticateToken, async (req, res) => {
     console.log("Error liking profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
+});
+
+router.get("/get_profile_visitors", authenticateToken, async (req, res) => {
+	const userId = req.user.id;
+
+	try {
+		const visitors = await userQueries.GetProfileVisitors(userId);
+		res.status(200).json({ visitors });
+	} catch (error) {
+		console.log("Error getting profile visitors:", error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 module.exports = router;
