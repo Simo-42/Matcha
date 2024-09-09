@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const userQueries = require("../queries/index.js"); // importe index.js depuis le dossier queries
+const userQueries = require("../queries/index.js"); 
 
 router.get("/verify-auth", (req, res) => {
   const token = req.cookies.token; // Le token reside dans req

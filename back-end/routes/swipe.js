@@ -256,4 +256,19 @@ router.get("/get_profile_visitors", authenticateToken, async (req, res) => {
 	}
 });
 
+router.get("/get_user_match", authenticateToken, async (req, res) => {
+	const userId = req.user.id;
+
+	try {
+		const UserMatchs = await userQueries.GetAllUsersMatchs(userId);
+		if (UserMatchs.length === 0) {
+			return res.status(404).json({ error: "No match found" });
+		}
+		res.status(200).json({ UserMatchs });
+	} catch (error) {
+		console.log("Error getting profile visitors:", error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+});
+
 module.exports = router;

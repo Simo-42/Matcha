@@ -28,6 +28,21 @@ services:
       - .:/app
       - /app/node_modules
 
+  frontend:
+    build:
+      context: ../front-end  # Chemin vers le dossier contenant le projet Nuxt.js
+    container_name: frontend_app
+    restart: always
+    ports:
+      - "3000:3000"  # Port pour le front-end Nuxt.js
+    volumes:
+      - ../front-end:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - app
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin_container

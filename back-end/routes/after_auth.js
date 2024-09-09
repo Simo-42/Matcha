@@ -126,6 +126,7 @@ router.post("/profil/location", authenticateToken, async (req, res) => {
     if (!user) {
       return res.status(500).json({ error: "Error updating user information" });
     }
+	
     console.log("User spec updated successfully:", user);
     return res
       .status(200)

@@ -25,6 +25,7 @@ const jwtRouter = require('./routes/jwt');
 const afterAuthRouter = require('./routes/after_auth');
 const SwipeRouter = require('./routes/swipe');
 const uploadRouter = require('./routes/upload'); // Importer le routeur upload
+
 app.use('/api/auth', authRouter);
 app.use('/api/password', passwordForgotRouter);
 app.use('/api/jwt', jwtRouter);
