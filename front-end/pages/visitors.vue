@@ -1,10 +1,8 @@
 <template>
-  <div>
-  <Logout />
-  <visitors />
-  </div>
+	<div>
+		<Logout />
+		<visitors />
+	</div>
 </template>
 
-<script setup>
-</script>
-
+<script setup></script>

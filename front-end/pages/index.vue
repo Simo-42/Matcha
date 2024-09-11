@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <Auth_form />
-  </div>
+	<div>
+		<Auth_form />
+	</div>
 </template>
 
 <script setup>
-import Auth_form from '~/components/Auth_form.vue';
+import Auth_form from "~/components/Auth_form.vue";
 </script>
 
 <style scoped>
-html, body {
-  height: 100%;
-  background-color: white;
+html,
+body {
+	height: 100%;
+	background-color: white;
 }
 </style>

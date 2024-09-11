@@ -1,17 +1,16 @@
 <template>
-  <div>
-    <logout />
-    <my_profil />
-  </div>
+	<div>
+		<logout />
+		<my_profil />
+	</div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
-html, body {
-  height: 100%;
-  background-color: white;
+html,
+body {
+	height: 100%;
+	background-color: white;
 }
 </style>

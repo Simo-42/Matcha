@@ -12,4 +12,5 @@ export default defineNuxtConfig({
 		googleMapsKey: process.env.GOOGLE_MAPS_KEY,  
 	  }
 	}
+	
   })

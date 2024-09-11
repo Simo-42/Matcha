@@ -1,122 +1,123 @@
 <template>
-<div class="w-full max-w-2xl mx-auto mt-10">
-	<!-- Carte et bouton SearchForm -->
-	<div class="relative flex items-center">
-	  <!-- Stack de cartes de profils -->
-	  <div class="card-stack relative w-3/4"> 
-		<div
-		  v-for="(profile, index) in profiles"
-		  :key="profile.id"
-		  :class="['card', { 'top-card': index === profiles.length - 1 }]"
-		>
-		  <div
-			class="card-content bg-white border border-gray-900 rounded-lg shadow-md overflow-hidden"
-		  >
-			<Swiper
-			  :slides-per-view="1"
-			  :loop="true"
-			  :pagination="{ clickable: true }"
-			  :initial-slide="0"
-	 		 class="relative w-full aspect-w-16 aspect-h-9"> 
-			  <!-- Affichage des photos du profil -->
-			  <SwiperSlide
-				v-for="(photo, photoIndex) in profile.photos.filter(photo => photo)"
-				:key="photoIndex"
-				class="flex justify-center items-center"
-			  >
-				<div class="w-full h-full">
-				  <img
-					:src="`http://localhost:3005${photo}`"
-					alt="User Photo"
-	   			 class="w-full h-full object-cover"
-				  />
-				</div>
-			  </SwiperSlide>
-			</Swiper>
-			<div class="p-6">
-			  <h2 class="text-3xl font-bold text-gray-900">
-				{{ profile.firstname }} {{ profile.lastname }} {{ profile.age }}
-			  </h2>
-			  <p
-				class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300"
-			  >
-				{{ profile.biography }}
-			  </p>
-			  <div class="mt-4">
-				<div class="flex items-center">
-				  <span class="text-gray-600 font-medium">Gender:</span>
-				  <span class="ml-2 text-gray-800">{{ profile.gender }}</span>
-				</div>
-				<div class="flex items-center mt-2">
-				  <span class="text-gray-600 font-medium">Preference:</span>
-				  <span class="ml-2 text-gray-800">{{ profile.sexual_preference }}</span>
-				</div>
-				<div class="flex items-center mt-2">
-				  <span class="text-gray-600 font-medium">Location:</span>
-				  <span class="ml-2 text-gray-800">{{ profile.location }}</span>
-				</div>
-			  </div>
-			  <div class="mt-4">
-				<h3 class="text-lg font-bold text-gray-900">Interests</h3>
-				<div class="flex flex-wrap mt-2">
-				  <span
-					v-for="(interest, index) in profile.interests"
-					:key="index"
-					class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2"
-				  >
-					{{ interest }}
-				  </span>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
+  <div class="w-full max-w-2xl mx-auto mt-10">
+    <!-- Carte et bouton SearchForm -->
+    <div class="relative flex items-center">
+      <!-- Stack de cartes de profils -->
+      <div class="card-stack relative w-3/4">
+        <div
+          v-for="(profile, index) in profiles"
+          :key="profile.id"
+          :class="['card', { 'top-card': index === profiles.length - 1 }]"
+        >
+          <div
+            class="card-content bg-white border border-gray-900 rounded-lg shadow-md overflow-hidden"
+          >
+            <Swiper
+              :slides-per-view="1"
+              :loop="true"
+              :pagination="{ clickable: true }"
+              :initial-slide="0"
+              class="relative w-full aspect-w-16 aspect-h-9"
+            >
+              <!-- Affichage des photos du profil -->
+              <SwiperSlide
+                v-for="(photo, photoIndex) in profile.photos.filter(
+                  (photo) => photo
+                )"
+                :key="photoIndex"
+                class="flex justify-center items-center"
+              >
+                <div class="w-full h-full">
+                  <img
+                    :src="`http://localhost:3005${photo}`"
+                    alt="User Photo"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </SwiperSlide>
+            </Swiper>
+            <div class="p-6">
+              <h2 class="text-3xl font-bold text-gray-900">
+                {{ profile.firstname }} {{ profile.lastname }} {{ profile.age }}
+              </h2>
+              <p
+                class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300"
+              >
+                {{ profile.biography }}
+              </p>
+              <div class="mt-4">
+                <div class="flex items-center">
+                  <span class="text-gray-600 font-medium">Gender:</span>
+                  <span class="ml-2 text-gray-800">{{ profile.gender }}</span>
+                </div>
+                <div class="flex items-center mt-2">
+                  <span class="text-gray-600 font-medium">Preference:</span>
+                  <span class="ml-2 text-gray-800">{{
+                    profile.sexual_preference
+                  }}</span>
+                </div>
+                <div class="flex items-center mt-2">
+                  <span class="text-gray-600 font-medium">Location:</span>
+                  <span class="ml-2 text-gray-800">{{ profile.location }}</span>
+                </div>
+              </div>
+              <div class="mt-4">
+                <h3 class="text-lg font-bold text-gray-900">Interests</h3>
+                <div class="flex flex-wrap mt-2">
+                  <span
+                    v-for="(interest, index) in profile.interests"
+                    :key="index"
+                    class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2"
+                  >
+                    {{ interest }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-		<!-- Boutons like/dislike en bas de la carte -->
-		<div class="tinder--buttons flex justify-around mt-4 w-full max-w-md mx-auto">
-		  <button
-			@click="swipeLeft"
-			class="w-16 h-16 bg-red-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white"
-		  >
-			<i class="fas fa-times"></i>
-		  </button>
-		  <button
-			@click="swipeRight"
-			class="w-16 h-16 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white"
-		  >
-			<i class="fas fa-heart"></i>
-		  </button>
-		</div>
-	  </div>
+        <!-- Boutons like/dislike en bas de la carte -->
+        <div
+          class="tinder--buttons flex justify-around mt-4 w-full max-w-md mx-auto"
+        >
+          <button
+            @click="swipeLeft"
+            class="w-16 h-16 bg-red-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <button
+            @click="swipeRight"
+            class="w-16 h-16 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white"
+          >
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+      </div>
 
-	  <!-- SearchForm Positionné à droite -->
-		  <div class="absolute top-0 right-20 mt-2 mr-2">
-			<SearchForm @submitForm="handleSearchCriteria" /> 
-    		<info :profile="profiles[profiles.length - 1]" />
-	  	</div>
-	  	<signaler @report="handleReport"   />
-   
+      <!-- SearchForm Positionné à droite -->
+      <div class="absolute top-0 right-20 mt-2 mr-2">
+        <SearchForm @submitForm="handleSearchCriteria" />
+			<info :profile="profiles.length ? profiles[profiles.length - 1] : {}" />
+			<!-- Check si le profil n'est pas vide avant d'essayer de l'ouvir -->
+      </div>
+      <signaler @report="handleReport" />
+    </div>
 
-		
-
-	</div>
-
-	<!-- Animation de match -->
-	<div
-	  v-if="showAnimation"
-	  class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20"
-	>
-	  <LottieAnimation
-		:animationData="animationData"
-		:loop="false"
-		:autoplay="true"
-	  />
-	</div>
+    <!-- Animation de match -->
+    <div
+      v-if="showAnimation"
+      class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20"
+    >
+      <LottieAnimation
+        :animationData="animationData"
+        :loop="false"
+        :autoplay="true"
+      />
+    </div>
   </div>
 </template>
-
-
-
 
 <script setup>
 // 1 - Etape 1 : Avoir tout les profils que le profil pourrait potentiellement match
@@ -144,24 +145,24 @@ const hasReported = ref(false);
 
 const likeProfile = async (likedUserId, status) => {
   try {
-	const response = await axios.post(
-	  "http://localhost:3005/api/swipe/like_profil",
-	  {
-		likedUserId,
-		status,
-	  },
-	  {
-		withCredentials: true,
-	  }
-	);
-	return response.data;
+    const response = await axios.post(
+      "http://localhost:3005/api/swipe/like_profil",
+      {
+        likedUserId,
+        status,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
-	console.error("Error liking/disliking profile:", error);
+    console.error("Error liking/disliking profile:", error);
   }
 };
 
 const swipeLeft = async () => {
-	if (isSwiping || profiles.value.length === 0) return;
+  if (isSwiping || profiles.value.length === 0) return;
   isSwiping = true; //
   const profile_id = profiles.value[profiles.value.length - 1].id;
   await likeProfile(profile_id, "dislike");
@@ -172,18 +173,18 @@ const swipeLeft = async () => {
 let isSwiping = false;
 
 const swipeRight = async () => {
-	if (isSwiping || profiles.value.length === 0) return;
+  if (isSwiping || profiles.value.length === 0) return;
   isSwiping = true;
 
   const profile_id = profiles.value[profiles.value.length - 1].id;
   const response = await likeProfile(profile_id, "like");
 
   if (response.match === true) {
-	  showAnimation.value = true; // Déclenche l'animation
-	setTimeout(() => {
-		showAnimation.value = false; // Cache l'animation après 3 secondes
-	}, 3000);
-	console.log("Matched");
+    showAnimation.value = true; // Déclenche l'animation
+    setTimeout(() => {
+      showAnimation.value = false; // Cache l'animation après 3 secondes
+    }, 3000);
+    console.log("Matched");
   }
 
   profiles.value.pop(); // Supprime la carte du haut
@@ -191,68 +192,77 @@ const swipeRight = async () => {
 };
 
 const fetchProfileData = async () => {
-	try {
-		console.log("Je suis là");
-	const response = await axios.get(
-		"http://localhost:3005/api/swipe/profil_to_match",
-	  {
-		params: searchCriteria.value,
-		withCredentials: true,
-	  }
-	);
+  try {
+    console.log("Je suis là");
+    console.log("Search criteria:", searchCriteria.value);
+    const response = await axios.get(
+      "http://localhost:3005/api/swipe/profil_to_match",
+      {
+        params: searchCriteria.value,
+        withCredentials: true,
+      }
+    );
 
-	const { data } = response;
-	console.log("Données reçues:", data);
-	profiles.value = data.profiles.map((profile) => {
-		if (typeof profile.interests === "string") {
-			profile.interests = JSON.parse(profile.interests);
-	  }
-	  profile.photos = Array.isArray(profile.photos)
-		? profile.photos.map((photo) => photo.replace("/app", ""))
-		: []; // Supprime app dans toutes les URL des photos
-	  return profile;
-	});
+    const { data } = response;
+    console.log("Données reçues:", data);
+    profiles.value = data.profiles.map((profile) => {
+      if (typeof profile.interests === "string") {
+        profile.interests = JSON.parse(profile.interests);
+      }
+      profile.photos = Array.isArray(profile.photos)
+        ? profile.photos.map((photo) => photo.replace("/app", ""))
+        : []; // Supprime app dans toutes les URL des photos
+      return profile;
+    });
   } catch (error) {
-	  console.error("Error fetching profiles:", error);
+    console.error("Error fetching profiles:", error);
   }
 };
-	
-const handleReport = async () => {
-	hasReported.value = true;
-	const profile_id = profiles.value[profiles.value.length - 1].id;
-	console.log("Name of the profile to report:", profiles.value[profiles.value.length - 1].firstname);
-	await likeProfile(profile_id, "dislike");
-	profiles.value.pop();
-	setTimeout(() => {
-		hasReported.value = false;
-	}, 1000);
 
-	try {
-		const response = await axios.post(
-			"http://localhost:3005/api/swipe/report_fake_profil",
-			{
-				profile_id,
-			},
-			{
-				withCredentials: true,
-			}
-		);
-		return response.data;
-	} catch (error) {
-		console.error("Error reporting profile:", error);
-	}
+const handleReport = async () => {
+  hasReported.value = true;
+  const profile_id = profiles.value[profiles.value.length - 1].id;
+  console.log(
+    "Name of the profile to report:",
+    profiles.value[profiles.value.length - 1].firstname
+  );
+  await likeProfile(profile_id, "dislike");
+  profiles.value.pop();
+  setTimeout(() => {
+    hasReported.value = false;
+  }, 1000);
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3005/api/swipe/report_fake_profil",
+      {
+        profile_id,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error reporting profile:", error);
+  }
 };
 
 const handleSearchCriteria = (criteria) => {
-	searchCriteria.value = criteria;
-	console.log("Search criteria received from child:", criteria);
-	window.location.reload();
+  searchCriteria.value = criteria;
+  localStorage.setItem("searchCriteria", JSON.stringify(criteria));
+
+  console.log("Search criteria received from child:", criteria);
+  window.location.reload();
 };
 
 onMounted(() => {
-	const searchCriteria = h(SearchForm, {
-		onSubmitForm: handleSearchCriteria, // Écouter l'événement émis par l'enfant
-  });
+  const savedCriteria = localStorage.getItem("searchCriteria");
+
+  if (savedCriteria) {
+    searchCriteria.value = JSON.parse(savedCriteria);
+    console.log("Restored search criteria:", searchCriteria.value);
+  }
   console.log("Search form component:", searchCriteria.interests);
   fetchProfileData();
 });
@@ -311,5 +321,4 @@ onMounted(() => {
 .sidebar.open {
   right: 0; /* Le panneau est visible lorsqu'il est ouvert */
 }
-
 </style>

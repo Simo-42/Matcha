@@ -1,14 +1,13 @@
 <template>
-  <div>
-    <logout />
-	<modify_photo />
-  </div>
+	<div>
+		<logout />
+		<modify_photo />
+	</div>
 </template>
 
 <script setup>
-import modify_photo from '~/components/Photos_modifcation.vue';
+import modify_photo from "~/components/Photos_modifcation.vue";
 definePageMeta({
-  middleware: ["auth"]
-})
-
+	middleware: ["auth"],
+});
 </script>

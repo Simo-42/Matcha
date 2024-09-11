@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <logout />
-	  <age />
-  </div>
+	<div>
+		<logout />
+		<age />
+	</div>
 </template>
 
 <script setup>
-import age from '~/components/profil/age.vue';
-import logout from '~/components/Logout.vue';
+import age from "~/components/profil/age.vue";
+import logout from "~/components/Logout.vue";
 definePageMeta({
-  middleware: ["auth"]
-})
-
+	middleware: ["auth"],
+});
 </script>

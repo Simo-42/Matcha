@@ -1,10 +1,8 @@
 <template>
-  <div>
-  <Logout />
-  <match />
-  </div>
+	<div>
+		<Logout />
+		<match />
+	</div>
 </template>
 
-<script setup>
-</script>
-
+<script setup></script>

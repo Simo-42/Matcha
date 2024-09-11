@@ -1,9 +1,9 @@
 <template>
-  <div>
-      <NuxtPage />
-  </div>
+	<div>
+		<NuxtPage />
+	</div>
 </template>
 
 <script setup>
-import RegisterForm from '~/components/RegisterForm.vue';
+import RegisterForm from "~/components/RegisterForm.vue";
 </script>

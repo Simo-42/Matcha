@@ -18,8 +18,7 @@ const storage = multer.diskStorage({
     // Créer le dossier de l'utilisateur s'il n'existe pas
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
-    }
-
+    }X
     cb(null, dir);
   },
   filename: function (req, file, cb) {
