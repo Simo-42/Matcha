@@ -44,11 +44,11 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
   const userId = req.user.id;
   console.log("Get user pics API called, userId:", userId);
   const searchCriteria = req.query; // Récupérer les critères de recherche depuis les paramètres de requête
-
+  console.log("Search criteria blabla :", searchCriteria);
   try {
     // Récupérer les informations du profil de l'utilisateur actuel
     const user = await userQueries.get_profil_spec_by_id(userId);
-    console.log("User profile retrieved:", user);
+    // console.log("User profile retrieved:", user);
 
     if (!user) {
       console.log("User not found");
@@ -73,12 +73,13 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
     let filteredProfiles = profiles.filter(
       (profile) => !likedProfileIds.includes(profile.id)
     );
+
     await Promise.all(
       filteredProfiles.map(async (profile) => {
         profile.photos = await userQueries.get_user_pics(profile.id); // Ajouter les photos pour chaque profil
       })
     );
-    profiles = filterAndSortProfiles(profiles, searchCriteria);
+    filteredProfiles = filterAndSortProfiles(profiles, searchCriteria);
 
     // Retourner les profils filtrés
     res.status(200).json({ profiles: filteredProfiles });
@@ -91,13 +92,20 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
 const filterAndSortProfiles = (profiles, searchCriteria) => {
   const { age_gap, fame_rating_gap, interests, location_gap, sort_by } =
     searchCriteria;
+  console.log("Search criteria age gapppp \n :", searchCriteria.age_gap);
+  console.log("Profiles before age gap :", profiles);
 
   // Filtrage des profils en fonction des critères fournis
   if (age_gap) {
+
+    console.log("Age gap :", age_gap);
     const [age_min, age_max] = age_gap.split("-").map(Number);
-    profiles = profiles.filter(
-      (profile) => profile.age >= age_min && profile.age <= age_max
-    );
+	profiles = profiles.filter((profile) => {
+		const profileAge = Number(profile.age); 
+		console.log(`Profile age: ${profile.age}`);
+		return profileAge >= age_min && profileAge <= age_max;
+	});
+    console.log("Profiles after age gap :", profiles);
   }
 
   if (fame_rating_gap) {
@@ -245,30 +253,30 @@ router.post("/set_profile_visited", authenticateToken, async (req, res) => {
 });
 
 router.get("/get_profile_visitors", authenticateToken, async (req, res) => {
-	const userId = req.user.id;
+  const userId = req.user.id;
 
-	try {
-		const visitors = await userQueries.GetProfileVisitors(userId);
-		res.status(200).json({ visitors });
-	} catch (error) {
-		console.log("Error getting profile visitors:", error);
-		return res.status(500).json({ error: "Internal server error" });
-	}
+  try {
+    const visitors = await userQueries.GetProfileVisitors(userId);
+    res.status(200).json({ visitors });
+  } catch (error) {
+    console.log("Error getting profile visitors:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 router.get("/get_user_match", authenticateToken, async (req, res) => {
-	const userId = req.user.id;
+  const userId = req.user.id;
 
-	try {
-		const UserMatchs = await userQueries.GetAllUsersMatchs(userId);
-		if (UserMatchs.length === 0) {
-			return res.status(404).json({ error: "No match found" });
-		}
-		res.status(200).json({ UserMatchs });
-	} catch (error) {
-		console.log("Error getting profile visitors:", error);
-		return res.status(500).json({ error: "Internal server error" });
-	}
+  try {
+    const UserMatchs = await userQueries.GetAllUsersMatchs(userId);
+    if (UserMatchs.length === 0) {
+      return res.status(404).json({ error: "No match found" });
+    }
+    res.status(200).json({ UserMatchs });
+  } catch (error) {
+    console.log("Error getting profile visitors:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 module.exports = router;

@@ -85,12 +85,10 @@ router.post("/authentification", async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
       if ((await userQueries.UserGetNumFake(user.id)) >= 3) {
-        return res
-          .status(400)
-          .json({
-            error:
-              "Your account has been reported as a fake profile too many times. Please contact support.",
-          });
+        return res.status(400).json({
+          error:
+            "Your account has been reported as a fake profile too many times. Please contact support.",
+        });
       }
       console.log("User authenticated successfully");
       return res.status(200).json({

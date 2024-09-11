@@ -7,8 +7,8 @@ const createUser = async (userInfo) => {
 
   try {
     const query = `
-			INSERT INTO users (email, password, username, firstname, lastname)
-			VALUES ($1, $2, $3, $4, $5)
+			INSERT INTO users (email, password, username, firstname, lastname, fame_rating, fake_account)
+			VALUES ($1, $2, $3, $4, $5, $6, $7)
 			RETURNING *`
 
     // Les valeurs à insérer dans la requête SQL

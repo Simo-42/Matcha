@@ -19,12 +19,12 @@ app.use(cors({
 app.use(cookieParser()); // Pour gérer les cookies
 
 
-const authRouter = require('./routes/auth');
 const passwordForgotRouter = require('./routes/pass_forgot');
 const jwtRouter = require('./routes/jwt');
-const afterAuthRouter = require('./routes/after_auth');
+const authRouter = require('./routes/auth');
 const SwipeRouter = require('./routes/swipe');
 const uploadRouter = require('./routes/upload'); // Importer le routeur upload
+const afterAuthRouter = require('./routes/after_auth');
 
 app.use('/api/auth', authRouter);
 app.use('/api/password', passwordForgotRouter);
