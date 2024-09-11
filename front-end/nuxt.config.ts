@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   icon: {
     serverBundle: {
       collections: ['uil', 'mdi'] // <!--- this
-    }
-  }
-})
+    },
+  },
+	runtimeConfig: {
+	  public: {
+		googleMapsKey: process.env.GOOGLE_MAPS_KEY,  
+	  }
+	}
+  })

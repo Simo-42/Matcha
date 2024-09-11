@@ -50,7 +50,6 @@ import { ref } from 'vue';
 import axios from 'axios';
 import LottieAnimation from '~/components/lotie/lotie_animation.vue';  // Remplacez par le bon chemin vers votre fichier JSON
 import animationData from '~/assets/lottie/valide.json';  // Remplacez par le bon chemin vers votre fichier JSON
-
 const username = ref('');
 const password = ref('');
 const message = ref('');

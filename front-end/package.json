@@ -2,14 +2,11 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "nuxt dev --port 3000",
-    "build": "nuxt build -- port 3000",
-    "start": "nuxt start --port 3000",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
+	"scripts": {
+		"dev": "nuxt dev --host 0.0.0.0 --port 3000",  		
+		"build": "nuxt build",
+		"start": "nuxt start"
+	},
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
     "@hutson/npm-deploy-git-tag": "^6.0.0",
