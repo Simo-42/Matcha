@@ -12,7 +12,7 @@ const createUser = async (userInfo) => {
 			RETURNING *`;
 
 		// Les valeurs à insérer dans la requête SQL
-		const values = [email, password, username, firstname, lastname];
+		const values = [email, password, username, firstname, lastname, 0, 0];
 
 		// Exécution de la requête SQL
 		const res = await pool.query(query, values);

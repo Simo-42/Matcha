@@ -20,23 +20,23 @@ app.use(
 
 app.use(cookieParser()); // Pour gérer les cookies
 
-const server = http.createServer(app);
-const io = new Server(server, {
-	// Créer une instance de socket.io
-	cors: {
-		origin: "http://localhost:3000",
-		credentials: true,
-	},
-});
+// const server = http.createServer(app);
+// const io = new Server(server, {
+// 	// Créer une instance de socket.io
+// 	cors: {
+// 		origin: "http://localhost:3000",
+// 		credentials: true,
+// 	},
+// });
 
-io.on("connection", (socket) => {
-	console.log("Un utilisateur est connecté");
+// io.on("connection", (socket) => {
+// 	console.log("Un utilisateur est connecté");
 
-	// Écouter la déconnexion de ce client
-	socket.on("disconnect", () => {
-		console.log("Un utilisateur est déconnecté");
-	});
-});
+// 	// Écouter la déconnexion de ce client
+// 	socket.on("disconnect", () => {
+// 		console.log("Un utilisateur est déconnecté");
+// 	});
+// });
 
 const passwordForgotRouter = require("./routes/pass_forgot");
 const jwtRouter = require("./routes/jwt");
