@@ -52,7 +52,7 @@ const sendResetEmail = async (email, resetToken) => {
 		},
 	});
 
-	const resetUrl = `http://localhost:3000/verify_password/${resetToken}`;
+	const resetUrl = `http://localhost:3001/verify_password/${resetToken}`;
 	const mailOptions = {
 		from: process.env.MAIL_VERIF,
 		to: email,

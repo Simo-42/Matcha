@@ -13,7 +13,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(
 	cors({
-		origin: "http://localhost:3000", // Remplace par le domaine de ton frontend
+		origin: "http://localhost:3001", // Remplace par le domaine de ton frontend
 		credentials: true, // Permet l'envoi des cookies
 	})
 ); // Utiliser le middleware CORS pour autoriser toutes les origines
@@ -24,7 +24,7 @@ app.use(cookieParser()); // Pour gérer les cookies
 // const io = new Server(server, {
 // 	// Créer une instance de socket.io
 // 	cors: {
-// 		origin: "http://localhost:3000",
+// 		origin: "http://localhost:3001",
 // 		credentials: true,
 // 	},
 // });
