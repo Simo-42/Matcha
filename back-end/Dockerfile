@@ -1,3 +1,4 @@
+
 # Utiliser une image de base officielle Node.js 18 alpine
 FROM node:16.13
 
@@ -14,7 +15,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Exposer le port de l'application
-EXPOSE 3005
+EXPOSE 3000
 
 # Démarrer l'application Express
 CMD ["npm", "start"]
