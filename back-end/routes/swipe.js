@@ -245,8 +245,10 @@ router.get("/get_user_match", authenticateToken, async (req, res) => {
 
 	try {
 		const UserMatchs = await userQueries.GetAllUsersMatchs(userId);
+		console.log("API get_user_match called");
+		console.log("User matchs:", UserMatchs);
 		if (UserMatchs.length === 0) {
-			return res.status(404).json({ error: "No match found" });
+			return res.status(200).json({ message: "No matches found", UserMatchs: [] });
 		}
 		res.status(200).json({ UserMatchs });
 	} catch (error) {

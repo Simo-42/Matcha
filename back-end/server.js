@@ -44,13 +44,15 @@ const authRouter = require("./routes/auth");
 const SwipeRouter = require("./routes/swipe");
 const uploadRouter = require("./routes/upload"); // Importer le routeur upload
 const afterAuthRouter = require("./routes/after_auth");
+const messageRouter = require("./routes/messagerie"); 
 
 app.use("/api/auth", authRouter);
 app.use("/api/password", passwordForgotRouter);
 app.use("/api/jwt", jwtRouter);
 app.use("/api/after_auth", afterAuthRouter);
 app.use("/api/swipe", SwipeRouter);
-app.use("/api/upload", uploadRouter); // Utiliser le routeur upload
+app.use("/api/upload", uploadRouter);
+app.use("/api/message", messageRouter);
 // Définir le port et démarrer le serveur
 
 const port = process.env.PORT || 3005;

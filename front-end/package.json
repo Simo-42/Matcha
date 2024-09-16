@@ -2,19 +2,20 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
-	"scripts": {
-		"dev": "nuxt dev --host 0.0.0.0 --port 3000",  		
-		"build": "nuxt build",
-		"start": "nuxt start"
-	},
+  "scripts": {
+    "dev": "nuxt dev --host 0.0.0.0 --port 3000",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
     "@hutson/npm-deploy-git-tag": "^6.0.0",
     "@iconify-json/mdi": "^1.2.0",
     "@iconify-json/uil": "^1.2.0",
+    "@nuxt/ui": "^2.18.4",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "again": "^0.0.1",
-    "axios": "^1.7.3",
+    "axios": "^1.7.7",
     "cookie-universal-nuxt": "^2.2.2",
     "hammerjs": "^2.0.8",
     "jwt-decode": "^4.0.0",

@@ -11,4 +11,5 @@ import logout from "~/components/Logout.vue";
 definePageMeta({
 	middleware: ["auth"],
 });
+
 </script>

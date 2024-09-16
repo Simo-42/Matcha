@@ -68,6 +68,7 @@ const authentification = async () => {
 			{
 				withCredentials: true,
 			}
+			
 		);
 
 		// Vérification si le profil est complet

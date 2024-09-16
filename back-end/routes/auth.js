@@ -28,11 +28,12 @@ router.post("/register", async (req, res) => {
 			return res.status(400).json({ error: "This username is already taken." });
 		}
 
+		
 		const user = await userQueries.createUser(info);
 		if (!user) {
 			return res.status(500).json({ error: "Error creating user" });
 		}
-
+		
 		await send_email(email, user.id);
 
 		res.status(201).json({
@@ -75,6 +76,7 @@ router.post("/authentification", async (req, res) => {
 				sameSite: "Strict",
 				maxAge: 24 * 60 * 60 * 1000,
 			});
+
 			if ((await userQueries.UserGetNumFake(user.id)) >= 3) {
 				return res.status(400).json({
 					error: "Your account has been reported as a fake profile too many times. Please contact support.",

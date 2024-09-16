@@ -15,6 +15,10 @@ start:
 stop:
 	docker-compose -f $(DOCKER_COMPOSE_FILE) down
 
+# Commande pour forcer l'arrêt des conteneurs si nécessaire
+force-stop:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) down || docker stop $(shell docker ps -q) || docker kill $(shell docker ps -q)
+
 # Commande pour vérifier l'état des conteneurs
 status:
 	docker-compose -f $(DOCKER_COMPOSE_FILE) ps
@@ -36,6 +40,7 @@ help:
 	@echo "Usage:"
 	@echo "  make start         - Build and start the containers in detached mode"
 	@echo "  make stop          - Stop and remove the containers"
+	@echo "  make force-stop    - Force stop and kill all running containers"
 	@echo "  make status        - Show the status of the containers"
 	@echo "  make logs          - Follow the logs of the containers"
 	@echo "  make restart       - Restart the containers"

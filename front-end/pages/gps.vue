@@ -8,6 +8,9 @@
 <script setup>
 import logout from "~/components/Logout.vue";
 import gps from "~/components/profil/gps_location.vue";
+definePageMeta({
+  middleware: ["auth"]
+})
 </script>
 
 <style scoped>

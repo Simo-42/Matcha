@@ -1,47 +1,169 @@
 <template>
-	<div>
-		<div class="flex flex-col items-center justify-center">
-			<h1 class="text-3xl font-semibold text-gray-800">Match of the users</h1>
-			<div class="mt-4"></div>
+	<div class="flex h-screen">
+		<!-- Sidebar (Profiles list) -->
+		<div class="w-1/3 bg-gray-200 p-4">
+			<h2 class="text-2xl font-bold mb-4">Profiles</h2>
+			<ul>
+				<li v-for="profile in profiles" :key="profile.id" @click="selectProfile(profile)" class="cursor-pointer mb-2 p-2 bg-white rounded shadow hover:bg-gray-100">
+					{{ profile.username }}
+				</li>
+			</ul>
+		</div>
+
+		<!-- Chat area -->
+		<div class="w-2/3 p-4 flex flex-col">
+			<div v-if="selectedProfile">
+				<h2 class="text-2xl font-bold mb-4">Chat with {{ selectedProfile.username }}</h2>
+
+				<!-- Messages display -->
+				<div class="flex-1 overflow-y-auto mb-4 p-2 bg-gray-100 rounded shadow">
+					<!-- Affiche les messages si messages[selectedProfile.id] existe et a des données -->
+					<div v-if="messages[selectedProfile.id] && messages[selectedProfile.id].length">
+						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
+							<p class="text-sm text-gray-800">
+								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : "You" }}:</strong> {{ message.message_text }}
+							</p>
+						</div>
+					</div>
+					<!-- Si pas de messages, afficher un message d'information -->
+					<div v-else>
+						<p class="text-gray-500">No messages yet. Start the conversation!</p>
+					</div>
+				</div>
+
+				<!-- Input for new message -->
+				<div class="flex">
+					<input v-model="newMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
+					<button @click="sendMessage" class="bg-blue-500 text-white p-2 rounded-r">Send</button>
+				</div>
+			</div>
+			<div v-else>
+				<p class="text-gray-500">Select a profile to start chatting.</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+// 1 - Creer la fonctionalite pour lenvoie de message et les save dans la db
+// 2 - Creer la fonctionnalite pour recuperer les messages de la db entre deux utilisateurs
+// 3 - Creer la fonctionalite pour pouvoir bloquer un utilisateur
+
+import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
-import VisitorProfileCard from "~/components/profil/example_profil.vue";
 
 const profiles = ref([]);
+const selectedProfile = ref(null);
+const newMessage = ref("");
+const my_profile = ref([]);
+const my_profile_id = ref(0); 	
+// Store messages for each profile
+const messages = ref({});
+
+// Fetching profiles
+const fetchMessages = async (receiverId) => {
+	try {
+		const response = await axios.get("http://localhost:3005/api/message/get_messages", {
+			params: { receiver_id: receiverId }, // Avec get on passe les params avec params:
+			withCredentials: true,
+		});
+		messages.value[receiverId] = response.data;
+		console.log("messages", messages.value); // Affiche l'objet messages avec les messages par ID
+	} catch (error) {
+		console.error("Error fetching messages: ", error);
+	}
+};
+const fetchMyCurrentProfil = async () => {
+	try {
+		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
+			withCredentials: true,
+		});
+		console.log("response", response);
+		my_profile.value = response.result;
+		my_profile_id.value = response.userId;
+		console.log("my profile id ===== ", my_profile_id);
+		console.log("my profile ===== ", my_profile);
+
+	} catch (error) {
+		console.error("Error fetching messages: ", error);
+	}
+};
 
 const fetchProfileData = async () => {
 	try {
 		const response = await axios.get("http://localhost:3005/api/swipe/get_user_match", {
 			withCredentials: true,
 		});
-		const data = response.data.matchs;
-
-		console.log("Données reçues:", data);
-
-		profiles.value = data.map((profile) => {
+		profiles.value = response.data.UserMatchs;
+		profiles.value = profiles.value.map((profile) => {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
 			profile.photos = Array.isArray(profile.photos) ? profile.photos.map((photo) => photo.replace("/app", "")) : [];
+			messages[profile.id] = [];
 			return profile;
 		});
-
-		console.log("profiles.value reçues:", profiles.value);
 	} catch (error) {
-		console.error("Error fetching profile data:", error);
+		console.error("Error fetching profile data: ", error);
+	}
+};
+
+// Select profile to chat with
+const selectProfile = async (profile) => {
+	selectedProfile.value = profile;
+	console.log("profile.id", profile.id);
+	await fetchMessages(profile.id);
+};
+
+const save_message = async (message, receiverId) => {
+	try {
+		console.log("save_message");
+		console.log(message, receiverId);
+		const response = await axios.post(
+			`http://localhost:3005/api/message/send_message`,
+			{
+				message: message,
+				receiver_id: receiverId, // Harmonisé avec le backend
+			},
+			{ withCredentials: true }
+		);
+		console.log(response.data);
+	} catch (error) {
+		message.value = error.response.data.error || "Password reset failed";
+	}
+};
+// Send message and store it in the messages object
+const sendMessage = async () => {
+	if (newMessage.value.trim() && selectedProfile.value) {
+		try {
+			console.log(selectedProfile.value.id);
+			console.log(newMessage.value);
+
+			// Envoie le message et le sauvegarde en base de données
+			await save_message(newMessage.value, selectedProfile.value.id);
+
+			// Ajoute le message localement avec les bonnes clés
+			messages[selectedProfile.value.id].push({
+				sender_id: 1, // Optionnel : ID de l'utilisateur envoyant le message
+				receiver_id: selectedProfile.value.id,
+				message_text: newMessage.value,
+				sent_at: new Date().toISOString(), // Optionnel : Date d'envoi
+			});
+
+			// Vide le champ de texte après l'envoi
+			newMessage.value = "";
+		} catch (error) {
+			console.error("Erreur lors de l'envoi du message :", error);
+		}
 	}
 };
 
 onMounted(() => {
 	fetchProfileData();
+	fetchMyCurrentProfil();
 });
 </script>
 
 <style scoped>
-/* Ajoutez ici des styles supplémentaires si nécessaire */
+/* Add any additional styles here */
 </style>

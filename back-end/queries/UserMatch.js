@@ -112,30 +112,15 @@ const CreateMatch = async (userId1, userId2) => {
 const GetAllUsersMatchs = async (userId) => {
 	try {
 		const query = `
-		SELECT 
-		  u.id, 
-		  u.username, 
-		  u.firstname, 
-		  u.lastname, 
-		  u.interests, 
-		  u.age, 
-		  u.fame_rating, 
-		  u.gender, 
-		  u.sexual_preference, 
-		  u.location, 
-		  u.biography, 
-		  u.photos, 
-		  m.matched_at 
+		SELECT u.id, u.username, u.firstname, u.lastname, u.interests, u.age, u.fame_rating, u.gender, u.sexual_preference, u.location, u.biography, u.photos, m.matched_at
 		FROM matches m
 		JOIN users u ON (m.user_id_1 = u.id OR m.user_id_2 = u.id)
 		WHERE (m.user_id_1 = $1 OR m.user_id_2 = $1) 
 		AND u.id != $1
 		ORDER BY m.matched_at DESC;
-	  `;
+	  	`;
 		const values = [userId];
-
 		const res = await pool.query(query, values);
-
 		if (res.rows.length === 0) {
 			return [];
 		}
