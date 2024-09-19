@@ -30,7 +30,7 @@ const getUserByUsername = async (username) => {
 const get_profil_spec_by_id = async (id) => {
 	try {
 		const query = `
-			SELECT biography, interests, sexual_preference, gender 
+			SELECT biography, interests, sexual_preference, gender, username
 			FROM users 
 			WHERE id = $1
 		`;

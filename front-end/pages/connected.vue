@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<logout />
-		<P> Vous êtes connecté ! ! ! </P>
+		<p> Vous êtes connecté ! ! ! </p>
 	</div>
 </template>
 

@@ -15,7 +15,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Exposer le port de l'application
-EXPOSE 3000
+EXPOSE 3005
 
 # Démarrer l'application Express
 CMD ["npm", "start"]

@@ -107,7 +107,7 @@ router.get("/verify/:id", async (req, res) => {
 		const result = await pool.query(query, values); // fais la requete
 
 		if (result.rows.length > 0) {
-			res.redirect(`http://localhost:3001/verify/${userId}`);
+			res.redirect(`http://localhost:3000/verify/${userId}`);
 		} else {
 			res.status(400).send("Email verification failed");
 		}

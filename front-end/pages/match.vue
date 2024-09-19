@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Logout />
-		<match />
+		<match_chat />
 	</div>
 </template>
 

@@ -21,7 +21,7 @@
 					<div v-if="messages[selectedProfile.id] && messages[selectedProfile.id].length">
 						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
 							<p class="text-sm text-gray-800">
-								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : "You" }}:</strong> {{ message.message_text }}
+								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong> {{ message.message_text }}
 							</p>
 						</div>
 					</div>
@@ -33,7 +33,7 @@
 
 				<!-- Input for new message -->
 				<div class="flex">
-					<input v-model="newMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
+					<input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
 					<button @click="sendMessage" class="bg-blue-500 text-white p-2 rounded-r">Send</button>
 				</div>
 			</div>
@@ -48,20 +48,22 @@
 // 1 - Creer la fonctionalite pour lenvoie de message et les save dans la db
 // 2 - Creer la fonctionnalite pour recuperer les messages de la db entre deux utilisateurs
 // 3 - Creer la fonctionalite pour pouvoir bloquer un utilisateur
-
+// 4 - Pouvoir mettre un jour avec les sockets pour avoir les messages en temps reel
+// Enregistrer les messages dans la base de données dans le cote serveur (backend)
 import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
+const { $socket } = useNuxtApp();
 
 const profiles = ref([]);
 const selectedProfile = ref(null);
 const newMessage = ref("");
 const my_profile = ref([]);
-const my_profile_id = ref(0); 	
+const my_profile_id = ref(0);
+const profile_name = ref("")
 // Store messages for each profile
 const messages = ref({});
 
-// Fetching profiles
-const fetchMessages = async (receiverId) => {
+const fetchMsgConversation = async (receiverId) => {
 	try {
 		const response = await axios.get("http://localhost:3005/api/message/get_messages", {
 			params: { receiver_id: receiverId }, // Avec get on passe les params avec params:
@@ -78,12 +80,11 @@ const fetchMyCurrentProfil = async () => {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
 			withCredentials: true,
 		});
-		console.log("response", response);
-		my_profile.value = response.result;
-		my_profile_id.value = response.userId;
-		console.log("my profile id ===== ", my_profile_id);
-		console.log("my profile ===== ", my_profile);
-
+		console.log("response", response.data);
+		profile_name.value = response.data.result.username;
+	
+		// my_profile_id.value = response.data.userId;
+		console.log("my profile  name ===== ", profile_name.value);
 	} catch (error) {
 		console.error("Error fetching messages: ", error);
 	}
@@ -111,8 +112,7 @@ const fetchProfileData = async () => {
 // Select profile to chat with
 const selectProfile = async (profile) => {
 	selectedProfile.value = profile;
-	console.log("profile.id", profile.id);
-	await fetchMessages(profile.id);
+	await fetchMsgConversation(profile.id);
 };
 
 const save_message = async (message, receiverId) => {
@@ -138,16 +138,12 @@ const sendMessage = async () => {
 		try {
 			console.log(selectedProfile.value.id);
 			console.log(newMessage.value);
-
-			// Envoie le message et le sauvegarde en base de données
-			await save_message(newMessage.value, selectedProfile.value.id);
-
-			// Ajoute le message localement avec les bonnes clés
-			messages[selectedProfile.value.id].push({
-				sender_id: 1, // Optionnel : ID de l'utilisateur envoyant le message
+			console.log(my_profile, "my profile");
+			// await save_message(newMessage.value, selectedProfile.value.id);
+			$socket.emit("Send message", {
+				message: newMessage.value,
 				receiver_id: selectedProfile.value.id,
-				message_text: newMessage.value,
-				sent_at: new Date().toISOString(), // Optionnel : Date d'envoi
+				sender_id: my_profile_id.value,
 			});
 
 			// Vide le champ de texte après l'envoi
@@ -159,8 +155,25 @@ const sendMessage = async () => {
 };
 
 onMounted(() => {
+	// console.log("mounted", $socket);
 	fetchProfileData();
 	fetchMyCurrentProfil();
+
+	$socket.on("Receive message", (message) => {
+		// console.log("message recu ", message);
+		if (message.sender_id === selectedProfile.value.id || message.receiver_id === selectedProfile.value.id) {
+			if (!messages.value[selectedProfile.value.id]) {
+				messages.value[selectedProfile.value.id] = [];
+			}
+
+			messages.value[selectedProfile.value.id].push({
+				sender_id: message.sender_id,
+				receiver_id: message.receiver_id,
+				message_text: message.message_text,
+				sent_at: message.sent_at,
+			});
+		}
+	});
 });
 </script>
 

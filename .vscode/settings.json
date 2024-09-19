@@ -16,7 +16,7 @@
 		"back-end/package.json": true,
 		"back-end/.vscode": true,
 		"front-end/public": true,
-		"front-end/plugins": true,
+		"front-end/plugins": false,
 		"front-end/app.vue": true,
 		"front-end/postcss.config.js": true,
 		"front-end/nuxt.config.ts": true,
