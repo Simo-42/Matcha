@@ -114,21 +114,6 @@ const selectProfile = async (profile) => {
 	await fetchMsgConversation(profile.id);
 };
 
-const save_message = async (message, receiverId) => {
-	try {
-		const response = await axios.post(
-			`http://localhost:3005/api/message/send_message`,
-			{
-				message: message,
-				receiver_id: receiverId, // Harmonisé avec le backend
-			},
-			{ withCredentials: true }
-		);
-		console.log(response.data);
-	} catch (error) {
-		message.value = error.response.data.error || "Password reset failed";
-	}
-};
 // Send message and store it in the messages object
 const sendMessage = async () => {
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
@@ -150,29 +135,7 @@ const sendMessage = async () => {
 	}
 };
 
-// onMounted(() => {
-// fetchProfileData();
-// fetchMyCurrentProfil();
-//
-// $socket.on("Receive message", (result) => {
-// console.log("Socket emit Receive message", result);
-// if (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
-// {
-// if (!messages.value[selectedProfile.value.id])
-// {
-// messages.value[selectedProfile.value.id] = [];
-// }
-// console.log("im here socket receive message");
-//
-// messages.value[selectedProfile.value.id].push({
-// sender_id: result.sender_id,
-// receiver_id: result.receiver_id,
-// message_text: result.message_text,
-// sent_at: result.sent_at,
-// });
-// }
-// });
-// });
+
 onMounted(async () => {
 	// console.log("mounted", $socket);
 	await fetchProfileData();
