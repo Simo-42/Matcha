@@ -83,6 +83,7 @@ const fetchMyCurrentProfil = async () => {
 		});
 		profile_name.value = response.data.result.username;
 		my_profile_id.value = response.data.userId;
+		console.log("my_profile_id.value", my_profile_id.value);
 	} catch (error) {
 		console.error("Error fetching messages: ", error);
 	}
@@ -130,8 +131,7 @@ const save_message = async (message, receiverId) => {
 };
 // Send message and store it in the messages object
 const sendMessage = async () => {
-	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) 
-	{
+	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
 		console.log("selectedProfile.value.id", selectedProfile.value.id);
 		console.log("my_profile_id.value", my_profile_id.value);
 		console.log("newMessage.value", newMessage.value);
@@ -150,13 +150,60 @@ const sendMessage = async () => {
 	}
 };
 
-onMounted(() => {
+// onMounted(() => {
+// fetchProfileData();
+// fetchMyCurrentProfil();
+//
+// $socket.on("Receive message", (result) => {
+// console.log("Socket emit Receive message", result);
+// if (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
+// {
+// if (!messages.value[selectedProfile.value.id])
+// {
+// messages.value[selectedProfile.value.id] = [];
+// }
+// console.log("im here socket receive message");
+//
+// messages.value[selectedProfile.value.id].push({
+// sender_id: result.sender_id,
+// receiver_id: result.receiver_id,
+// message_text: result.message_text,
+// sent_at: result.sent_at,
+// });
+// }
+// });
+// });
+onMounted(async () => {
 	// console.log("mounted", $socket);
-	fetchProfileData();
-	fetchMyCurrentProfil();
+	await fetchProfileData();
+	await fetchMyCurrentProfil();
+
+	const { $socket } = useNuxtApp();
+
+	const userId = my_profile_id.value;
+	if (userId) 
+	    console.log("userId côté client :", userId);
+
+	$socket.io.opts.query = { userId }; // Passer l'ID de l'utilisateur connecté au serveur
+	$socket.io.opts.transports = ["websocket"];  // Forcer WebSocket sinon le serveur utilise polling par défaut
+
+	$socket.connect();
+	setupMessageListener();
+});
+
+onBeforeUnmount(() => {
+  const { $socket } = useNuxtApp();
+  $socket.off("Receive message");
+});
+
+const setupMessageListener = () => {
+	const { $socket } = useNuxtApp();
 
 	$socket.on("Receive message", (result) => {
-		if (messages.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
+		console.log("Socket emit Receive message", result);
+
+		// Vérifie que le message reçu correspond à la conversation active
+		if (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
 			if (!messages.value[selectedProfile.value.id]) {
 				messages.value[selectedProfile.value.id] = [];
 			}
@@ -169,9 +216,9 @@ onMounted(() => {
 			});
 		}
 	});
-});
+};
 </script>
 
-<style scoped>	
+<style scoped>
 /* Add any additional styles here */
 </style>
