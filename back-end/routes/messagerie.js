@@ -6,7 +6,7 @@ const userQueries = require("../queries/index.js");
 router.post("/send_message", authenticateToken, async (req, res) => {
 	const { message, receiver_id } = req.body;
 	const sender_id = req.user.id;
-
+	console.log("Sender ID:", sender_id);
 	if (!message || !receiver_id) {
 		return res.status(400).json({ error: "Message or receiver ID is missing" });
 	}
@@ -41,7 +41,6 @@ router.get("/get_messages", authenticateToken, async (req, res) => {
 		if (messages.length === 0) {
 			return res.status(404).json({ error: "No messages found" });
 		}
-		console.log("Messages entre les 2 users :", messages);
 		return res.status(200).json(messages);
 	} catch (error) {
 		console.error("Error while getting messages:", error);

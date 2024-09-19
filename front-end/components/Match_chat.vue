@@ -22,6 +22,8 @@
 						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
 							<p class="text-sm text-gray-800">
 								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong> {{ message.message_text }}
+								<!-- <p> {{ message.sender.id }} </p> -->
+								<!-- <p> {{ selectedProfile.id }} </p> -->
 							</p>
 						</div>
 					</div>
@@ -59,7 +61,7 @@ const selectedProfile = ref(null);
 const newMessage = ref("");
 const my_profile = ref([]);
 const my_profile_id = ref(0);
-const profile_name = ref("")
+const profile_name = ref("");
 // Store messages for each profile
 const messages = ref({});
 
@@ -70,7 +72,6 @@ const fetchMsgConversation = async (receiverId) => {
 			withCredentials: true,
 		});
 		messages.value[receiverId] = response.data;
-		console.log("messages", messages.value); // Affiche l'objet messages avec les messages par ID
 	} catch (error) {
 		console.error("Error fetching messages: ", error);
 	}
@@ -80,11 +81,8 @@ const fetchMyCurrentProfil = async () => {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
 			withCredentials: true,
 		});
-		console.log("response", response.data);
 		profile_name.value = response.data.result.username;
-	
-		// my_profile_id.value = response.data.userId;
-		console.log("my profile  name ===== ", profile_name.value);
+		my_profile_id.value = response.data.userId;
 	} catch (error) {
 		console.error("Error fetching messages: ", error);
 	}
@@ -117,8 +115,6 @@ const selectProfile = async (profile) => {
 
 const save_message = async (message, receiverId) => {
 	try {
-		console.log("save_message");
-		console.log(message, receiverId);
 		const response = await axios.post(
 			`http://localhost:3005/api/message/send_message`,
 			{
@@ -134,12 +130,12 @@ const save_message = async (message, receiverId) => {
 };
 // Send message and store it in the messages object
 const sendMessage = async () => {
-	if (newMessage.value.trim() && selectedProfile.value) {
+	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) 
+	{
+		console.log("selectedProfile.value.id", selectedProfile.value.id);
+		console.log("my_profile_id.value", my_profile_id.value);
+		console.log("newMessage.value", newMessage.value);
 		try {
-			console.log(selectedProfile.value.id);
-			console.log(newMessage.value);
-			console.log(my_profile, "my profile");
-			// await save_message(newMessage.value, selectedProfile.value.id);
 			$socket.emit("Send message", {
 				message: newMessage.value,
 				receiver_id: selectedProfile.value.id,
@@ -159,24 +155,23 @@ onMounted(() => {
 	fetchProfileData();
 	fetchMyCurrentProfil();
 
-	$socket.on("Receive message", (message) => {
-		// console.log("message recu ", message);
-		if (message.sender_id === selectedProfile.value.id || message.receiver_id === selectedProfile.value.id) {
+	$socket.on("Receive message", (result) => {
+		if (messages.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
 			if (!messages.value[selectedProfile.value.id]) {
 				messages.value[selectedProfile.value.id] = [];
 			}
 
 			messages.value[selectedProfile.value.id].push({
-				sender_id: message.sender_id,
-				receiver_id: message.receiver_id,
-				message_text: message.message_text,
-				sent_at: message.sent_at,
+				sender_id: result.sender_id,
+				receiver_id: result.receiver_id,
+				message_text: result.message_text,
+				sent_at: result.sent_at,
 			});
 		}
 	});
 });
 </script>
 
-<style scoped>
+<style scoped>	
 /* Add any additional styles here */
 </style>
