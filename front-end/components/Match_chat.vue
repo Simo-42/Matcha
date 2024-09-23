@@ -6,6 +6,7 @@
 			<ul>
 				<li v-for="profile in profiles" :key="profile.id" @click="selectProfile(profile)" class="cursor-pointer mb-2 p-2 bg-white rounded shadow hover:bg-gray-100">
 					{{ profile.username }}
+					{{ profile.connected ? "🟢" : "🔴" }}
 				</li>
 			</ul>
 		</div>
@@ -135,28 +136,26 @@ const sendMessage = async () => {
 	}
 };
 
-
 onMounted(async () => {
 	// console.log("mounted", $socket);
 	await fetchProfileData();
 	await fetchMyCurrentProfil();
 
 	const { $socket } = useNuxtApp();
-
+	const status = "tchat";
 	const userId = my_profile_id.value;
-	if (userId) 
-	    console.log("userId côté client :", userId);
+	if (userId) console.log("userId côté client :", userId);
 
-	$socket.io.opts.query = { userId }; // Passer l'ID de l'utilisateur connecté au serveur
-	$socket.io.opts.transports = ["websocket"];  // Forcer WebSocket sinon le serveur utilise polling par défaut
+	$socket.io.opts.query = { userId, status }; // Passer l'ID de l'utilisateur connecté au serveur
+	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling par défaut
 
 	$socket.connect();
 	setupMessageListener();
 });
 
 onBeforeUnmount(() => {
-  const { $socket } = useNuxtApp();
-  $socket.off("Receive message");
+	const { $socket } = useNuxtApp();
+	$socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
 });
 
 const setupMessageListener = () => {
@@ -180,6 +179,7 @@ const setupMessageListener = () => {
 		}
 	});
 };
+
 </script>
 
 <style scoped>

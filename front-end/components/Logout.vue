@@ -19,20 +19,52 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-
-const router = useRouter();
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+const router = useRouter();
+const userId = ref(0);
+const { $socket } = useNuxtApp();
 
+const fetchMyCurrentProfil = async () => {
+	try {
+		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
+			withCredentials: true,
+		});
+		userId.value = response.data.userId;
+		return userId.value;
+	} catch (error) {
+		console.error("Error fetching messages: ", error);
+	}
+};
 const logout = async () => {
 	try {
 		await axios.post("http://localhost:3005/api/jwt/logout");
+		$socket.emit("user_disconnected", { userId: userId.value }); // Émettre l'événement de déconnexion
+		$socket.disconnect();
+
 		router.push("/auth");
 	} catch (error) {
 		console.error("Failed to log out:", error);
 	}
 };
+onMounted(async () => {
+	await fetchMyCurrentProfil();
+	const status = "online";
+	$socket.io.opts.query = { userId: userId.value, status };
+	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling par défaut
+	$socket.connect();
+	$socket.emit("user_connected", { userId: userId.value });
+	// setupListenerStatus(); // Mettre en place un écouteur pour les événements de statut
+});
+
+onBeforeUnmount(() => {
+	if ($socket.connected) {
+		$socket.disconnect();
+	}
+});
+
+
 </script>
 
 <style scoped></style>

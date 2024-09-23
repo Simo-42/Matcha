@@ -88,14 +88,14 @@ router.post("/profil/update_profil", authenticateToken, async (req, res) => {
 
 router.get("/profil/spec_info", authenticateToken, async (req, res) => {
 	const userId = req.user.id; // Utilisation de `req.user` pour accéder à l'ID utilisateur
-	console.log("User ID:", userId);
+	// console.log("User ID:", userId);
 
 	try {
 		const result = await userQueries.get_profil_spec_by_id(userId);
 		if (!result) {
 			return res.status(404).json({ error: "User not found" });
 		}
-		console.log("User spec fetched successfully:", result);
+		// console.log("User spec fetched successfully:", result);
 		return res.status(200).json({ message: "User information fetched successfully", result, userId });
 	} catch (error) {
 		console.log("Error fetching user:", error);

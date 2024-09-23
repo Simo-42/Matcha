@@ -1,5 +1,5 @@
 -- DROP TABLE IF EXISTS users, matches, likes, messages, blocks, profile_visits, reports, notifications;
--- ALTER TABLE profile_visits ADD COLUMN visit_count INTEGER DEFAULT 1;
+-- ALTER TABLE users ADD COLUMN connected BOOLEAN DEFAULT FALSE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -13,6 +13,7 @@ CREATE TABLE users (
 	fake_account INTEGER DEFAULT 0,
     verified BOOLEAN DEFAULT FALSE,
     profile_complete BOOLEAN DEFAULT FALSE,
+	connected  BOOLEAN DEFAULT FALSE,
     gender VARCHAR(255),  -- Nouvelle colonne pour le genre
     sexual_preference VARCHAR(255),  -- Nouvelle colonne pour la préférence sexuelle
     biography TEXT,  -- 
