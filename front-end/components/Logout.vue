@@ -63,8 +63,6 @@ onBeforeUnmount(() => {
 		$socket.disconnect();
 	}
 });
-
-
 </script>
 
 <style scoped></style>

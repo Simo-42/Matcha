@@ -3,10 +3,7 @@ const userQueries = require("../queries/index.js");
 
 module.exports = (io) => {
 	io.on("connection", (socket) => {
-		// const userId = socket.handshake.query.userId;
-		// const status = socket.handshake.query.status;
 		const { userId, status } = socket.handshake.query;
-		console.log("Utilisateur connecté :", userId);
 		if (userId && status === "tchat") {
 			socket.join(`user_${userId}`);
 			console.log(`Utilisateur ${userId} a rejoint la room user_${userId}`);
@@ -21,7 +18,7 @@ module.exports = (io) => {
 			console.log(`Raison de la déconnexion : ${reason}`);
 
 			try {
-				const result = await userQueries.updateConnectionStatus(userId, false); 
+				const result = await userQueries.updateConnectionStatus(userId, false);
 				if (!result) {
 					console.error("Error updating user connection status during disconnect");
 					return;
