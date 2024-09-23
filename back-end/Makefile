@@ -2,9 +2,9 @@
 DOCKER_COMPOSE_FILE = docker-compose.yml
 
 # Nom des services dans docker-compose
-APP_SERVICE = backend_app
-DB_SERVICE = postgres_db
-PGADMIN_SERVICE = pgadmin_container
+APP_SERVICE = backend_application
+DB_SERVICE = postgres_database
+PGADMIN_SERVICE = pgadmin
 SCHEMA_FILE = models/schema.sql
 
 # Commande pour démarrer les conteneurs en mode détaché
@@ -36,7 +36,7 @@ apply-schema:
 	docker cp $(SCHEMA_FILE) $(DB_SERVICE):/schema.sql
 	docker exec -it $(DB_SERVICE) bash -c 'psql -U $$POSTGRES_USER -d $$POSTGRES_DB -f /schema.sql'
 
-# Commande pour afficher les aides
+
 help:
 	@echo "Usage:"
 	@echo "  make start         - Build and start the containers in detached mode"
@@ -47,3 +47,4 @@ help:
 	@echo "  make restart       - Restart the containers by removing and rebuilding them"
 	@echo "  make apply-schema  - Copy and apply schema.sql to the database"
 	@echo "  make help          - Show this help message"
+	@echo "  make full-rebuild  - Stop and remove all containers, images, volumes and rebuild the containers"

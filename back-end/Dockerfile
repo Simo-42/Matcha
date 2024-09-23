@@ -1,21 +1,20 @@
+# Utiliser une image de base node
+FROM node:20
 
-# Utiliser une image de base officielle Node.js 18 alpine
-FROM node:16.13
-
-# Créer un répertoire de travail
+# Créer et définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json
+# Copier le fichier package.json et package-lock.json dans le conteneur
 COPY package*.json ./
 
-# Installer uniquement les dépendances de production (ou développement si nécessaire)
-RUN npm ci --only=production
+# Installer les dépendances
+RUN npm install
 
-# Copier le reste des fichiers de l'application
+# Copier le reste des fichiers dans le répertoire de travail du conteneur
 COPY . .
 
-# Exposer le port de l'application
+# Exposer le port sur lequel l'application va tourner
 EXPOSE 3005
 
-# Démarrer l'application Express
+# Démarrer l'application
 CMD ["npm", "start"]
