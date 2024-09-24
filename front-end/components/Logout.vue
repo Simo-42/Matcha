@@ -40,9 +40,7 @@ const fetchMyCurrentProfil = async () => {
 const logout = async () => {
 	try {
 		await axios.post("http://localhost:3005/api/jwt/logout");
-		$socket.emit("user_disconnected", { userId: userId.value }); // Émettre l'événement de déconnexion
 		$socket.disconnect();
-
 		router.push("/auth");
 	} catch (error) {
 		console.error("Failed to log out:", error);

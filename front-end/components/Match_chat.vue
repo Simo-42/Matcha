@@ -116,11 +116,15 @@ const selectProfile = async (profile) => {
 };
 
 // Send message and store it in the messages object
-const sendMessage = async () => {
+const sendMessage = async () => 
+{
+	// console.log("selectedProfile.value.id", selectedProfile.value.id);
+	// console.log("my_profile_id.value", my_profile_id.value);
+	console.log("Send message function");
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
-		console.log("selectedProfile.value.id", selectedProfile.value.id);
-		console.log("my_profile_id.value", my_profile_id.value);
-		console.log("newMessage.value", newMessage.value);
+		console.log("in send message function ==== ", selectedProfile.value.id);
+		// console.log("my_profile_id.value", my_profile_id.value);
+		// console.log("newMessage.value", newMessage.value);
 		try {
 			$socket.emit("Send message", {
 				message: newMessage.value,

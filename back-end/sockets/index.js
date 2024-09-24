@@ -7,8 +7,8 @@ module.exports = (io) => {
 		if (userId && status === "tchat") {
 			socket.join(`user_${userId}`);
 			console.log(`Utilisateur ${userId} a rejoint la room user_${userId}`);
-			require("./chat")(io, socket);
 		}
+		require("./chat")(io, socket);
 
 		require("./is_connected")(io, socket);
 		// require("./notification")(io, socket);
