@@ -3,11 +3,8 @@ const userQueries = require("../queries/index.js");
 
 module.exports = (io) => {
 	io.on("connection", (socket) => {
-		const { userId, status } = socket.handshake.query;
-		if (userId && status === "tchat") {
-			socket.join(`user_${userId}`);
-			console.log(`Utilisateur ${userId} a rejoint la room user_${userId}`);
-		}
+		const { userId} = socket.handshake.query;
+
 		require("./chat")(io, socket);
 
 		require("./is_connected")(io, socket);

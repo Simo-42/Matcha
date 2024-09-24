@@ -53,7 +53,6 @@ onMounted(async () => {
 	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling par défaut
 	$socket.connect();
 	$socket.emit("user_connected", { userId: userId.value });
-	// setupListenerStatus(); // Mettre en place un écouteur pour les événements de statut
 });
 
 onBeforeUnmount(() => {

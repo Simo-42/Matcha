@@ -111,21 +111,21 @@ const fetchProfileData = async () => {
 
 // Select profile to chat with
 const selectProfile = async (profile) => {
-	selectedProfile.value = profile;
 	await fetchMsgConversation(profile.id);
+	
+	selectedProfile.value = profile;
+	const roomId = my_profile_id.value < profile.id
+    ? `room_${my_profile_id.value}_${profile.id}`
+    : `room_${profile.id}_${my_profile_id.value}`;
+	console.log("roomId", roomId);
+	$socket.emit("joinRoom", { roomId });
 };
 
 // Send message and store it in the messages object
-const sendMessage = async () => 
-{
-	// console.log("selectedProfile.value.id", selectedProfile.value.id);
-	// console.log("my_profile_id.value", my_profile_id.value);
-	console.log("Send message function");
+const sendMessage = async () => {
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
-		console.log("in send message function ==== ", selectedProfile.value.id);
-		// console.log("my_profile_id.value", my_profile_id.value);
-		// console.log("newMessage.value", newMessage.value);
 		try {
+			console.log("je suis dans send message")
 			$socket.emit("Send message", {
 				message: newMessage.value,
 				receiver_id: selectedProfile.value.id,
@@ -144,46 +144,53 @@ onMounted(async () => {
 	// console.log("mounted", $socket);
 	await fetchProfileData();
 	await fetchMyCurrentProfil();
-
 	const { $socket } = useNuxtApp();
-	const status = "tchat";
 	const userId = my_profile_id.value;
-	if (userId) console.log("userId côté client :", userId);
 
-	$socket.io.opts.query = { userId, status }; // Passer l'ID de l'utilisateur connecté au serveur
+	$socket.io.opts.query = { userId }; // Passer l'ID de l'utilisateur connecté au serveur
 	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling par défaut
-
 	$socket.connect();
 	setupMessageListener();
 });
 
 onBeforeUnmount(() => {
 	const { $socket } = useNuxtApp();
-	$socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
+	// $socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
+	$socket.disconnect();
 });
 
 const setupMessageListener = () => {
-	const { $socket } = useNuxtApp();
+  const { $socket } = useNuxtApp();
+  console.log("Setup message listener");
 
-	$socket.on("Receive message", (result) => {
-		console.log("Socket emit Receive message", result);
+  // Ecouter les messages reçus
+  $socket.on("Receive message", (result) => {
+    console.log("Message reçu :", result);
 
-		// Vérifie que le message reçu correspond à la conversation active
-		if (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id) {
-			if (!messages.value[selectedProfile.value.id]) {
-				messages.value[selectedProfile.value.id] = [];
-			}
+    // Vérifie que le profil est sélectionné et que le message concerne la conversation active
+    if (selectedProfile.value && 
+        (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) {
 
-			messages.value[selectedProfile.value.id].push({
-				sender_id: result.sender_id,
-				receiver_id: result.receiver_id,
-				message_text: result.message_text,
-				sent_at: result.sent_at,
-			});
-		}
-	});
+      // Initialiser le tableau des messages s'il n'existe pas encore pour ce profil
+      if (!messages.value[selectedProfile.value.id]) {
+        messages.value[selectedProfile.value.id] = [];
+      }
+
+      // Ajouter le nouveau message à la liste des messages
+      messages.value[selectedProfile.value.id].push({
+        sender_id: result.sender_id,
+        receiver_id: result.receiver_id,
+        message_text: result.message_text,
+        sent_at: result.sent_at,
+      });
+
+      // Log de debug pour vérifier que le message est bien stocké
+      console.log(`Message ajouté à la conversation avec ${selectedProfile.value.username}`, messages.value[selectedProfile.value.id]);
+    } else {
+      console.log("Message reçu pour une autre conversation ou profil non sélectionné.");
+    }
+  });
 };
-
 </script>
 
 <style scoped>
