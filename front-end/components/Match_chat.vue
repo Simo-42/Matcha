@@ -23,8 +23,6 @@
 						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
 							<p class="text-sm text-gray-800">
 								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong> {{ message.message_text }}
-								<!-- <p> {{ message.sender.id }} </p> -->
-								<!-- <p> {{ selectedProfile.id }} </p> -->
 							</p>
 						</div>
 					</div>
@@ -34,12 +32,16 @@
 					</div>
 				</div>
 
+				<!-- Indicateur 'En train d'écrire' -->
+				<p v-if="isTyping">{{ selectedProfile.username }} est en train d'écrire...</p>
+
 				<!-- Input for new message -->
 				<div class="flex">
-					<input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
+					<input v-model="newMessage" @input="handleTyping(profile)" @keyup.enter="sendMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
 					<button @click="sendMessage" class="bg-blue-500 text-white p-2 rounded-r">Send</button>
 				</div>
 			</div>
+
 			<div v-else>
 				<p class="text-gray-500">Select a profile to start chatting.</p>
 			</div>
@@ -63,8 +65,22 @@ const newMessage = ref("");
 const my_profile = ref([]);
 const my_profile_id = ref(0);
 const profile_name = ref("");
-// Store messages for each profile
+const isTyping = ref(false);
+const typingTimeout = ref(null);
 const messages = ref({});
+// Store messages for each profile
+
+const handleTyping = async () => {
+	// Émettre un événement 'userTyping'
+	const roomId = my_profile_id.value < selectedProfile.value.id ? `room_${my_profile_id.value}_${selectedProfile.value.id}` : `room_${selectedProfile.value.id}_${my_profile_id.value}`;
+	const userId = my_profile_id.value;
+	console.log("roomId", roomId);
+	console.log("userId", userId);
+	$socket.emit("userTyping", {
+		roomId: roomId,
+		userId: userId,
+	});
+};
 
 const fetchMsgConversation = async (receiverId) => {
 	try {
@@ -112,11 +128,10 @@ const fetchProfileData = async () => {
 // Select profile to chat with
 const selectProfile = async (profile) => {
 	await fetchMsgConversation(profile.id);
-	
+
 	selectedProfile.value = profile;
-	const roomId = my_profile_id.value < profile.id
-    ? `room_${my_profile_id.value}_${profile.id}`
-    : `room_${profile.id}_${my_profile_id.value}`;
+	const roomId = my_profile_id.value < profile.id ? `room_${my_profile_id.value}_${profile.id}` : `room_${profile.id}_${my_profile_id.value}`;
+	// Cree la roomId en fonction de l'id le plus petit en premier
 	console.log("roomId", roomId);
 	$socket.emit("joinRoom", { roomId });
 };
@@ -125,7 +140,7 @@ const selectProfile = async (profile) => {
 const sendMessage = async () => {
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
 		try {
-			console.log("je suis dans send message")
+			console.log("je suis dans send message");
 			$socket.emit("Send message", {
 				message: newMessage.value,
 				receiver_id: selectedProfile.value.id,
@@ -155,41 +170,70 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
 	const { $socket } = useNuxtApp();
-	// $socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
-	$socket.disconnect();
+	if ($socket) {
+		$socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
+		$socket.off("joinRoom");
+		$socket.off("userIsTyping");
+		$socket.emit("disconnect");
+	}
 });
 
 const setupMessageListener = () => {
-  const { $socket } = useNuxtApp();
-  console.log("Setup message listener");
+	const { $socket } = useNuxtApp();
+	console.log("Setup message listener");
 
-  // Ecouter les messages reçus
-  $socket.on("Receive message", (result) => {
-    console.log("Message reçu :", result);
+	// Ecouter les messages reçus
+	$socket.on("Receive message", (result) => {
+		console.log("Message reçu :", result);
 
-    // Vérifie que le profil est sélectionné et que le message concerne la conversation active
-    if (selectedProfile.value && 
-        (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) {
+		// Vérifie que le profil est sélectionné et que le message concerne la conversation active
+		if (selectedProfile.value && (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) {
+			// Initialiser le tableau des messages s'il n'existe pas encore pour ce profil
+			if (!messages.value[selectedProfile.value.id]) {
+				messages.value[selectedProfile.value.id] = [];
+			}
 
-      // Initialiser le tableau des messages s'il n'existe pas encore pour ce profil
-      if (!messages.value[selectedProfile.value.id]) {
-        messages.value[selectedProfile.value.id] = [];
-      }
+			// Ajouter le nouveau message à la liste des messages
+			messages.value[selectedProfile.value.id].push({
+				sender_id: result.sender_id,
+				receiver_id: result.receiver_id,
+				message_text: result.message_text,
+				sent_at: result.sent_at,
+			});
 
-      // Ajouter le nouveau message à la liste des messages
-      messages.value[selectedProfile.value.id].push({
-        sender_id: result.sender_id,
-        receiver_id: result.receiver_id,
-        message_text: result.message_text,
-        sent_at: result.sent_at,
-      });
+			// Log de debug pour vérifier que le message est bien stocké
+			console.log(`Message ajouté à la conversation avec ${selectedProfile.value.username}`, messages.value[selectedProfile.value.id]);
+		} else {
+			console.log("Message reçu pour une autre conversation ou profil non sélectionné.");
+		}
+	});
 
-      // Log de debug pour vérifier que le message est bien stocké
-      console.log(`Message ajouté à la conversation avec ${selectedProfile.value.username}`, messages.value[selectedProfile.value.id]);
-    } else {
-      console.log("Message reçu pour une autre conversation ou profil non sélectionné.");
-    }
-  });
+	$socket.on("userIsTyping", (data) => {
+		console.log("Données reçues dans userIsTyping :", data);
+
+		if (data && data.userId) {
+			const { userId } = data;
+			console.log("userId reçu :", userId);
+			console.log("Mon propre ID :", my_profile_id.value);
+
+			if (userId !== my_profile_id.value) {
+				// Vérification que l'utilisateur qui tape est différent
+				console.log("L'utilisateur est en train d'écrire:", userId);
+				isTyping.value = true;
+
+				// Réinitialiser l'indicateur après 2 secondes d'inactivité
+				if (typingTimeout.value) {
+					clearTimeout(typingTimeout.value);
+				}
+				typingTimeout.value = setTimeout(() => {
+					isTyping.value = false;
+					console.log("L'utilisateur a arrêté d'écrire:", userId);
+				}, 2000);
+			}
+		} else {
+			console.error("userId non défini dans l'événement userIsTyping");
+		}
+	});
 };
 </script>
 

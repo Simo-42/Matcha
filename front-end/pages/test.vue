@@ -2,10 +2,10 @@
 	<div>
 		<Logout />
 		<p>This is a test page</p>
-		<button class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg">Responsive</button>
+		<!-- <button class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg">Responsive</button> -->
 		  <UButton>Button</UButton>
-
-		<button @click="console.log('clicked')">Click me</button>
+		<Notification />
+		<!-- <button @click="console.log('clicked')">Click me</button> -->
 		<!-- <user_form /> -->
 	</div>
 </template>

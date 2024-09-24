@@ -8,7 +8,7 @@
 				<nuxt-link to="/visitors" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Visitors</nuxt-link>
 				<nuxt-link to="/match" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Matchs</nuxt-link>
 				<nuxt-link to="/Likes" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Likes Pages</nuxt-link>
-
+				<nuxt-link to="/test" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Notification</nuxt-link>
 				<nuxt-link to="/my_profil" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">My profil</nuxt-link>
 
 				<button @click="logout" class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium">Logout</button>
@@ -58,8 +58,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
 	if ($socket.connected) {
 		$socket.disconnect();
-	}
-});
+	}});
 </script>
 
 <style scoped></style>

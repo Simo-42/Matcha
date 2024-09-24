@@ -146,8 +146,8 @@ const swipeRight = async () => {
 
 const fetchProfileData = async () => {
 	try {
-		console.log("Je suis là");
-		console.log("Search criteria:", searchCriteria.value);
+		// console.log("Je suis là");
+		// console.log("Search criteria:", searchCriteria.value);
 		const response = await axios.get("http://localhost:3005/api/swipe/profil_to_match", {
 			params: searchCriteria.value,
 			withCredentials: true,
@@ -163,7 +163,7 @@ const fetchProfileData = async () => {
 			return profile;
 		});
 	} catch (error) {
-		console.error("Error fetching profiles:", error);
+		console.error("Error fetching profiles:");
 	}
 };
 
