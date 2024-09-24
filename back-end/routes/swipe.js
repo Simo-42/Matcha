@@ -1,7 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const pool = require("../db.js");
-const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authMiddleware.js");
 require("dotenv").config();
 const router = express.Router();
@@ -53,7 +50,7 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
 
 		if (!getProfilesFunction) {
 			console.log(`No profiles found for gender ${user.gender} and preference ${user.sexual_preference}`);
-			return res.status(400).json({
+			return res.status(204).json({
 				error: `No profiles found for gender ${user.gender} and preference ${user.sexual_preference}`,
 			});
 		}

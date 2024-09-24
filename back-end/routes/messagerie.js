@@ -39,7 +39,7 @@ router.get("/get_messages", authenticateToken, async (req, res) => {
 		const messages = await userQueries.GetMessages(sender_id, receiver_id);
 
 		if (messages.length === 0) {
-			return res.status(404).json({ error: "No messages found" });
+			return res.status(204).json({ error: "No messages found" });
 		}
 		return res.status(200).json(messages);
 	} catch (error) {

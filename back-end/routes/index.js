@@ -7,6 +7,7 @@ const afterAuthRoutes = require('./after_auth');
 const swipeRoutes = require('./swipe');
 const uploadRoutes = require('./upload');
 const messageRoutes = require('./messagerie');
+const notifications	= require('./notification');
 
 module.exports = (app) => {
     app.use('/api/auth', authRoutes);
@@ -16,4 +17,5 @@ module.exports = (app) => {
     app.use('/api/swipe', swipeRoutes);
     app.use('/api/upload', uploadRoutes);
     app.use('/api/message', messageRoutes);
+	app.use('/api/notification', notifications);
 };

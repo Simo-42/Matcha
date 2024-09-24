@@ -75,7 +75,7 @@ const GetNotifications = async (userId) => {
 
 module.exports = {
 	AddNotification,
+	NotificationIsRead,
 	DeleteNotification,
-	GetNotifications,
-	NotificationIsRead
+	GetNotifications
 };
