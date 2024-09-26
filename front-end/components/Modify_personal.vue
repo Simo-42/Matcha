@@ -5,36 +5,70 @@
 			<form @submit.prevent="modify_profil" class="space-y-6">
 				<div>
 					<label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-					<input type="email" v-model="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="email"
+						v-model="email"
+						required
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 				</div>
 				<div>
 					<label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
-					<input type="text" v-model="username" maxlength="20" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="text"
+						v-model="username"
+						maxlength="20"
+						required
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 					<small v-if="username.length > 20" class="text-red-500">Username cannot exceed 20 characters.</small>
 				</div>
 				<div>
 					<label for="firstname" class="block text-sm font-medium text-gray-700">First name:</label>
-					<input type="text" v-model="firstname" maxlength="30" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="text"
+						v-model="firstname"
+						maxlength="30"
+						required
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 					<small v-if="firstname.length > 30" class="text-red-500">First name cannot exceed 30 characters.</small>
 				</div>
 				<div>
 					<label for="lastname" class="block text-sm font-medium text-gray-700">Last name:</label>
-					<input type="text" v-model="lastname" maxlength="30" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="text"
+						v-model="lastname"
+						maxlength="30"
+						required
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 					<small v-if="lastname.length > 30" class="text-red-500">Last name cannot exceed 30 characters.</small>
 				</div>
 				<div>
 					<label for="password" class="block text-sm font-medium text-gray-700">Current Password:</label>
-					<input type="password" v-model="password" maxlength="20" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="password"
+						v-model="password"
+						maxlength="20"
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 				</div>
 				<div>
 					<label for="new_password" class="block text-sm font-medium text-gray-700">New Password (optional):</label>
-					<input type="password" v-model="verify_password" maxlength="20" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+					<input
+						type="password"
+						v-model="verify_password"
+						maxlength="20"
+						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 					<small v-if="verify_password.length > 20" class="text-red-500">Password cannot exceed 20 characters.</small>
-					<small v-if="verify_password && !isPasswordComplex" class="text-red-500"> Password must be at least 8 characters long, include an uppercase letter, a number, and a special character. </small>
+					<small v-if="verify_password && !isPasswordComplex" class="text-red-500">
+						Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.
+					</small>
 					<small v-if="verify_password && isPasswordComplex" class="text-green-500"> Password is strong enough. </small>
 				</div>
 				<div>
-					<button :disabled="!isFormValid" type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">Modify Profile</button>
+					<button
+						:disabled="!isFormValid"
+						type="submit"
+						class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+						Modify Profile
+					</button>
 				</div>
 			</form>
 			<p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
@@ -59,8 +93,7 @@ const firstname = ref("");
 const lastname = ref("");
 const message = ref("");
 const showAnimation = ref(false);
-
-const fetchProfileData = async () => {
+async function fetchProfileData() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/id_info", {
 			withCredentials: true,
@@ -74,13 +107,13 @@ const fetchProfileData = async () => {
 		console.error("Error fetching profile data:", error);
 		message.value = "Failed to load profile information.";
 	}
-};
+}
 
 onMounted(() => {
 	fetchProfileData();
 });
 // si le user change son email doit reverifier son compte
-const modify_profil = async () => {
+async function modify_profil() {
 	try {
 		const response = await axios.post(
 			"http://localhost:3005/api/after_auth/profil/update_profil",
@@ -103,7 +136,7 @@ const modify_profil = async () => {
 	} catch (error) {
 		message.value = error.response?.data?.error || "Modification failed";
 	}
-};
+}
 
 const isPasswordComplex = computed(() => {
 	const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Regle définie pour le mdp vérifie l'intégralité de la chaîne de caractères
@@ -111,6 +144,12 @@ const isPasswordComplex = computed(() => {
 });
 
 const isFormValid = computed(() => {
-	return email.value !== "" && username.value !== "" && firstname.value !== "" && lastname.value !== "" && (verify_password.value === "" || isPasswordComplex.value);
+	return (
+		email.value !== "" &&
+		username.value !== "" &&
+		firstname.value !== "" &&
+		lastname.value !== "" &&
+		(verify_password.value === "" || isPasswordComplex.value)
+	);
 });
 </script>

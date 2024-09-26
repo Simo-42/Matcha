@@ -1,6 +1,6 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 
-const AddNotification = async (userId, type, message) => {
+async function AddNotification(userId, type, message) {
 	try {
 		const query = `
 		INSERT INTO notifications (user_id, type, message, created_at)
@@ -18,7 +18,7 @@ const AddNotification = async (userId, type, message) => {
 	}
 }
 
-const NotificationIsRead = async (userId) => {
+async function NotificationIsRead(userId) {
 	try {
 		const query = `
 		UPDATE notifications
@@ -37,7 +37,7 @@ const NotificationIsRead = async (userId) => {
 	}
 }
 
-const DeleteNotification = async (userId) => {
+async function DeleteNotification(userId) {
 	try {
 		const query = `
 		DELETE FROM notifications
@@ -55,7 +55,7 @@ const DeleteNotification = async (userId) => {
 	}
 }
 
-const GetNotifications = async (userId) => {
+async function GetNotifications(userId) {
 	try {
 		const query = `
 		SELECT * FROM notifications

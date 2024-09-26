@@ -1,7 +1,7 @@
 <template>
 	<div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
 		<Swiper :slides-per-view="1" :loop="true" :pagination="{ clickable: true }" :initial-slide="1" class="relative h-96">
-			<SwiperSlide v-for="(photo, index) in photos.filter((photo) => photo)" :key="index" class="flex justify-center item-center">
+			<SwiperSlide v-for="(photo, index) in photos.filter(photo => photo)" :key="index" class="flex justify-center item-center">
 				<img :src="`http://localhost:3005${photo}`" alt="User Photo" class="w-full h-full object-cover" />
 			</SwiperSlide>
 		</Swiper>
@@ -30,7 +30,10 @@
 			<div class="mt-4">
 				<h3 class="text-lg font-bold text-gray-900">Interests</h3>
 				<div class="flex flex-wrap mt-2">
-					<span v-for="(interest, index) in interests" :key="index" class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
+					<span
+						v-for="(interest, index) in interests"
+						:key="index"
+						class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
 						{{ interest }}
 					</span>
 				</div>
@@ -54,7 +57,7 @@ const sexual_preference = ref("");
 const interests = ref([]);
 const location = ref("");
 
-const fetchProfileData = async () => {
+async function fetchProfileData() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/my_profil_info", {
 			withCredentials: true,
@@ -66,7 +69,7 @@ const fetchProfileData = async () => {
 		biography.value = data.biography;
 		gender.value = data.gender;
 
-		photos.value = Array.isArray(data.photos) ? data.photos.map((photo) => photo.replace("/app", "")) : []; // Supprime app dans toutes les URL des photos
+		photos.value = Array.isArray(data.photos) ? data.photos.map(photo => photo.replace("/app", "")) : []; // Supprime app dans toutes les URL des photos
 		age.value = data.age;
 		sexual_preference.value = data.sexual_preference;
 		location.value = data.location;
@@ -76,7 +79,7 @@ const fetchProfileData = async () => {
 	} catch (error) {
 		console.error("Error fetching profile data:", error);
 	}
-};
+}
 
 onMounted(() => {
 	fetchProfileData();

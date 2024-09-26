@@ -1,7 +1,7 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
-const addGetFameRating = async (userId, points) => {
+async function addGetFameRating(userId, points) {
 	try {
 		const query = `
             UPDATE users 
@@ -19,7 +19,7 @@ const addGetFameRating = async (userId, points) => {
 	}
 };
 
-const removeFameRating = async (userId, points) => {
+async function removeFameRating(userId, points) {
 	try {
 		const query = `
             UPDATE users 

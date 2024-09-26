@@ -1,6 +1,6 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 
-const AddMessage = async (senderId, receiverId, message) => {
+async function AddMessage(senderId, receiverId, message) {
 	try {
 		const query = `
 		INSERT INTO messages (sender_id, receiver_id, message_text, sent_at)
@@ -18,7 +18,7 @@ const AddMessage = async (senderId, receiverId, message) => {
 	}
 };
 
-const GetMessages = async (senderId, receiverId) => {
+async function GetMessages(senderId, receiverId) {
 	try {
 		const query = `
 		SELECT * FROM messages

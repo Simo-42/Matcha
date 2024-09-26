@@ -25,24 +25,24 @@ const bio = ref(""); // Renommé ici
 const selectedInterests = ref([]);
 const message = ref("");
 
-const updateGender = (newGender) => {
+function updateGender (newGender)  {
 	selectedGender.value = newGender;
 };
 
-const updateSexualPref = (newPref) => {
+function updateSexualPref (newPref)  {
 	selectedSexualPref.value = newPref;
 };
 
-const updateBio = (newBio) => {
+function updateBio (newBio)  {
 	bio.value = newBio;
 };
 
-const updateInterests = (newInterests) => {
+function updateInterests (newInterests)  {
 	selectedInterests.value = newInterests;
 };
 
 // Fonction pour récupérer les informations de profil au chargement de la page
-const fetchProfileData = async () => {
+async function fetchProfileData() { 
 	try {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
 			withCredentials: true,
@@ -64,7 +64,7 @@ onMounted(() => {
 });
 
 // Fonction pour soumettre les modifications
-const submitForm = async () => {
+async function submitForm() {
 	try {
 		const response = await axios.post(
 			"http://localhost:3005/api/after_auth/profil/update", // Changez l'URL si nécessaire

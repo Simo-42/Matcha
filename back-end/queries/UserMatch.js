@@ -1,6 +1,6 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 
-const UserLikeProfiles = async (userId, likedUserId) => {
+async function UserLikeProfiles(userId, likedUserId) {
 	try {
 		const query = `
       INSERT INTO likes (user_id_from, user_id_to, liked, liked_at)
@@ -18,7 +18,7 @@ const UserLikeProfiles = async (userId, likedUserId) => {
 	}
 };
 
-const UserDislikeProfiles = async (userId, likedUserId) => {
+async function UserDislikeProfiles(userId, likedUserId) {
 	try {
 		const query = `
 		INSERT INTO likes (user_id_from, user_id_to, liked, liked_at)
@@ -35,7 +35,8 @@ const UserDislikeProfiles = async (userId, likedUserId) => {
 		throw err; // Lève une erreur si la requête échoue
 	}
 };
-const GetAllProfilesLikes = async (userId) => {
+
+async function GetAllProfilesLikes(userId) {
 	try {
 		const query = `
             SELECT users.id, users.firstname, users.lastname, likes.liked, likes.liked_at
@@ -56,7 +57,7 @@ const GetAllProfilesLikes = async (userId) => {
 	}
 };
 
-const checkMatch = async (userId1, userId2) => {
+async function checkMatch(userId1, userId2) {
 	try {
 		const query = `
 		SELECT 
@@ -76,7 +77,7 @@ const checkMatch = async (userId1, userId2) => {
 	}
 };
 
-const CreateMatch = async (userId1, userId2) => {
+async function CreateMatch(userId1, userId2) {
 	try {
 		const [user1, user2] = userId1 < userId2 ? [userId1, userId2] : [userId2, userId1];
 
@@ -109,7 +110,8 @@ const CreateMatch = async (userId1, userId2) => {
 		throw err; // Lève une erreur si la requête échoue
 	}
 };
-const GetAllUsersMatchs = async (userId) => {
+
+async function GetAllUsersMatchs(userId) {
 	try {
 		const query = `
 		SELECT u.id, u.username, u.firstname, u.lastname, u.interests, u.age, u.fame_rating, u.gender, u.sexual_preference, u.location, u.biography, u.photos, m.matched_at, u.connected

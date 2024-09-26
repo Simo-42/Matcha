@@ -17,7 +17,7 @@ import VisitorProfileCard from "~/components/profil/example_profil.vue";
 
 const profiles = ref([]);
 
-const fetchProfileData = async () => {
+async function fetchProfileData() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/swipe/get_profile_visitors", {
 			withCredentials: true,
@@ -26,11 +26,11 @@ const fetchProfileData = async () => {
 
 		console.log("Données reçues:", data);
 
-		profiles.value = data.map((profile) => {
+		profiles.value = data.map(profile => {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
-			profile.photos = Array.isArray(profile.photos) ? profile.photos.map((photo) => photo.replace("/app", "")) : [];
+			profile.photos = Array.isArray(profile.photos) ? profile.photos.map(photo => photo.replace("/app", "")) : [];
 			return profile;
 		});
 
@@ -38,7 +38,7 @@ const fetchProfileData = async () => {
 	} catch (error) {
 		console.error("Error fetching profile data:", error);
 	}
-};
+}
 
 onMounted(() => {
 	fetchProfileData();

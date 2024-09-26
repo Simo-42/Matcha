@@ -1,6 +1,6 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 
-const getHeterosexualWomenProfiles = async (userId) => {
+async function getHeterosexualWomenProfiles(userId) {
 	try {
 		const query = `
 			SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -17,7 +17,7 @@ const getHeterosexualWomenProfiles = async (userId) => {
 	}
 };
 
-const getGayMenProfiles = async (userId) => {
+async function getGayMenProfiles(userId) {
 	try {
 		const query = `
 			SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -34,7 +34,7 @@ const getGayMenProfiles = async (userId) => {
 	}
 };
 
-const getGayWomenProfiles = async (userId) => {
+async function getGayWomenProfiles(userId) {
 	try {
 		const query = `
 			SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -51,7 +51,7 @@ const getGayWomenProfiles = async (userId) => {
 	}
 };
 
-const getHeterosexualMenProfiles = async (userId) => {
+async function getHeterosexualMenProfiles(userId) {
 	try {
 		const query = `
 			SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -68,7 +68,7 @@ const getHeterosexualMenProfiles = async (userId) => {
 	}
 };
 
-const getWomenAndBisexualAndGayMenProfiles = async (userId) => {
+async function getWomenAndBisexualAndGayMenProfiles(userId) {
 	try {
 		const query = `
 		SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -89,7 +89,7 @@ const getWomenAndBisexualAndGayMenProfiles = async (userId) => {
 	}
 };
 
-const getMenAndBisexualAndGayWomenProfiles = async (userId) => {
+async function getMenAndBisexualAndGayWomenProfiles(userId) {
 	try {
 		const query = `
 		SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 
@@ -109,7 +109,8 @@ const getMenAndBisexualAndGayWomenProfiles = async (userId) => {
 		throw err;
 	}
 };
-const getOtherProfiles = async (userId) => {
+
+async function getOtherProfiles(userId) {
 	try {
 		const query = `
 			SELECT id, email, username, firstname, lastname, biography, age, gender, sexual_preference, location, interests 

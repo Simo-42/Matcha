@@ -2,7 +2,7 @@ const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
 // userQueries.js
-const createUser = async (userInfo) => {
+async function createUser(userInfo) {
 	const { email, password, username, firstname, lastname } = userInfo;
 
 	try {
@@ -25,7 +25,7 @@ const createUser = async (userInfo) => {
 	}
 };
 
-const insert_new_pictures = async (userId, photoPaths) => {
+async function insert_new_pictures(userId, photoPaths) {
 	const query = `
         UPDATE users 
         SET photos = array_cat(photos, $1::varchar[])
@@ -35,7 +35,8 @@ const insert_new_pictures = async (userId, photoPaths) => {
 	const res = await pool.query(query, values);
 	return res.rowCount > 0; // Retourne true si la mise à jour a été effectuée
 };
-const update_pictures = async (userId, photoPaths) => {
+
+async function update_pictures(userId, photoPaths) {
 	const query = `
         UPDATE users 
         SET photos = $1::varchar[]
@@ -46,7 +47,7 @@ const update_pictures = async (userId, photoPaths) => {
 	return res.rowCount > 0; // Retourne true si la mise à jour a été effectuée
 };
 
-const get_pictures = async (userId) => {
+async function get_pictures(userId) {
 	const query = `
         SELECT photos 
         FROM users 
@@ -57,7 +58,7 @@ const get_pictures = async (userId) => {
 	return res.rows[0] ? res.rows[0].photos : null; // Retourne les photos si trouvées, sinon null
 };
 
-const insert_location = async (userId, location) => {
+async function insert_location(userId, location) {
 	try {
 		const query = `
 			UPDATE users

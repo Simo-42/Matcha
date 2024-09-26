@@ -33,7 +33,7 @@ const isPasswordComplex = computed(() => {
 	return regex.test(newPassword.value);
 });
 
-const resetPassword = async () => {
+async function resetPassword() {
 	const resetToken = route.params.token; // Récupère le token depuis l'URL
 	console.log("je suis ici");
 	try {

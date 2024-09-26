@@ -4,7 +4,11 @@
 		<div class="w-1/3 bg-gray-200 p-4">
 			<h2 class="text-2xl font-bold mb-4">Profiles</h2>
 			<ul>
-				<li v-for="profile in profiles" :key="profile.id" @click="selectProfile(profile)" class="cursor-pointer mb-2 p-2 bg-white rounded shadow hover:bg-gray-100">
+				<li
+					v-for="profile in profiles"
+					:key="profile.id"
+					@click="selectProfile(profile)"
+					class="cursor-pointer mb-2 p-2 bg-white rounded shadow hover:bg-gray-100">
 					{{ profile.username }}
 					{{ profile.connected ? "🟢" : "🔴" }}
 				</li>
@@ -22,7 +26,8 @@
 					<div v-if="messages[selectedProfile.id] && messages[selectedProfile.id].length">
 						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
 							<p class="text-sm text-gray-800">
-								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong> {{ message.message_text }}
+								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong>
+								{{ message.message_text }}
 							</p>
 						</div>
 					</div>
@@ -37,7 +42,12 @@
 
 				<!-- Input for new message -->
 				<div class="flex">
-					<input v-model="newMessage" @input="handleTyping(profile)" @keyup.enter="sendMessage" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l" />
+					<input
+						v-model="newMessage"
+						@input="handleTyping(profile)"
+						@keyup.enter="sendMessage"
+						placeholder="Type a message"
+						class="flex-1 p-2 border border-gray-300 rounded-l" />
 					<button @click="sendMessage" class="bg-blue-500 text-white p-2 rounded-r">Send</button>
 				</div>
 			</div>
@@ -70,9 +80,12 @@ const typingTimeout = ref(null);
 const messages = ref({});
 // Store messages for each profile
 
-const handleTyping = async () => {
+async function handleTyping() {
 	// Émettre un événement 'userTyping'
-	const roomId = my_profile_id.value < selectedProfile.value.id ? `room_${my_profile_id.value}_${selectedProfile.value.id}` : `room_${selectedProfile.value.id}_${my_profile_id.value}`;
+	const roomId =
+		my_profile_id.value < selectedProfile.value.id
+			? `room_${my_profile_id.value}_${selectedProfile.value.id}`
+			: `room_${selectedProfile.value.id}_${my_profile_id.value}`;
 	const userId = my_profile_id.value;
 	console.log("roomId", roomId);
 	console.log("userId", userId);
@@ -80,64 +93,63 @@ const handleTyping = async () => {
 		roomId: roomId,
 		userId: userId,
 	});
-};
-
-const fetchMsgConversation = async (receiverId) => {
+}
+async function fetchMsgConversation(receiver_id) {
 	try {
 		const response = await axios.get("http://localhost:3005/api/message/get_messages", {
-			params: { receiver_id: receiverId }, // Avec get on passe les params avec params:
+			params: { receiver_id: receiver_id }, // Avec get on passe les params avec params:
 			withCredentials: true,
 		});
-		messages.value[receiverId] = response.data;
+		messages.value[receiver_id] = response.data;
 	} catch (error) {
 		console.error("Error fetching messages: ", error);
 	}
-};
-const fetchMyCurrentProfil = async () => {
+}
+
+async function fetchMyCurrentProfil() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
 			withCredentials: true,
 		});
+
 		profile_name.value = response.data.result.username;
 		my_profile_id.value = response.data.userId;
 		console.log("my_profile_id.value", my_profile_id.value);
 	} catch (error) {
-		console.error("Error fetching messages: ", error);
+		console.error("Error fetching my current profil: ", error);
 	}
-};
+}
 
-const fetchProfileData = async () => {
+async function fetchProfileData() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/swipe/get_user_match", {
 			withCredentials: true,
 		});
+
 		profiles.value = response.data.UserMatchs;
-		profiles.value = profiles.value.map((profile) => {
+		profiles.value = profiles.value.map(profile => {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
-			profile.photos = Array.isArray(profile.photos) ? profile.photos.map((photo) => photo.replace("/app", "")) : [];
+			profile.photos = Array.isArray(profile.photos) ? profile.photos.map(photo => photo.replace("/app", "")) : [];
 			messages[profile.id] = [];
 			return profile;
 		});
 	} catch (error) {
 		console.error("Error fetching profile data: ", error);
 	}
-};
+}
 
-// Select profile to chat with
-const selectProfile = async (profile) => {
-	await fetchMsgConversation(profile.id);
-
+async function SelectProfile(profile) {
 	selectedProfile.value = profile;
-	const roomId = my_profile_id.value < profile.id ? `room_${my_profile_id.value}_${profile.id}` : `room_${profile.id}_${my_profile_id.value}`;
+	const roomId =
+		my_profile_id.value < profile.id ? `room_${my_profile_id.value}_${profile.id}` : `room_${profile.id}_${my_profile_id.value}`;
 	// Cree la roomId en fonction de l'id le plus petit en premier
 	console.log("roomId", roomId);
 	$socket.emit("joinRoom", { roomId });
-};
-
+}
 // Send message and store it in the messages object
-const sendMessage = async () => {
+async function SendMessage() {
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
 		try {
 			console.log("je suis dans send message");
@@ -153,9 +165,9 @@ const sendMessage = async () => {
 			console.error("Erreur lors de l'envoi du message :", error);
 		}
 	}
-};
+}
 
-onMounted(async () => {
+onMounted(async function () {
 	// console.log("mounted", $socket);
 	await fetchProfileData();
 	await fetchMyCurrentProfil();
@@ -178,22 +190,17 @@ onBeforeUnmount(() => {
 	}
 });
 
-const setupMessageListener = () => {
+function setupMessageListener() {
 	const { $socket } = useNuxtApp();
 	console.log("Setup message listener");
 
 	// Ecouter les messages reçus
-	$socket.on("Receive message", (result) => {
-		console.log("Message reçu :", result);
-
-		// Vérifie que le profil est sélectionné et que le message concerne la conversation active
+	$socket.on("Receive message", function (result) {
 		if (selectedProfile.value && (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) {
-			// Initialiser le tableau des messages s'il n'existe pas encore pour ce profil
 			if (!messages.value[selectedProfile.value.id]) {
 				messages.value[selectedProfile.value.id] = [];
 			}
 
-			// Ajouter le nouveau message à la liste des messages
 			messages.value[selectedProfile.value.id].push({
 				sender_id: result.sender_id,
 				receiver_id: result.receiver_id,
@@ -201,14 +208,16 @@ const setupMessageListener = () => {
 				sent_at: result.sent_at,
 			});
 
-			// Log de debug pour vérifier que le message est bien stocké
-			console.log(`Message ajouté à la conversation avec ${selectedProfile.value.username}`, messages.value[selectedProfile.value.id]);
+			console.log(
+				`Message ajouté à la conversation avec ${selectedProfile.value.username}`,
+				messages.value[selectedProfile.value.id]
+			);
 		} else {
 			console.log("Message reçu pour une autre conversation ou profil non sélectionné.");
 		}
 	});
 
-	$socket.on("userIsTyping", (data) => {
+	$socket.on("userIsTyping", function (data) {
 		console.log("Données reçues dans userIsTyping :", data);
 
 		if (data && data.userId) {
@@ -234,7 +243,7 @@ const setupMessageListener = () => {
 			console.error("userId non défini dans l'événement userIsTyping");
 		}
 	});
-};
+}
 </script>
 
 <style scoped>

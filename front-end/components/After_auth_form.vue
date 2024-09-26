@@ -25,23 +25,24 @@ const SelectedBio = ref("");
 const selectedInterests = ref([]);
 const message = ref("");
 
-const updateGender = (newGender) => {
+function updateGender(newGender) {
 	selectedGender.value = newGender;
-};
+}
 
-const updateSexualPref = (newPref) => {
+function updateSexualPref(newPref){
 	selectedSexualPref.value = newPref;
 };
 
-const updateBio = (newBio) => {
+function updateBio(newBio){
 	SelectedBio.value = newBio;
 };
 
-const updateInterests = (newInterests) => {
+function updateInterests(newInterests){
 	selectedInterests.value = newInterests;
 };
 
-const submitForm = async () => {
+
+async function submitForm() {
 	try {
 		if (!selectedGender.value || !selectedSexualPref.value || !SelectedBio.value || selectedInterests.value.length === 0) {
 			message.value = "Please fill in all fields";

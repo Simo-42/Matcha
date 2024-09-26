@@ -1,7 +1,7 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
-const SetProfileVisited = async (userIdFrom, userIdTo) => {
+async function SetProfileVisited(userIdFrom, userIdTo) {
 	try {
 		const query = `
       INSERT INTO profile_visits (user_id_from, user_id_to, visited_at)
@@ -19,7 +19,7 @@ const SetProfileVisited = async (userIdFrom, userIdTo) => {
 		throw err; // Lève une exception en cas d'erreur
 	}
 };
-const GetProfileVisitors = async (userIdTo) => {
+async function GetProfileVisitors(userIdTo) {
 	try {
 		const query = `
 		SELECT u.id, u.username, u.firstname, u.lastname, u.interests, u.age, u.fame_rating, u.gender, u.sexual_preference, u.location,u.biography, u.photos, pv.visited_at 

@@ -230,4 +230,5 @@ router.get("/profil/my_profil_info", authenticateToken, async (req, res) => {
 		return res.status(500).json({ error: "Internal server error" });
 	}
 });
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 
-const update_user_spec = async (userId, userInfo) => {
+async function update_user_spec(userId, userInfo) {
 	const { gender, sexual_preference, biography, interests } = userInfo;
 	try {
 		const query = `
@@ -14,7 +14,7 @@ const update_user_spec = async (userId, userInfo) => {
 			RETURNING *`;
 
 		const values = [gender, sexual_preference, biography, JSON.stringify(interests), userId];
-		// Note: JSON.stringify est utilisé pour s'assurer que 'interests' est stocké correctement en tant que JSON
+		// JSON.stringify
 
 		const res = await pool.query(query, values);
 		console.log("Updated user:", res.rows[0]);
@@ -23,10 +23,10 @@ const update_user_spec = async (userId, userInfo) => {
 		console.error("Error executing query", err.stack);
 		throw err; // Lève une erreur si la requête échoue
 	}
-};
+}
 // Dans votre fichier userQueries.js
 // Dans votre fichier userQueries.js
-const update_user_age = async (username, age) => {
+async function update_user_age(username, age) {
 	try {
 		const query = "UPDATE users SET age = $1 WHERE username = $2 RETURNING *";
 		const values = [age, username];
@@ -39,7 +39,7 @@ const update_user_age = async (username, age) => {
 	}
 };
 
-const update_profile_complete = async (userId) => {
+async function update_profile_complete(userId) {
 	try {
 		const query = `
 			UPDATE users
@@ -58,7 +58,7 @@ const update_profile_complete = async (userId) => {
 	}
 };
 
-const update_user_password = async (username, password) => {
+async function update_user_password(username, password) {
 	try {
 		const query = `
 			UPDATE users
@@ -76,7 +76,7 @@ const update_user_password = async (username, password) => {
 	}
 };
 
-const update_user_info = async (userId, userInfo) => {
+async function update_user_info(userId, userInfo) {
 	const { email, username, firstname, lastname } = userInfo;
 	try {
 		const query = `
@@ -101,7 +101,7 @@ const update_user_info = async (userId, userInfo) => {
 	}
 };
 
-const update_verification_status = async (userId) => {
+async function update_verification_status(userId) {
 	try {
 		const query = `
 			UPDATE users

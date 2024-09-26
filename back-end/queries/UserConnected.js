@@ -1,7 +1,7 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
-const updateConnectionStatus = async (userId, status) => {
+async function updateConnectionStatus(userId, status) {
 	try {
 		const query = "UPDATE users SET connected = $1 WHERE id = $2";
 		const values = [status, userId];
@@ -15,7 +15,7 @@ const updateConnectionStatus = async (userId, status) => {
 		return false;
 	}
 }
-const GetUserStatus = async (userId) => {
+async function GetUserStatus(userId) {
 	try {
 		const query = "SELECT connected FROM users WHERE id = $1";
 		const values = [userId];

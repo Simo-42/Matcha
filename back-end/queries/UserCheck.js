@@ -1,7 +1,7 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
-const check_mail_user_exist = async (email) => {
+async function check_mail_user_exist(email) {
 	try {
 		const query = "SELECT * FROM users WHERE email = $1";
 		const values = [email];
@@ -20,7 +20,7 @@ const check_mail_user_exist = async (email) => {
 	}
 };
 
-const check_verif_user = async (verified) => {
+async function check_verif_user(verified) {
 	try {
 		const query = "SELECT * FROM users WHERE verified = $1";
 		const values = [verified];
@@ -39,7 +39,7 @@ const check_verif_user = async (verified) => {
 	}
 };
 
-const check_username_user_exist = async (username) => {
+async function check_username_user_exist(username) {
 	try {
 		const query = "SELECT * FROM users WHERE username = $1";
 		const values = [username];

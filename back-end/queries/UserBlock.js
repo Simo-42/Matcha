@@ -1,7 +1,7 @@
 const pool = require("../db.js"); // Importez la connexion depuis db.js
 const bcrypt = require("bcryptjs");
 
-const UserFakeProfile = async (userId) => {
+async function UserFakeProfile(userId) {
 	try {
 		const querySelect = "SELECT * FROM users WHERE id = $1";
 		const values = [userId];
@@ -23,7 +23,8 @@ const UserFakeProfile = async (userId) => {
 		return false;
 	}
 };
-const UserGetNumFake = async (UserId) => {
+
+async function UserGetNumFake(UserId) {
 	try {
 		const query = "SELECT fake_account FROM users WHERE id = $1";
 		const values = [UserId];
