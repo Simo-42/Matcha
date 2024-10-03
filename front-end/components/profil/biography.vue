@@ -1,7 +1,17 @@
 <template>
 	<div class="p-4">
-		<label for="bio" class="block text-sm font-medium text-gray-700">Your Biography</label>
-		<textarea id="bio" v-model="localBio" :maxlength="maxLength" rows="6" placeholder="Write about yourself..." class="mt-2 block w-full p-3 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm bg-gray-100 text-gray-700 resize-none"></textarea>
+		<label
+			for="bio"
+			class="block text-sm font-medium text-gray-700"
+			>Your Biography</label
+		>
+		<textarea
+			id="bio"
+			v-model="localBio"
+			:maxlength="maxLength"
+			rows="6"
+			placeholder="Write about yourself..."
+			class="mt-2 block w-full p-3 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm bg-gray-100 text-gray-700 resize-none"></textarea>
 		<p class="mt-2 text-sm text-gray-500">{{ remainingChars }} characters left</p>
 	</div>
 </template>
@@ -28,7 +38,7 @@ const emit = defineEmits(["updateBio"]);
 
 watch(
 	() => props.bio,
-	(newVal) => {
+	newVal => {
 		if (newVal !== localBio.value) {
 			localBio.value = newVal || "";
 		}

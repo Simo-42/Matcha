@@ -1,11 +1,25 @@
 <template>
 	<div class="min-h-screen flex items-center justify-center bg-gray-100">
-		<form @submit.prevent="submitForm" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-			<Gender_select :selectedGender="selectedGender" @updateGender="updateGender" />
-			<Sexual_pref :selectedSexualPref="selectedSexualPref" @updateSexualPref="updateSexualPref" />
-			<Biography_form :SelectedBio="SelectedBio" @updateBio="updateBio" />
-			<Interests_select :selectedInterests="selectedInterests" @updateInterests="updateInterests" />
-			<button type="submit" class="mt-6 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Soumettre</button>
+		<form
+			@submit.prevent="submitForm"
+			class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+			<Gender_select
+				:selectedGender="selectedGender"
+				@updateGender="updateGender" />
+			<Sexual_pref
+				:selectedSexualPref="selectedSexualPref"
+				@updateSexualPref="updateSexualPref" />
+			<Biography_form
+				:SelectedBio="SelectedBio"
+				@updateBio="updateBio" />
+			<Interests_select
+				:selectedInterests="selectedInterests"
+				@updateInterests="updateInterests" />
+			<button
+				type="submit"
+				class="mt-6 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+				Soumettre
+			</button>
 		</form>
 	</div>
 	<div class="text-center mt-4 text-red-500">{{ message }}</div>
@@ -29,22 +43,26 @@ function updateGender(newGender) {
 	selectedGender.value = newGender;
 }
 
-function updateSexualPref(newPref){
+function updateSexualPref(newPref) {
 	selectedSexualPref.value = newPref;
-};
+}
 
-function updateBio(newBio){
+function updateBio(newBio) {
 	SelectedBio.value = newBio;
-};
+}
 
-function updateInterests(newInterests){
+function updateInterests(newInterests) {
 	selectedInterests.value = newInterests;
-};
-
+}
 
 async function submitForm() {
 	try {
-		if (!selectedGender.value || !selectedSexualPref.value || !SelectedBio.value || selectedInterests.value.length === 0) {
+		if (
+			!selectedGender.value ||
+			!selectedSexualPref.value ||
+			!SelectedBio.value ||
+			selectedInterests.value.length === 0
+		) {
 			message.value = "Please fill in all fields";
 			return;
 		}
@@ -66,5 +84,5 @@ async function submitForm() {
 		console.log(message.value);
 		console.log(error);
 	}
-};
+}
 </script>

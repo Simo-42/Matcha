@@ -1,6 +1,12 @@
 <template>
-	<div role="alert" class="alert shadow-lg w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
+	<div
+		role="alert"
+		class="alert shadow-lg w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			class="stroke-info h-6 w-6 shrink-0">
 			<path
 				stroke-linecap="round"
 				stroke-linejoin="round"

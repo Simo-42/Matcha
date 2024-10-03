@@ -1,10 +1,18 @@
 <template>
 	<div class="flex items-center justify-center min-h-screen bg-gray-100">
 		<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-			<h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Modify your personal information</h2>
-			<form @submit.prevent="modify_profil" class="space-y-6">
+			<h2 class="text-2xl font-bold text-center mb-8 text-gray-900">
+				Modify your personal information
+			</h2>
+			<form
+				@submit.prevent="modify_profil"
+				class="space-y-6">
 				<div>
-					<label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+					<label
+						for="email"
+						class="block text-sm font-medium text-gray-700"
+						>Email:</label
+					>
 					<input
 						type="email"
 						v-model="email"
@@ -12,37 +20,65 @@
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 				</div>
 				<div>
-					<label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
+					<label
+						for="username"
+						class="block text-sm font-medium text-gray-700"
+						>Username:</label
+					>
 					<input
 						type="text"
 						v-model="username"
 						maxlength="20"
 						required
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-					<small v-if="username.length > 20" class="text-red-500">Username cannot exceed 20 characters.</small>
+					<small
+						v-if="username.length > 20"
+						class="text-red-500"
+						>Username cannot exceed 20 characters.</small
+					>
 				</div>
 				<div>
-					<label for="firstname" class="block text-sm font-medium text-gray-700">First name:</label>
+					<label
+						for="firstname"
+						class="block text-sm font-medium text-gray-700"
+						>First name:</label
+					>
 					<input
 						type="text"
 						v-model="firstname"
 						maxlength="30"
 						required
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-					<small v-if="firstname.length > 30" class="text-red-500">First name cannot exceed 30 characters.</small>
+					<small
+						v-if="firstname.length > 30"
+						class="text-red-500"
+						>First name cannot exceed 30 characters.</small
+					>
 				</div>
 				<div>
-					<label for="lastname" class="block text-sm font-medium text-gray-700">Last name:</label>
+					<label
+						for="lastname"
+						class="block text-sm font-medium text-gray-700"
+						>Last name:</label
+					>
 					<input
 						type="text"
 						v-model="lastname"
 						maxlength="30"
 						required
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-					<small v-if="lastname.length > 30" class="text-red-500">Last name cannot exceed 30 characters.</small>
+					<small
+						v-if="lastname.length > 30"
+						class="text-red-500"
+						>Last name cannot exceed 30 characters.</small
+					>
 				</div>
 				<div>
-					<label for="password" class="block text-sm font-medium text-gray-700">Current Password:</label>
+					<label
+						for="password"
+						class="block text-sm font-medium text-gray-700"
+						>Current Password:</label
+					>
 					<input
 						type="password"
 						v-model="password"
@@ -50,17 +86,32 @@
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 				</div>
 				<div>
-					<label for="new_password" class="block text-sm font-medium text-gray-700">New Password (optional):</label>
+					<label
+						for="new_password"
+						class="block text-sm font-medium text-gray-700"
+						>New Password (optional):</label
+					>
 					<input
 						type="password"
 						v-model="verify_password"
 						maxlength="20"
 						class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-					<small v-if="verify_password.length > 20" class="text-red-500">Password cannot exceed 20 characters.</small>
-					<small v-if="verify_password && !isPasswordComplex" class="text-red-500">
-						Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.
+					<small
+						v-if="verify_password.length > 20"
+						class="text-red-500"
+						>Password cannot exceed 20 characters.</small
+					>
+					<small
+						v-if="verify_password && !isPasswordComplex"
+						class="text-red-500">
+						Password must be at least 8 characters long, include an
+						uppercase letter, a number, and a special character.
 					</small>
-					<small v-if="verify_password && isPasswordComplex" class="text-green-500"> Password is strong enough. </small>
+					<small
+						v-if="verify_password && isPasswordComplex"
+						class="text-green-500">
+						Password is strong enough.
+					</small>
 				</div>
 				<div>
 					<button
@@ -71,10 +122,19 @@
 					</button>
 				</div>
 			</form>
-			<p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
+			<p
+				v-if="message"
+				class="mt-4 text-center text-sm text-green-600">
+				{{ message }}
+			</p>
 		</div>
-		<div v-if="showAnimation" class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
-			<LottieAnimation :animationData="animationData" :loop="false" :autoplay="true" />
+		<div
+			v-if="showAnimation"
+			class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
+			<LottieAnimation
+				:animationData="animationData"
+				:loop="false"
+				:autoplay="true" />
 		</div>
 	</div>
 </template>
@@ -95,9 +155,12 @@ const message = ref("");
 const showAnimation = ref(false);
 async function fetchProfileData() {
 	try {
-		const response = await axios.get("http://localhost:3005/api/after_auth/profil/id_info", {
-			withCredentials: true,
-		});
+		const response = await axios.get(
+			"http://localhost:3005/api/after_auth/profil/id_info",
+			{
+				withCredentials: true,
+			}
+		);
 		const data = response.data.result;
 		email.value = data.email || "";
 		username.value = data.username || "";

@@ -28,12 +28,11 @@ router.post("/register", async (req, res) => {
 			return res.status(400).json({ error: "This username is already taken." });
 		}
 
-		
 		const user = await userQueries.createUser(info);
 		if (!user) {
 			return res.status(500).json({ error: "Error creating user" });
 		}
-		
+
 		await send_email(email, user.id);
 
 		res.status(201).json({
@@ -68,7 +67,9 @@ router.post("/authentification", async (req, res) => {
 				return res.status(400).json({ error: "Email not verified. Verification email resent." });
 			}
 
-			const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+			const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+				expiresIn: process.env.JWT_EXPIRATION,
+			});
 
 			res.cookie("token", token, {
 				httpOnly: true,
@@ -77,7 +78,7 @@ router.post("/authentification", async (req, res) => {
 				maxAge: 24 * 60 * 60 * 1000,
 			});
 
-			if ((await userQueries.UserGetNumFake(user.id)) >= 3) {
+			if ((await userQueries.UserGetNumFake(user.id)) >= 3) { // report number
 				return res.status(400).json({
 					error: "Your account has been reported as a fake profile too many times. Please contact support.",
 				});

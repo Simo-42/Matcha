@@ -17,10 +17,14 @@
 					Delete
 				</button>
 			</div>
-			<div v-else class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md">
+			<div
+				v-else
+				class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md">
 				<span class="text-gray-500 text-3xl font-bold">+</span>
 			</div>
-			<div class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded">Photo Principale</div>
+			<div class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded">
+				Photo Principale
+			</div>
 		</div>
 
 		<!-- Photos secondaires -->
@@ -44,14 +48,20 @@
 						Delete
 					</button>
 				</div>
-				<div v-else class="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-md">
+				<div
+					v-else
+					class="w-10 h-10 bg-gray-200 flex items-center justify-center rounded-md">
 					<span class="text-gray-500 text-xl font-bold">+</span>
 				</div>
 			</div>
 		</div>
 
 		<!-- Indication "At least 2 photos" -->
-		<div v-if="images.filter(img => img !== null).length < 2" class="mb-6 text-sm text-gray-500">At least 2 photos required</div>
+		<div
+			v-if="images.filter(img => img !== null).length < 2"
+			class="mb-6 text-sm text-gray-500">
+			At least 2 photos required
+		</div>
 
 		<!-- Bouton Submit -->
 		<button
@@ -112,11 +122,11 @@ function selectImage(index) {
 }
 
 function deleteImage(index) {
-if (images.value[index]) {
+	if (images.value[index]) {
 		URL.revokeObjectURL(images.value[index]?.src); // Libère la mémoire utilisée par l'URL
 	}
 	images.value[index] = null;
-};
+}
 
 async function submitImages() {
 	if (images.value[0] === null) {
@@ -126,6 +136,7 @@ async function submitImages() {
 		alert("You must select at least 2 photos before submitting.");
 		return;
 	}
+
 	try {
 		const formData = new FormData();
 		images.value.forEach(image => {
@@ -145,7 +156,7 @@ async function submitImages() {
 	} catch (error) {
 		error.value = "An error occurred while submitting the images.";
 	}
-};
+}
 </script>
 
 <style scoped>

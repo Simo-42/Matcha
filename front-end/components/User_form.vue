@@ -1,11 +1,25 @@
 <template>
 	<div class="min-h-screen flex items-center justify-center bg-gray-100">
-		<form @submit.prevent="submitForm" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-			<Gender_select :selectedGender="selectedGender" @updateGender="updateGender" />
-			<Sexual_pref :selectedSexualPref="selectedSexualPref" @updateSexualPref="updateSexualPref" />
-			<Biography_form :bio="bio" @updateBio="updateBio" />
-			<Interests_select :selectedInterests="selectedInterests" @updateInterests="updateInterests" />
-			<button type="submit" class="mt-6 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Soumettre</button>
+		<form
+			@submit.prevent="submitForm"
+			class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+			<Gender_select
+				:selectedGender="selectedGender"
+				@updateGender="updateGender" />
+			<Sexual_pref
+				:selectedSexualPref="selectedSexualPref"
+				@updateSexualPref="updateSexualPref" />
+			<Biography_form
+				:bio="bio"
+				@updateBio="updateBio" />
+			<Interests_select
+				:selectedInterests="selectedInterests"
+				@updateInterests="updateInterests" />
+			<button
+				type="submit"
+				class="mt-6 w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+				Soumettre
+			</button>
 		</form>
 	</div>
 	<div class="text-center mt-4 text-red-500">{{ message }}</div>
@@ -25,24 +39,24 @@ const bio = ref(""); // Renommé ici
 const selectedInterests = ref([]);
 const message = ref("");
 
-function updateGender (newGender)  {
+function updateGender(newGender) {
 	selectedGender.value = newGender;
-};
+}
 
-function updateSexualPref (newPref)  {
+function updateSexualPref(newPref) {
 	selectedSexualPref.value = newPref;
-};
+}
 
-function updateBio (newBio)  {
+function updateBio(newBio) {
 	bio.value = newBio;
-};
+}
 
-function updateInterests (newInterests)  {
+function updateInterests(newInterests) {
 	selectedInterests.value = newInterests;
-};
+}
 
 // Fonction pour récupérer les informations de profil au chargement de la page
-async function fetchProfileData() { 
+async function fetchProfileData() {
 	try {
 		const response = await axios.get("http://localhost:3005/api/after_auth/profil/spec_info", {
 			withCredentials: true,
@@ -56,7 +70,7 @@ async function fetchProfileData() {
 		console.error("Error fetching profile data:", error);
 		message.value = "Failed to load profile information.";
 	}
-};
+}
 
 // Charger les données de profil lorsque le composant est monté
 onMounted(() => {
@@ -84,5 +98,5 @@ async function submitForm() {
 		console.error("Error submitting profile changes:", error);
 		message.value = "Failed to update profile information.";
 	}
-};
+}
 </script>

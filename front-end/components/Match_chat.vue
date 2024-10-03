@@ -24,9 +24,18 @@
 				<div class="flex-1 overflow-y-auto mb-4 p-2 bg-gray-100 rounded shadow">
 					<!-- Affiche les messages si messages[selectedProfile.id] existe et a des données -->
 					<div v-if="messages[selectedProfile.id] && messages[selectedProfile.id].length">
-						<div v-for="(message, index) in messages[selectedProfile.id]" :key="index" class="mb-2">
+						<div
+							v-for="(message, index) in messages[selectedProfile.id]"
+							:key="index"
+							class="mb-2">
 							<p class="text-sm text-gray-800">
-								<strong>{{ message.sender_id === selectedProfile.id ? selectedProfile.username : profile_name }}:</strong>
+								<strong
+									>{{
+										message.sender_id === selectedProfile.id
+											? selectedProfile.username
+											: profile_name
+									}}:</strong
+								>
 								{{ message.message_text }}
 							</p>
 						</div>
@@ -48,7 +57,11 @@
 						@keyup.enter="sendMessage"
 						placeholder="Type a message"
 						class="flex-1 p-2 border border-gray-300 rounded-l" />
-					<button @click="sendMessage" class="bg-blue-500 text-white p-2 rounded-r">Send</button>
+					<button
+						@click="sendMessage"
+						class="bg-blue-500 text-white p-2 rounded-r">
+						Send
+					</button>
 				</div>
 			</div>
 
@@ -131,7 +144,9 @@ async function fetchProfileData() {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
-			profile.photos = Array.isArray(profile.photos) ? profile.photos.map(photo => photo.replace("/app", "")) : [];
+			profile.photos = Array.isArray(profile.photos)
+				? profile.photos.map(photo => photo.replace("/app", ""))
+				: [];
 			messages[profile.id] = [];
 			return profile;
 		});
@@ -140,19 +155,27 @@ async function fetchProfileData() {
 	}
 }
 
-async function SelectProfile(profile) {
+async function selectProfile(profile) {
 	selectedProfile.value = profile;
 	const roomId =
-		my_profile_id.value < profile.id ? `room_${my_profile_id.value}_${profile.id}` : `room_${profile.id}_${my_profile_id.value}`;
-	// Cree la roomId en fonction de l'id le plus petit en premier
+		my_profile_id.value < profile.id
+			? `room_${my_profile_id.value}_${profile.id}`
+			: `room_${profile.id}_${my_profile_id.value}`;
+	// Create the roomId with the smaller id first
 	console.log("roomId", roomId);
 	$socket.emit("joinRoom", { roomId });
+	await fetchMsgConversation(profile.id);
 }
 // Send message and store it in the messages object
-async function SendMessage() {
+const sendMessage = async () => {
+	console.log("je suis dans send message");
+	console.log("selectedProfile.value", selectedProfile.value);
+	console.log("selectedProfile.value.id", selectedProfile.value.id);
+	console.log("my_profile_id.value", my_profile_id.value);
+	console.log("newMessage.value", newMessage.value);
 	if (newMessage.value.trim() && selectedProfile.value && selectedProfile.value.id && my_profile_id.value) {
 		try {
-			console.log("je suis dans send message");
+			// console.log("je suis dans send message")
 			$socket.emit("Send message", {
 				message: newMessage.value,
 				receiver_id: selectedProfile.value.id,
@@ -165,8 +188,7 @@ async function SendMessage() {
 			console.error("Erreur lors de l'envoi du message :", error);
 		}
 	}
-}
-
+};
 onMounted(async function () {
 	// console.log("mounted", $socket);
 	await fetchProfileData();
@@ -186,7 +208,7 @@ onBeforeUnmount(() => {
 		$socket.off("Receive message"); // Désabonner le listener pour éviter les fuites de mémoire
 		$socket.off("joinRoom");
 		$socket.off("userIsTyping");
-		$socket.emit("disconnect");
+		// $socket.disconnect(); // Déconnecte le client du serveur
 	}
 });
 
@@ -196,7 +218,9 @@ function setupMessageListener() {
 
 	// Ecouter les messages reçus
 	$socket.on("Receive message", function (result) {
-		if (selectedProfile.value && (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) {
+		// prettier-ignore
+		if (selectedProfile.value && (result.sender_id === selectedProfile.value.id || result.receiver_id === selectedProfile.value.id)) 
+		{
 			if (!messages.value[selectedProfile.value.id]) {
 				messages.value[selectedProfile.value.id] = [];
 			}

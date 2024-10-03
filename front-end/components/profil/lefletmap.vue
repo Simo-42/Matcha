@@ -1,5 +1,7 @@
 <template>
-	<div ref="mapContainer" style="width: 100%; height: 400px"></div>
+	<div
+		ref="mapContainer"
+		style="width: 100%; height: 400px"></div>
 </template>
 
 <script setup>

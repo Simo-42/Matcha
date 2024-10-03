@@ -3,27 +3,47 @@
 		<div class="container mx-auto flex justify-between items-center">
 			<div class="text-white text-lg font-semibold">Matcha</div>
 			<div class="space-x-4">
-				<nuxt-link to="/browsing_page" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/browsing_page"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>Browsing profil</nuxt-link
 				>
-				<nuxt-link to="/usermod" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/usermod"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>Modify your Profil</nuxt-link
 				>
-				<nuxt-link to="/visitors" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/visitors"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>Visitors</nuxt-link
 				>
-				<nuxt-link to="/match" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Matchs</nuxt-link>
-				<nuxt-link to="/Likes" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/match"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+					>Matchs</nuxt-link
+				>
+				<nuxt-link
+					to="/Likes"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>Likes Pages</nuxt-link
 				>
-				<nuxt-link to="/test" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/test"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>Notification</nuxt-link
 				>
-				<nuxt-link to="/my_profil" class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
+				<nuxt-link
+					to="/my_profil"
+					class="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
 					>My profil</nuxt-link
 				>
 
-				<button @click="logout" class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+				<button
+					@click="logout"
+					class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium">
+					Logout
+				</button>
 			</div>
 		</div>
 	</nav>

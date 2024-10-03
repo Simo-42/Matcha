@@ -30,7 +30,9 @@ async function fetchProfileData() {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
-			profile.photos = Array.isArray(profile.photos) ? profile.photos.map(photo => photo.replace("/app", "")) : [];
+			profile.photos = Array.isArray(profile.photos)
+				? profile.photos.map(photo => photo.replace("/app", ""))
+				: [];
 			return profile;
 		});
 

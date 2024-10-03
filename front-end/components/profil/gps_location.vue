@@ -3,22 +3,47 @@
 		<div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg">
 			<h2 class="text-3xl font-extrabold text-center mb-6 text-gray-900">Put Your Location</h2>
 
-			<p v-if="city" class="text-center text-gray-700 mb-6">
+			<p
+				v-if="city"
+				class="text-center text-gray-700 mb-6">
 				Your current location is: <br />
 				<span class="font-semibold">{{ city }}</span>
 			</p>
 
-			<button @click="get_Location" class="w-full mb-4 bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">Get My Location</button>
+			<button
+				@click="get_Location"
+				class="w-full mb-4 bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">
+				Get My Location
+			</button>
 
-			<input v-model="location_input" placeholder="Enter a place" class="mb-4 w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+			<input
+				v-model="location_input"
+				placeholder="Enter a place"
+				class="mb-4 w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
-			<button @click="search_location" class="w-full mb-4 bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">Search Location</button>
+			<button
+				@click="search_location"
+				class="w-full mb-4 bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">
+				Search Location
+			</button>
 
-			<LeafletMap v-if="mapVisible" :latitude="latitude" :longitude="longitude" class="mb-4 rounded-lg shadow-lg" />
+			<LeafletMap
+				v-if="mapVisible"
+				:latitude="latitude"
+				:longitude="longitude"
+				class="mb-4 rounded-lg shadow-lg" />
 
-			<p v-if="errorMessage" class="text-red-500 text-center mt-4">{{ errorMessage }}</p>
+			<p
+				v-if="errorMessage"
+				class="text-red-500 text-center mt-4">
+				{{ errorMessage }}
+			</p>
 
-			<button @click="submit_location" class="w-full bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">Submit Location</button>
+			<button
+				@click="submit_location"
+				class="w-full bg-indigo-600 text-white font-semibold py-3 px-5 rounded-full hover:bg-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50 transition duration-150 ease-in-out">
+				Submit Location
+			</button>
 		</div>
 	</div>
 </template>
@@ -42,17 +67,20 @@ const router = useRouter();
 const get_Location = () => {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(
-			async (position) => {
+			async position => {
 				latitude.value = position.coords.latitude;
 				longitude.value = position.coords.longitude;
 				mapVisible.value = true;
 
 				// Recherche du nom de la ville via l'API OpenStreetMap
 				try {
-					const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude.value}&lon=${longitude.value}&format=json`);
+					const response = await fetch(
+						`https://nominatim.openstreetmap.org/reverse?lat=${latitude.value}&lon=${longitude.value}&format=json`
+					);
 					const data = await response.json();
 					if (data && data.address) {
-						city.value = data.address.city || data.address.town || data.address.village || "Location not found";
+						city.value =
+							data.address.city || data.address.town || data.address.village || "Location not found";
 					} else {
 						city.value = "Location not found";
 					}
@@ -72,7 +100,11 @@ const get_Location = () => {
 const search_location = async () => {
 	if (location_input.value) {
 		try {
-			const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location_input.value)}&format=json&limit=1`);
+			const response = await fetch(
+				`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+					location_input.value
+				)}&format=json&limit=1`
+			);
 			const data = await response.json();
 			if (data && data.length > 0) {
 				latitude.value = parseFloat(data[0].lat);

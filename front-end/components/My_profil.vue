@@ -1,8 +1,19 @@
 <template>
 	<div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
-		<Swiper :slides-per-view="1" :loop="true" :pagination="{ clickable: true }" :initial-slide="1" class="relative h-96">
-			<SwiperSlide v-for="(photo, index) in photos.filter(photo => photo)" :key="index" class="flex justify-center item-center">
-				<img :src="`http://localhost:3005${photo}`" alt="User Photo" class="w-full h-full object-cover" />
+		<Swiper
+			:slides-per-view="1"
+			:loop="true"
+			:pagination="{ clickable: true }"
+			:initial-slide="1"
+			class="relative h-96">
+			<SwiperSlide
+				v-for="(photo, index) in photos.filter(photo => photo)"
+				:key="index"
+				class="flex justify-center item-center">
+				<img
+					:src="`http://localhost:3005${photo}`"
+					alt="User Photo"
+					class="w-full h-full object-cover" />
 			</SwiperSlide>
 		</Swiper>
 
@@ -10,7 +21,9 @@
 			<h2 class="text-2xl font-bold text-gray-900">{{ firstname }} {{ lastname }}</h2>
 			<h2 class="text-2xl font-bold text-gray-900">Age : {{ age }}</h2>
 			<span class="text-gray-600 font-medium">My Biography:</span>
-			<p class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">{{ biography }}</p>
+			<p class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">
+				{{ biography }}
+			</p>
 
 			<div class="mt-4">
 				<div class="flex items-center">

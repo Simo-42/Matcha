@@ -2,9 +2,15 @@
 	<div class="flex items-center justify-center min-h-screen bg-gray-100">
 		<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
 			<h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Forget Password</h2>
-			<form @submit.prevent="passwordForget" class="space-y-6">
+			<form
+				@submit.prevent="passwordForget"
+				class="space-y-6">
 				<div>
-					<label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+					<label
+						for="email"
+						class="block text-sm font-medium text-gray-700"
+						>Email:</label
+					>
 					<input
 						type="email"
 						v-model="email"
@@ -21,11 +27,15 @@
 				</div>
 			</form>
 			<p class="mt-10 text-center text-sm text-gray-500">
-				<nuxt-link to="/auth" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+				<nuxt-link
+					to="/auth"
+					class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
 					>Comeback to authentification ?</nuxt-link
 				>
 			</p>
-			<p v-if="message" class="mt-4 text-center text-sm text-green-600">
+			<p
+				v-if="message"
+				class="mt-4 text-center text-sm text-green-600">
 				{{ message }}
 			</p>
 		</div>

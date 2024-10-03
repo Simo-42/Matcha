@@ -4,18 +4,34 @@
 		<div class="relative flex items-center">
 			<!-- Stack de cartes de profils -->
 			<div class="card-stack relative w-3/4">
-				<div v-for="(profile, index) in profiles" :key="profile.id" :class="['card', { 'top-card': index === profiles.length - 1 }]">
+				<div
+					v-for="(profile, index) in profiles"
+					:key="profile.id"
+					:class="['card', { 'top-card': index === profiles.length - 1 }]">
 					<div class="card-content bg-white border border-gray-900 rounded-lg shadow-md overflow-hidden">
-						<Swiper :slides-per-view="1" :loop="true" :pagination="{ clickable: true }" :initial-slide="0" class="relative w-full aspect-w-16 aspect-h-9">
+						<Swiper
+							:slides-per-view="1"
+							:loop="true"
+							:pagination="{ clickable: true }"
+							:initial-slide="0"
+							class="relative w-full aspect-w-16 aspect-h-9">
 							<!-- Affichage des photos du profil -->
-							<SwiperSlide v-for="(photo, photoIndex) in profile.photos.filter((photo) => photo)" :key="photoIndex" class="flex justify-center items-center">
+							<SwiperSlide
+								v-for="(photo, photoIndex) in profile.photos.filter(photo => photo)"
+								:key="photoIndex"
+								class="flex justify-center items-center">
 								<div class="w-full h-full">
-									<img :src="`http://localhost:3005${photo}`" alt="User Photo" class="w-full h-full object-cover" />
+									<img
+										:src="`http://localhost:3005${photo}`"
+										alt="User Photo"
+										class="w-full h-full object-cover" />
 								</div>
 							</SwiperSlide>
 						</Swiper>
 						<div class="p-6">
-							<h2 class="text-3xl font-bold text-gray-900">{{ profile.firstname }} {{ profile.lastname }} {{ profile.age }}</h2>
+							<h2 class="text-3xl font-bold text-gray-900">
+								{{ profile.firstname }} {{ profile.lastname }} {{ profile.age }}
+							</h2>
 							<p class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">
 								{{ profile.biography }}
 							</p>
@@ -36,7 +52,10 @@
 							<div class="mt-4">
 								<h3 class="text-lg font-bold text-gray-900">Interests</h3>
 								<div class="flex flex-wrap mt-2">
-									<span v-for="(interest, index) in profile.interests" :key="index" class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
+									<span
+										v-for="(interest, index) in profile.interests"
+										:key="index"
+										class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
 										{{ interest }}
 									</span>
 								</div>
@@ -47,10 +66,14 @@
 
 				<!-- Boutons like/dislike en bas de la carte -->
 				<div class="tinder--buttons flex justify-around mt-4 w-full max-w-md mx-auto">
-					<button @click="swipeLeft" class="w-16 h-16 bg-red-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white">
+					<button
+						@click="swipeLeft"
+						class="w-16 h-16 bg-red-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white">
 						<i class="fas fa-times"></i>
 					</button>
-					<button @click="swipeRight" class="w-16 h-16 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white">
+					<button
+						@click="swipeRight"
+						class="w-16 h-16 bg-green-500 rounded-full shadow-lg flex items-center justify-center text-2xl text-white">
 						<i class="fas fa-heart"></i>
 					</button>
 				</div>
@@ -66,8 +89,13 @@
 		</div>
 
 		<!-- Animation de match -->
-		<div v-if="showAnimation" class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
-			<LottieAnimation :animationData="animationData" :loop="false" :autoplay="true" />
+		<div
+			v-if="showAnimation"
+			class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
+			<LottieAnimation
+				:animationData="animationData"
+				:loop="false"
+				:autoplay="true" />
 		</div>
 	</div>
 </template>
@@ -155,11 +183,13 @@ const fetchProfileData = async () => {
 
 		const { data } = response;
 		console.log("Données reçues:", data);
-		profiles.value = data.profiles.map((profile) => {
+		profiles.value = data.profiles.map(profile => {
 			if (typeof profile.interests === "string") {
 				profile.interests = JSON.parse(profile.interests);
 			}
-			profile.photos = Array.isArray(profile.photos) ? profile.photos.map((photo) => photo.replace("/app", "")) : []; // Supprime app dans toutes les URL des photos
+			profile.photos = Array.isArray(profile.photos)
+				? profile.photos.map(photo => photo.replace("/app", ""))
+				: []; // Supprime app dans toutes les URL des photos
 			return profile;
 		});
 	} catch (error) {
@@ -193,7 +223,7 @@ const handleReport = async () => {
 	}
 };
 
-const handleSearchCriteria = (criteria) => {
+const handleSearchCriteria = criteria => {
 	searchCriteria.value = criteria;
 	localStorage.setItem("searchCriteria", JSON.stringify(criteria));
 
