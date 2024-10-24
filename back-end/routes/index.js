@@ -1,5 +1,4 @@
 // routes/index.js
-const express = require('express');
 const authRoutes = require('./auth');
 const passwordForgotRoutes = require('./pass_forgot');
 const jwtRoutes = require('./jwt');

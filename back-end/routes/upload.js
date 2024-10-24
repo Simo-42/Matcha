@@ -34,6 +34,7 @@ const upload = multer({
 		fieldSize: 25 * 1024 * 1024, // Limite de 25 Mo pour la taille des champs de texte
 		files: 5, // Nombre maximum de fichiers
 	},
+	// ! ajouter la vérification de type de fichier
 });
 
 // Route pour uploader les photos
@@ -47,12 +48,12 @@ router.post("/pictures", authenticateToken, upload.array("pictures", 5), async (
 			return res.status(400).json({ error: "No files uploaded" });
 		}
 
-		req.files.forEach((file) => {
+		req.files.forEach(file => {
 			console.log(`Received file: ${file.originalname}, Size: ${file.size} bytes`);
 		});
 
 		// Créer les chemins publics des fichiers à partir des fichiers uploadés
-		let picturePaths = req.files.map((file) => `/uploads/users/${userId}/${file.filename}`);
+		let picturePaths = req.files.map(file => `/uploads/users/${userId}/${file.filename}`);
 		console.log("Picture paths:", picturePaths);
 
 		// Mettre à jour les photos de l'utilisateur dans la base de données
@@ -89,12 +90,12 @@ router.post("/update_pics", authenticateToken, upload.array("pictures", 5), asyn
 			return res.status(400).json({ error: "No files uploaded" });
 		}
 
-		req.files.forEach((file) => {
+		req.files.forEach(file => {
 			console.log(`Received file: ${file.originalname}, Size: ${file.size} bytes`);
 		});
 
 		// Créer les chemins publics des fichiers à partir des fichiers uploadés
-		let picturePaths = req.files.map((file) => `/uploads/users/${userId}/${file.filename}`);
+		let picturePaths = req.files.map(file => `/uploads/users/${userId}/${file.filename}`);
 		console.log("Picture paths:", picturePaths);
 
 		// Mettre à jour les photos de l'utilisateur dans la base de données

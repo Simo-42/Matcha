@@ -48,17 +48,18 @@ router.post("/reset/:token", async (req, res) => {
 		const username = usernameResult.rows[0].username;
 
 		// prettier-ignore
-		if ((await userQueries.check_same_password(username, newPassword)) === true) {
-      return res.status(400).json({ error: "Same password as before." });
-    }
+		if ((await userQueries.check_same_password(username, newPassword)) === true) 
+		{
+    		return res.status(400).json({ error: "Same password as before." });
+    	}
 
 		const hashedPassword = await bcrypt.hash(newPassword, 10);
 
 		const query = `
-      UPDATE users
-      SET password = $1, reset_token = NULL, reset_token_expires = NULL
-      WHERE reset_token = $2 AND reset_token_expires > NOW()
-      RETURNING *`;
+      	UPDATE users
+      	SET password = $1, reset_token = NULL, reset_token_expires = NULL
+      	WHERE reset_token = $2 AND reset_token_expires > NOW()
+      	RETURNING *`;
 
 		const values = [hashedPassword, token];
 		const result = await pool.query(query, values);

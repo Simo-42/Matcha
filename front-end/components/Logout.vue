@@ -84,7 +84,7 @@ onMounted(async () => {
 	await fetchMyCurrentProfil();
 	const status = "online";
 	$socket.io.opts.query = { userId: userId.value, status };
-	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling par défaut
+	$socket.io.opts.transports = ["websocket"]; // Forcer WebSocket sinon le serveur utilise polling 
 	$socket.connect();
 	$socket.emit("user_connected", { userId: userId.value });
 });
