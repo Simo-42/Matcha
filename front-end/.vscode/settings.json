@@ -38,7 +38,8 @@
 		"plugins": false,
 		"server": false,
 		"Dockerfile": false,
-		"pages/.prettierrc": false
+		"pages/.prettierrc": false,
+		"yarn.lock": false
 	},
 	"explorerExclude.backup": {
 		"**/.git": true,
@@ -52,7 +53,7 @@
 		"**/tsconfig.json": true,
 		"*.json": true,
 		"tsconfig.json": true,
-		"**/*.json": false,
+		"**/*.json": true,
 		"**/.gitignore": true,
 		".gitignore": true,
 		"**/README.md": true,
@@ -79,6 +80,8 @@
 		"plugins": true,
 		"server": true,
 		"Dockerfile": true,
-		"pages/.prettierrc": true
-	}
+		"pages/.prettierrc": true,
+		"yarn.lock": true
+	},
+	"explorerExclude.showPicker": false
 }
