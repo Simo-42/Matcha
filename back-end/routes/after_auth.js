@@ -47,7 +47,7 @@ router.post("/profil/update_profil", authenticateToken, async (req, res) => {
 	try {
 		if ((await userQueries.check_mail_user_exist(email)) == true) {
 			// Vérifiez si l'e-mail existe déjà
-			const existingEmailUser = await getUserByEmail(email);
+			const existingEmailUser = await userQueries.getUserByEmail(email);
 			if (existingEmailUser && existingEmailUser.id !== userId) {
 				return res.status(400).json({ error: "Email already taken" });
 			}

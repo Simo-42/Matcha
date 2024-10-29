@@ -104,7 +104,7 @@ async function get_my_profil_info(id) {
 		const res = await pool.query(query, values);
 		if (res.rows.length > 0) {
 			// console.log('User profile specs:', res.rows[0]);
-			return res.rows[0]; // Retourne les informations spécifiques de l'utilisateur
+			return res.rows[0]; 
 		}
 	} catch (err) {
 		console.error("Error executing query", err.stack);
@@ -123,7 +123,7 @@ async function get_user_pics(id) {
 		const res = await pool.query(query, values);
 		if (res.rows.length > 0) {
 			console.log("User profile specs:", res.rows[0]);
-			return res.rows[0].photos; // Retourne les informations spécifiques de l'utilisateur
+			return res.rows[0].photos; 
 		} else {
 			console.log("User does not exist");
 			return false;

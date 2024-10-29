@@ -137,7 +137,7 @@ async function submitImages() {
 		return;
 	}
 
-	try {
+	try {  
 		const formData = new FormData();
 		images.value.forEach(image => {
 			if (image) {
