@@ -6,17 +6,16 @@ const send_email = async (email, user_id) => {
 	console.log(process.env.MAIL_VERIF);
 	console.log(process.env.MAIL_MDP);
 	console.log("im here");
+	console.log("email ===", email);
 
+	
 	const transporter = nodemailer.createTransport({
-		host: "smtp.office365.com",
+		host: "smtp.gmail.com",
 		port: 587,
-		secure: false, // true for 465, false for other ports
+		secure: false,
 		auth: {
 			user: process.env.MAIL_VERIF,
 			pass: process.env.MAIL_MDP,
-		},
-		tls: {
-			ciphers: "SSLv3",
 		},
 	});
 	const mailOptions = {
@@ -40,7 +39,7 @@ const send_email = async (email, user_id) => {
 
 const sendResetEmail = async (email, resetToken) => {
 	const transporter = nodemailer.createTransport({
-		host: "smtp.office365.com",
+		host: "smtp.gmail.com",
 		port: 587,
 		secure: false,
 		auth: {
@@ -59,7 +58,6 @@ const sendResetEmail = async (email, resetToken) => {
 		subject: "Password Reset",
 		text: `You requested a password reset. Please click the following link to reset your password: ${resetUrl}`,
 	};
-
 	return new Promise((resolve, reject) => {
 		transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {

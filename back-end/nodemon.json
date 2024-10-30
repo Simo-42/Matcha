@@ -1,0 +1,8 @@
+{
+    "watch": ["middleware","models", "queries", "routes", "sockets", "utils"], 
+    "ext": "js,json",
+    "ignore": ["node_modules", "uploads", "swagger-output.json"],
+    "exec": "pnpm start",
+    "delay": "5000"
+  }
+  

@@ -1,20 +1,28 @@
 # Utiliser une image de base node
 FROM node:20
 
+# Installer pnpm globalement
+RUN npm install -g pnpm
+
+# Définir le shell et configurer le dossier global de pnpm
+ENV SHELL=/bin/sh
+RUN pnpm config set global-bin-dir /usr/local/bin
+RUN pnpm add -g nodemon
+
 # Créer et définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier package.json et package-lock.json dans le conteneur
-COPY package*.json ./
+# Copier les fichiers de configuration pour installer les dépendances
+COPY package.json pnpm-lock.yaml ./
 
-# Installer les dépendances
-RUN npm install
+# Installer toutes les dépendances, y compris les devDependencies
+RUN pnpm install --prod=false
 
-# Copier le reste des fichiers dans le répertoire de travail du conteneur
+# Copier le reste des fichiers dans le conteneur
 COPY . .
 
-# Exposer le port sur lequel l'application va tourner
+# Exposer le port de l'application
 EXPOSE 3005
 
-# Démarrer l'application
-CMD ["npm", "start"]
+# Utiliser nodemon pour le démarrage en développement
+CMD ["nodemon", "server.js"]

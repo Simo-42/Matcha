@@ -78,7 +78,8 @@ router.post("/authentification", async (req, res) => {
 				maxAge: 24 * 60 * 60 * 1000,
 			});
 
-			if ((await userQueries.UserGetNumFake(user.id)) >= 3) { // report number
+			if ((await userQueries.UserGetNumFake(user.id)) >= 3) {
+				// report number
 				return res.status(400).json({
 					error: "Your account has been reported as a fake profile too many times. Please contact support.",
 				});
