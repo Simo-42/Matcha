@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from "axios"; 
 import Biography_form from "~/components/profil/biography.vue";
 import Gender_select from "~/components/profil/gender.vue";
 import Sexual_pref from "~/components/profil/sexual_pref.vue";

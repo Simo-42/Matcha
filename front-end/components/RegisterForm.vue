@@ -127,10 +127,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
 import axios from "axios";
-import LottieAnimation from "~/components/lotie/lotie_animation.vue"; // Remplacez par le bon chemin vers votre fichier JSON
+import { computed, ref } from "vue";
 import animationData from "~/assets/lottie/email_send.json"; // Remplacez par le bon chemin vers votre fichier JSON
+import LottieAnimation from "~/components/lotie/lotie_animation.vue"; // Remplacez par le bon chemin vers votre fichier JSON
 
 const email = ref("");
 const password = ref("");

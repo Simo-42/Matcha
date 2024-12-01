@@ -28,10 +28,15 @@
     "vue-awesome-swiper": "^5.0.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
     "@iconify-json/clarity": "^1.2.0",
     "@types/node": "^22.6.0",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.10",
+    "eslint": "^9.16.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "globals": "^15.12.0",
     "npm-force-resolutions": "^0.0.10",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13"

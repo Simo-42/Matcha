@@ -11,4 +11,5 @@ import upload_pictures from "~/components/profil/upload_pictures.vue";
 definePageMeta({
 	middleware: ["auth"],
 });
+
 </script>

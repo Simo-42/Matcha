@@ -75,12 +75,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import axios from "axios";
+import { ref } from "vue";
 
 const images = ref(Array(5).fill(null)); // Tableau pour stocker les images et leurs URLs
 const message = ref(""); // Message de confirmation
-const error = ref(""); // Message d'erreur
 const selectImage = index => {
 	const input = document.createElement("input");
 	input.type = "file";
