@@ -28,3 +28,9 @@ build/
 # System files
 .DS_Store
 Thumbs.db
+
+node_modules
+postgres_data
+pgadmin
+uploads
+*.log

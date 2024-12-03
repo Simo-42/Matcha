@@ -27,6 +27,9 @@ status:
 logs:
 	docker-compose -f $(DOCKER_COMPOSE_FILE) logs -f
 
+# Commande pour redémarrer les conteneurs (supprimer et reconstruire)
+restart:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) down && docker-compose -f $(DOCKER_COMPOSE_FILE) up -d --build --remove-orphans
 
 # Commande pour copier et appliquer le fichier schema.sql
 apply-schema:
@@ -41,5 +44,7 @@ help:
 	@echo "  make force-stop    - Force stop and kill all running containers"
 	@echo "  make status        - Show the status of the containers"
 	@echo "  make logs          - Follow the logs of the containers"
+	@echo "  make restart       - Restart the containers by removing and rebuilding them"
 	@echo "  make apply-schema  - Copy and apply schema.sql to the database"
 	@echo "  make help          - Show this help message"
+	@echo "  make full-rebuild  - Stop and remove all containers, images, volumes and rebuild the containers"
