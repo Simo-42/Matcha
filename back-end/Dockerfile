@@ -28,6 +28,9 @@ COPY package.json pnpm-lock.yaml ./
 # Installer toutes les dépendances, y compris les devDependencies
 RUN pnpm install --prod=false
 
+COPY init.sh /docker-entrypoint-initdb.d/
+RUN chmod +777 /docker-entrypoint-initdb.d/init.sh
+
 # Copier le reste des fichiers dans le conteneur
 COPY . .
 

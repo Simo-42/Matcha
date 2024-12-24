@@ -17,9 +17,9 @@ router.get("/verify-auth", (req, res) => {
   }
 });
 
-router.post("/logout", (req, res) => {
+router.post("/header", (req, res) => {
   res.clearCookie("token");
-  res.status(200).json({ message: "Logout successful" });
+  res.status(200).json({ message: "Header successful" });
 });
 
 module.exports = router;

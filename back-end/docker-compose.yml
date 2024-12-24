@@ -11,7 +11,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_database:/var/lib/postgresql/data
+      - ./models/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
 
   backend:
     build: .
@@ -26,6 +28,8 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+      - ./package.json:/app/package.json
+
 
   pgadmin:
     image: dpage/pgadmin4
@@ -38,7 +42,8 @@ services:
       - "5050:80"
     depends_on:
       - db
+    
 
 volumes:
-  postgres_data:
+  postgres_database:
   node_modules:

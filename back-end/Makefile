@@ -9,7 +9,7 @@ SCHEMA_FILE = models/schema.sql
 
 # Commande pour démarrer les conteneurs en mode détaché
 start:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d --build --remove-orphans
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --build --remove-orphans
 
 # Commande pour arrêter les conteneurs
 stop:
@@ -33,8 +33,7 @@ restart:
 
 # Commande pour copier et appliquer le fichier schema.sql
 apply-schema:
-	docker cp $(SCHEMA_FILE) $(DB_SERVICE):/schema.sql
-	docker exec -it $(DB_SERVICE) bash -c 'psql -U $$POSTGRES_USER -d $$POSTGRES_DB -f /schema.sql'
+	docker exec -it $(DB_SERVICE) bash -c 'psql -U $$POSTGRES_USER -d $$POSTGRES_DB -f /docker-entrypoint-initdb.d/schema.sql'
 
 
 help:
@@ -45,6 +44,6 @@ help:
 	@echo "  make status        - Show the status of the containers"
 	@echo "  make logs          - Follow the logs of the containers"
 	@echo "  make restart       - Restart the containers by removing and rebuilding them"
-	@echo "  make apply-schema  - Copy and apply schema.sql to the database"
+	@echo "  make apply-schema y and apply schema.sql to the database"
 	@echo "  make help          - Show this help message"
-	@echo "  make full-rebuild  - Stop and remove all containers, images, volumes and rebuild the containers"
+	# @echo "  make full-rebuild  - Stop and remove all containers, images, volumes and rebuild the containers"e

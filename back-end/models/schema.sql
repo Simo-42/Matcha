@@ -1,7 +1,7 @@
 -- DROP TABLE IF EXISTS users, matches, likes, messages, blocks, profile_visits, reports, notifications;
 -- ALTER TABLE users ADD COLUMN connected BOOLEAN DEFAULT FALSE;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- Many to many relation between users for matches
-CREATE TABLE matches (
+CREATE TABLE IF NOT EXISTS matches (
     id SERIAL PRIMARY KEY,
     user_id_1 INTEGER REFERENCES users(id) ON DELETE CASCADE,
     user_id_2 INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -39,7 +39,7 @@ CREATE UNIQUE INDEX unique_match_index ON matches (
     GREATEST(user_id_1, user_id_2)
 );
 -- One to many relation between users for likes
-CREATE TABLE likes (
+CREATE TABLE IF NOT EXISTS likes (
     id SERIAL PRIMARY KEY,
     user_id_from INT NOT NULL,
     user_id_to INT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE likes (
 );
 
 -- One to many relation between users for messages
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,  -- Identifiant unique pour chaque message
     sender_id INT NOT NULL,  -- ID de l'utilisateur qui envoie le message
     receiver_id INT NOT NULL,  -- ID de l'utilisateur qui reçoit le message
@@ -61,7 +61,7 @@ CREATE TABLE messages (
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE  -- Lien avec l'utilisateur qui reçoit le message
 );
 -- One to many relation between users for blocks
-CREATE TABLE blocks (
+CREATE TABLE IF NOT EXISTS blocks (
     id SERIAL PRIMARY KEY,  -- Identifiant unique pour chaque blocage
     user_id_from INT NOT NULL,  -- L'utilisateur qui bloque
     user_id_to INT NOT NULL,  -- L'utilisateur qui est bloqué
@@ -71,7 +71,7 @@ CREATE TABLE blocks (
     UNIQUE(user_id_from, user_id_to)  -- Assure qu'un utilisateur ne peut bloquer un autre utilisateur qu'une seule fois
 );
 -- One to many relation between users for profile visits
-CREATE TABLE profile_visits ( 
+CREATE TABLE IF NOT EXISTS profile_visits ( 
     id SERIAL PRIMARY KEY,                         -- Clé primaire pour identifier chaque visite unique
     user_id_from INT NOT NULL,                     -- L'utilisateur qui visite un autre profil
     user_id_to INT NOT NULL,                       -- L'utilisateur dont le profil est visité
@@ -82,7 +82,7 @@ CREATE TABLE profile_visits (
 );
 
 -- One to many relation between users for reports 
-CREATE TABLE reports (
+CREATE TABLE IF NOT EXISTS reports (
     id SERIAL PRIMARY KEY,
     user_id_from INT NOT NULL,
     user_id_to INT NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE reports (
     FOREIGN KEY (user_id_to) REFERENCES users(id) ON DELETE CASCADE
 );
 -- Relation one to many entre les utilisateurs et les notifications
-CREATE TABLE notifications ( 
+CREATE TABLE IF NOT EXISTS notifications ( 
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,  -- L'utilisateur qui reçoit la notification
     type VARCHAR(50) NOT NULL,  -- Type de notification (ex: 'like', 'message', 'visit', 'match', etc.)

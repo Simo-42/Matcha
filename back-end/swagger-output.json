@@ -7,9 +7,7 @@
   },
   "host": "localhost:3005",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "securityDefinitions": {
     "bearerAuth": {
       "type": "http",
@@ -208,7 +206,7 @@
         }
       }
     },
-    "/api/jwt/logout": {
+    "/api/jwt/header": {
       "post": {
         "description": "",
         "responses": {
