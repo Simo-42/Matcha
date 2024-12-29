@@ -1,15 +1,15 @@
 <template>
-	<div>
-		<logout />
-		<age />
-	</div>
+  <div>
+    <Header />
+    <age />
+  </div>
 </template>
 
 <script setup>
 import age from "~/components/profil/age.vue";
-import logout from "~/components/Logout.vue";
-definePageMeta({
-	middleware: ["auth"],
-});
+import Header from "~/components/Header.vue";
 
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>

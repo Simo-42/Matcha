@@ -12,5 +12,9 @@ export default defineNuxtConfig({
 			googleMapsKey: process.env.GOOGLE_MAPS_KEY,
 		},
 		},
-	plugins: ["~/plugins/socket.js"],
+	build: {
+		transpile: ["vuetify"], // Transpilation pour Nuxt
+	  },
+	plugins: ["~/plugins/socket.js", "~/plugins/vuetify.js"],
+	css:["~/css/main.css", "vuetify/styles", "@mdi/font/css/materialdesignicons.min.css"]
 });

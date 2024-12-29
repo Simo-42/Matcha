@@ -1,13 +1,13 @@
 <template>
-	<div>
-		<Logout />
-		<security />
-	</div>
+  <div>
+    <Header />
+    <security />
+  </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-	middleware: ["auth"],
+  middleware: ["auth"],
 });
 
 import { ref } from "vue";

@@ -1,8 +1,8 @@
 <template>
-	<div>
-		<Logout />
-		<match_chat />
-	</div>
+  <div>
+    <Header />
+    <match_chat />
+  </div>
 </template>
 
 <script setup></script>

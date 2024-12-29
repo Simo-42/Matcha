@@ -1,12 +1,12 @@
 <template>
-	<Logout />
-	<!-- <user_mod /> -->
-	<user_form />
+  <Header />
+  <!-- <user_mod /> -->
+  <user_form />
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-	middleware: ["auth"],
+  middleware: ["auth"],
 });
 
 import { ref } from "vue";
