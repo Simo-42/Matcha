@@ -41,8 +41,7 @@
 
         <button
           @click="header"
-          class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium"
-        >
+          class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium">
           Header
         </button>
       </div>
@@ -50,7 +49,7 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import { useRouter } from "vue-router";
 const router = useRouter();

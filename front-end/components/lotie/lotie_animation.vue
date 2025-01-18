@@ -4,7 +4,7 @@
 		class="lottie-animation"></div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import lottie from "lottie-web";
 
@@ -24,6 +24,7 @@ const props = defineProps({
 });
 
 const lottieContainer = ref(null);
+	// @ts-ignore
 let lottieInstance = null;
 
 onMounted(() => {
@@ -39,6 +40,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+	// @ts-ignore
 	if (lottieInstance) {
 		lottieInstance.destroy(); // Clean up Lottie instance when the component is unmounted
 	}
