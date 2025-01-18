@@ -13,5 +13,6 @@ html,
 body {
 	height: 100%;
 	background-color: white;
+	overflow-y: hidden;
 }
 </style>

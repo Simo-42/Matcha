@@ -1,9 +1,11 @@
 <template>
-	<div>
-		<Auth_form />
-	</div>
+  <div>
+    <LoginDialog />
+    <RegisterDialog />
+  </div>
 </template>
 
 <script setup>
-import Auth_form from "~/components/Auth_form.vue";
+import RegisterDialog from "~/components/RegisterDialog.vue";
+import LoginDialog from "~/components/LoginDialog.vue";
 </script>

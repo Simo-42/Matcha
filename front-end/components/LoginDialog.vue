@@ -1,42 +1,21 @@
 <template>
   <div class="pa-4 text-center">
-    <div class="flex justify-end" style="color: white;">TEST</div>
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
           class="text-none font-weight-regular"
           prepend-icon="mdi-account"
-          text="Créer un compte"
+          text="Sign in"
           variant="tonal"
           v-bind="activatorProps"
         ></v-btn>
       </template>
 
-      <v-card prepend-icon="mdi-account" title="User Profile">
+      <v-card prepend-icon="mdi-account" title="Sign in to your account">
         <v-card-text>
           <v-row dense>
             <v-col cols="12" md="4" sm="6">
               <v-text-field label="Username*" required v-model="username"></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="4" sm="6">
-              <v-text-field
-                hint="example of helper text only on focus"
-                label="First name"
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="4" sm="6">
-              <v-text-field
-                hint="example of persistent helper text"
-                label="Last name*"
-                persistent-hint
-                required
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="4" sm="6">
-              <v-text-field label="Email*" required></v-text-field>
             </v-col>
 
             <v-col cols="12" md="4" sm="6">
@@ -46,41 +25,6 @@
                 required
                 v-model="password"
               ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" md="4" sm="6">
-              <v-text-field
-                label="Confirm Password*"
-                type="password"
-                required
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12" sm="6">
-              <v-select
-                :items="['0-17', '18-29', '30-54', '54+']"
-                label="Age*"
-                required
-              ></v-select>
-            </v-col>
-
-            <v-col cols="12" sm="6">
-              <v-autocomplete
-                :items="[
-                  'Skiing',
-                  'Ice hockey',
-                  'Soccer',
-                  'Basketball',
-                  'Hockey',
-                  'Reading',
-                  'Writing',
-                  'Coding',
-                  'Basejump',
-                ]"
-                label="Interests"
-                auto-select-first
-                multiple
-              ></v-autocomplete>
             </v-col>
           </v-row>
 
@@ -98,7 +42,7 @@
 
           <v-btn
             color="primary"
-            text="Save"
+            text="Sign in"
             variant="tonal"
             @click="authentification"
           ></v-btn>
@@ -106,6 +50,7 @@
       </v-card>
     </v-dialog>
     <LottieAnimation v-if="showAnimation" :animationData="animationData" />
+    <p v-if="message" class="mt-4 text-center text-sm text-red-500">{{ message }}</p>
   </div>
 </template>
 
@@ -135,14 +80,12 @@ async function authentification() {
     );
 
     if (response.data.profile_complete == true) {
-      console.log("username after log : ", username.value);
       console.log("Profile is complete");
       showAnimation.value = true;
       setTimeout(() => {
         navigateTo("/connected");
       }, 2000);
     } else {
-      console.log("username before log : ", username.value);
       console.log("response.data.profile_complete", response.data.profile_complete);
       console.log("Profile is not complete");
       showAnimation.value = true;

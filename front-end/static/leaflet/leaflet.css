@@ -351,7 +351,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	background: #fff;
 	}
 .leaflet-control-layers-scrollbar {
-	overflow-y: scroll;
+	overflow-y: hidden;
 	overflow-x: hidden;
 	padding-right: 5px;
 	}
@@ -508,7 +508,7 @@ path.leaflet-interactive:focus:not(:focus-visible) {
 	color: #585858;
 	}
 .leaflet-popup-scrolled {
-	overflow: auto;
+	overflow: hidden;
 	}
 
 /* div icon */

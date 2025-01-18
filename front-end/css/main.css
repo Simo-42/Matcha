@@ -1,15 +1,21 @@
-body {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('../public/img/background_PC.jpg');
-    background-repeat: no-repeat; 
-    background-position: center; 
-    background-size: cover; 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+
 }
 
+body {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../public/img/background_PC.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
 
 @media only screen and (max-width: 768px) {
-    body {
-        background-image: url('../public/img/background_mobile.jpg');
-    }
+  body {
+    background-image: url("../public/img/background_mobile.jpg");
   }
+}

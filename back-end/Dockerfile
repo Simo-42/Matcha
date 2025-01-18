@@ -28,8 +28,8 @@ COPY package.json pnpm-lock.yaml ./
 # Installer toutes les dépendances, y compris les devDependencies
 RUN pnpm install --prod=false
 
-COPY init.sh /docker-entrypoint-initdb.d/
-RUN chmod +777 /docker-entrypoint-initdb.d/init.sh
+COPY /init.sh /
+RUN chmod +777 /init.sh
 
 # Copier le reste des fichiers dans le conteneur
 COPY . .
@@ -38,4 +38,4 @@ COPY . .
 EXPOSE 3005
 
 # Utiliser nodemon pour le démarrage en développement
-CMD ["nodemon", "server.js"]
+CMD ["nodemon", "server.js", "init.sh"]
