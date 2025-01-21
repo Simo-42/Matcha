@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<Auth_form />
+		<auth />
 	</div>
 </template>
 
 <script setup>
-import Auth_form from "~/components/Auth_form.vue";
+import auth from './auth.vue';
 </script>
 
 <style scoped>

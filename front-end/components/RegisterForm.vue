@@ -13,7 +13,8 @@
             type="email"
             v-model="email"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
         </div>
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700"
@@ -24,7 +25,8 @@
             v-model="password"
             maxlength="20"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
           <small v-if="password.length > 40" class="text-red-500"
             >Password cannot exceed 40 characters.</small
           >
@@ -42,7 +44,8 @@
             v-model="username"
             maxlength="20"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
           <small v-if="username.length > 20" class="text-red-500"
             >Username cannot exceed 20 characters.</small
           >
@@ -56,7 +59,8 @@
             v-model="firstname"
             maxlength="30"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
           <small v-if="firstname.length > 30" class="text-red-500"
             >First name cannot exceed 30 characters.</small
           >
@@ -70,7 +74,8 @@
             v-model="lastname"
             maxlength="30"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
           <small v-if="lastname.length > 30" class="text-red-500"
             >Last name cannot exceed 30 characters.</small
           >
@@ -79,7 +84,8 @@
           <button
             :disabled="!isFormValid"
             type="submit"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+          >
             Register
           </button>
         </div>
@@ -97,11 +103,13 @@
     </div>
     <div
       v-if="showAnimation"
-      class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20">
+      class="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-20"
+    >
       <LottieAnimation
         :animationData="animationData"
         :loop="false"
-        :autoplay="true" />
+        :autoplay="true"
+      />
     </div>
   </div>
 </template>

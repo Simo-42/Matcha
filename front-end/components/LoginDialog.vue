@@ -27,6 +27,7 @@
               ></v-text-field>
             </v-col>
           </v-row>
+          <p v-if="message" class="m-4  text-sm text-red-500">{{ message }}</p>
 
           <small class="text-caption text-medium-emphasis"
             >*indicates required field</small
@@ -50,7 +51,6 @@
       </v-card>
     </v-dialog>
     <LottieAnimation v-if="showAnimation" :animationData="animationData" />
-    <p v-if="message" class="mt-4 text-center text-sm text-red-500">{{ message }}</p>
   </div>
 </template>
 
@@ -88,6 +88,7 @@ async function authentification() {
     } else {
       console.log("response.data.profile_complete", response.data.profile_complete);
       console.log("Profile is not complete");
+      dialog.value = false;
       showAnimation.value = true;
       setTimeout(() => {
         navigateTo("/after_auth_form");

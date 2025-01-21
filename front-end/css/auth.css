@@ -1,0 +1,17 @@
+.auth {
+	height: 100%;
+}
+
+.custom-btn {
+	background-color: #4CAF50;
+	color: white;
+	border-radius: 8px;
+	padding: 10px 20px;
+	transition: background-color 0.3s ease;
+	font-size: 1.5em;
+	height: 100px;
+  }
+  
+  .custom-btn:hover {
+	background-color: #45a049;
+  }

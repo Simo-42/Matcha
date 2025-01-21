@@ -6,7 +6,7 @@
 		</div>
 
 		<!-- Formulaire d'authentification -->
-		<Auth_form />
+		<LoginDialog />
 	</div>
 </template>
 
@@ -14,7 +14,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
-import Auth_form from "~/components/Auth_form.vue";
+import LoginDialog from "~/components/LoginDialog.vue";
 
 const route = useRoute();
 const message = ref("");

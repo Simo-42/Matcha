@@ -40,9 +40,9 @@
         >
 
         <button
-          @click="header"
+          @click="logout"
           class="text-white hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium">
-          Header
+          Logout
         </button>
       </div>
     </div>
@@ -71,9 +71,10 @@ async function fetchMyCurrentProfil() {
   }
 }
 
-async function header() {
+async function logout() {
   try {
-    await axios.post("http://localhost:3005/api/jwt/header");
+    await axios.post("http://localhost:3005/api/jwt/logout");
+    console.log("logout");
     $socket.disconnect();
     router.push("/auth");
   } catch (error) {

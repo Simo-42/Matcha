@@ -3,10 +3,8 @@
 	  <v-dialog v-model="dialog" max-width="600">
 		<template v-slot:activator="{ props: activatorProps }">
 		  <v-btn
-			class="text-none font-weight-regular"
-			prepend-icon="mdi-account"
+			class="custom-btn"
 			text="Créer un compte"
-			variant="tonal"
 			v-bind="activatorProps"
 		  ></v-btn>
 		</template>
@@ -138,6 +136,7 @@
 		  lastname: lastname.value,
 		},
 	  );
+		dialog.value = false;
 		message.value = response.data.message;
 		showAnimation.value = true;
 		setTimeout(() => {
