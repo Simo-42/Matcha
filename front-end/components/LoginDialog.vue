@@ -1,12 +1,10 @@
 <template>
-  <div class="pa-4 text-center">
+  <div class="pa-4">
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
-          class="text-none font-weight-regular"
-          prepend-icon="mdi-account"
-          text="Sign in"
-          variant="tonal"
+          class="custom-btn"
+          text="Se connecter"
           v-bind="activatorProps"
         ></v-btn>
       </template>

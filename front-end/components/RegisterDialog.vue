@@ -1,5 +1,5 @@
 <template>
-	<div class="pa-4 text-center">
+	<div class="pa-4">
 	  <v-dialog v-model="dialog" max-width="600">
 		<template v-slot:activator="{ props: activatorProps }">
 		  <v-btn
@@ -18,7 +18,6 @@
   
 			  <v-col cols="12" md="4" sm="6">
 				<v-text-field
-				  hint="example of helper text only on focus"
 				  label="First name"
 				  v-model="firstname"
 				></v-text-field>
@@ -26,9 +25,7 @@
   
 			  <v-col cols="12" md="4" sm="6">
 				<v-text-field
-				  hint="example of persistent helper text"
 				  label="Last name*"
-				  persistent-hint
 				  required
 				  v-model="lastname"
 				></v-text-field>
@@ -57,13 +54,13 @@
   
 			  <v-col cols="12" sm="6">
 				<v-select
-				  :items="['0-17', '18-29', '30-54', '54+']"
+				  type="age"
 				  label="Age*"
 				  required
 				></v-select>
 			  </v-col>
   
-			  <v-col cols="12" sm="6">
+			  <!-- <v-col cols="12" sm="6">
 				<v-autocomplete
 				  :items="[
 					'Skiing',
@@ -79,8 +76,8 @@
 				  label="Interests"
 				  auto-select-first
 				  multiple
-				></v-autocomplete>
-			  </v-col>
+				></v-autocomplete> -->
+			  <!-- </v-col> -->
 			</v-row>
   
 			<small class="text-caption text-medium-emphasis"
@@ -102,8 +99,8 @@
 			  @click="register"
 			></v-btn>
 		  </v-card-actions>
+		  <p v-if="message" :class="{'text-green-600': !isError, 'text-red-600': isError}" class="text-center text-base pb-4">{{ message }}</p>
 		</v-card>
-		<p v-if="message" class="mt-4 text-center text-sm text-green-600">{{ message }}</p>
 		<LottieAnimation v-if="showAnimation" :animationData="animationData" :loop="false" :autoplay="true" />
 	  </v-dialog>
 	</div>
@@ -112,10 +109,11 @@
   <script setup>
   import { ref } from "vue";
   import axios from "axios";
-  import LottieAnimation from "~/components/lotie/lotie_animation.vue"; // Replace with the correct path to your component
-  import animationData from "~/assets/lottie/valide.json"; // Replace with the correct path to your JSON file
+  import LottieAnimation from "~/components/lotie/lotie_animation.vue";
+  import animationData from "~/assets/lottie/valide.json"; 
   
   const dialog = ref(false);
+  const age = ref("");
   const email = ref("");
   const firstname = ref("");
   const lastname = ref("");
@@ -123,6 +121,7 @@
   const password = ref("");
   const message = ref("");
   const showAnimation = ref(false);
+  const isError = ref(false);
   
   async function register() {
 	try {
@@ -134,17 +133,19 @@
 		  email: email.value,
 		  firstname: firstname.value,
 		  lastname: lastname.value,
+		  age: age.value,
 		},
 	  );
 		dialog.value = false;
 		message.value = response.data.message;
 		showAnimation.value = true;
+		isError.value = false;
 		setTimeout(() => {
 		  navigateTo("/auth");
 		}, 3000);
 	} catch (error) {
-	  message.value = error.response.data.error || "Registration failed";
+		message.value = error.response.data.error || "Registration failed";
+		isError.value = true;
 	}
 }
   </script>
-  

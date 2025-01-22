@@ -8,8 +8,11 @@ require("dotenv").config(); // Charge les variables d'environnement depuis le fi
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-	const { email, password, username, firstname, lastname } = req.body;
+	const { email, password, username, firstname, lastname, age } = req.body;
 
+	if (!email || !password || !username || !firstname || !lastname || !age) {
+			return res.status(400).json({ error: "All fields are required." });
+	}
 	// Hachage du mot de passe
 	const hashed_password = await bcrypt.hash(password, 10);
 	const info = {
@@ -18,7 +21,10 @@ router.post("/register", async (req, res) => {
 		username: username,
 		firstname: firstname,
 		lastname: lastname,
+		age: age,
 	};
+	
+	
 
 	try {
 		// Vérifier si cet email est déjà enregistré dans la DB

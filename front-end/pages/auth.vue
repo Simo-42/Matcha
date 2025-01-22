@@ -3,7 +3,10 @@
     <div class="flex justify-end">
       <LoginDialog />
     </div>
-    <div class="flex items-center justify-center"  style="height: 100vh;">
+    <div class="flex flex-col justify-center items-center" style="height: 100vh;">
+      <div class="text-center ">
+        <p>Swipe Right™</p>
+      </div>
       <RegisterDialog />
     </div>
   </div>
