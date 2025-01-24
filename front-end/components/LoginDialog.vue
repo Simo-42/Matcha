@@ -25,7 +25,7 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <p v-if="message" class="m-4  text-sm text-red-500">{{ message }}</p>
+          <p v-if="message" class="text-base text-red-500">{{ message }}</p>
 
           <small class="text-caption text-medium-emphasis"
             >*indicates required field</small
