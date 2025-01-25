@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="home_bg min-h-screen flex items-center justify-center">
     <form
       @submit.prevent="submitForm"
       class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -30,6 +30,7 @@ import Biography_form from "~/components/profil/biography.vue";
 import Gender_select from "~/components/profil/gender.vue";
 import Interests_select from "~/components/profil/interests.vue";
 import Sexual_pref from "~/components/profil/sexual_pref.vue";
+import "/css/home.css";
 
 const selectedGender = ref("");
 const selectedSexualPref = ref("");

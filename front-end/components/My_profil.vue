@@ -1,48 +1,59 @@
 <template>
-  <div
-    class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
-    <Swiper
-      :slides-per-view="1"
-      :loop="true"
-      :pagination="{ clickable: true }"
-      :initial-slide="1"
-      class="relative h-96">
-      <SwiperSlide
-        v-for="(photo, index) in photos.filter((photo) => photo)"
-        :key="index"
-        class="flex justify-center item-center">
+  <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
+    <div class="relative h-96">
+      <!-- Image slider -->
+      <div class="h-full w-full relative flex items-center justify-center" tabindex="0">
         <img
+          v-for="(photo, index) in photos.filter((photo) => photo)"
+          :key="index"
           :src="`http://localhost:3005${photo}`"
+          :class="{ 'opacity-100': currentSlide === index, 'opacity-0': currentSlide !== index }"
+          class="absolute w-64 h-64 object-cover transition-opacity duration-300 rounded-full"
           alt="User Photo"
-          class="w-full h-full object-cover" />
-      </SwiperSlide>
-    </Swiper>
+        />
+      </div>
+      <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+        <button
+          v-for="(photo, index) in photos.filter((photo) => photo)"
+          :key="index"
+          @click="currentSlide = index"
+          :class="[
+            'w-2 h-2 rounded-full transition-all duration-300',
+            currentSlide === index ? 'bg-white w-4' : 'bg-white/50'
+          ]"
+          :aria-label="`Go to slide ${index + 1}`"
+        ></button>
+      </div>
+    </div>
 
     <div class="p-6">
-      <h2 class="text-2xl font-bold text-gray-900">
-        {{ firstname }} {{ lastname }}
-      </h2>
-      <h2 class="text-2xl font-bold text-gray-900">Age : {{ age }}</h2>
+      <div class="flex flex-row space-between">
+        <h2 class="text-2xl font-bold text-gray-900">
+          {{ firstname }} {{ lastname }}
+        </h2>
+        <h2 class="text-2xl font-bold text-gray-900">{{ age }}</h2>
+        
+        <div class="">
+          <div class="flex items-center">
+            <span class="text-gray-600 font-medium">Gender:</span>
+            <span class="ml-2 text-gray-800">{{ gender }}</span>
+          </div>
+          <div class="flex items-center mt-2">
+            <span class="text-gray-600 font-medium">Preference:</span>
+            <span class="ml-2 text-gray-800">{{ sexual_preference }}</span>
+          </div>
+          <div class="flex items-center mt-2">
+            <span class="text-gray-600 font-medium">Location:</span>
+            <span class="ml-2 text-gray-800">{{ location }}</span>
+          </div>
+        </div>
+      </div>
+
       <span class="text-gray-600 font-medium">My Biography:</span>
       <p
         class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">
         {{ biography }}
       </p>
-
-      <div class="mt-4">
-        <div class="flex items-center">
-          <span class="text-gray-600 font-medium">Gender:</span>
-          <span class="ml-2 text-gray-800">{{ gender }}</span>
-        </div>
-        <div class="flex items-center mt-2">
-          <span class="text-gray-600 font-medium">Preference:</span>
-          <span class="ml-2 text-gray-800">{{ sexual_preference }}</span>
-        </div>
-        <div class="flex items-center mt-2">
-          <span class="text-gray-600 font-medium">Location:</span>
-          <span class="ml-2 text-gray-800">{{ location }}</span>
-        </div>
-      </div>
 
       <div class="mt-4">
         <h3 class="text-lg font-bold text-gray-900">Interests</h3>
@@ -61,7 +72,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onBeforeUnmount } from "vue";
 
 interface ProfileData {
   firstname: string;
@@ -85,6 +96,42 @@ const gender = ref<string>("");
 const sexual_preference = ref<string>("");
 const interests = ref<string[]>([]);
 const location = ref<string>("");
+
+const currentSlide = ref(0);
+const isPlaying = ref(false);
+let slideInterval: NodeJS.Timeout | null = null;
+
+function nextSlide() {
+  const filteredPhotos = photos.value.filter(photo => photo);
+  currentSlide.value = (currentSlide.value + 1) % filteredPhotos.length;
+}
+
+function prevSlide() {
+  const filteredPhotos = photos.value.filter(photo => photo);
+  currentSlide.value = (currentSlide.value - 1 + filteredPhotos.length) % filteredPhotos.length;
+}
+
+function startSlideshow() {
+  if (!slideInterval) {
+    slideInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+  }
+}
+
+function stopSlideshow() {
+  if (slideInterval) {
+    clearInterval(slideInterval);
+    slideInterval = null;
+  }
+}
+
+function toggleAutoplay() {
+  isPlaying.value = !isPlaying.value;
+  if (isPlaying.value) {
+    startSlideshow();
+  } else {
+    stopSlideshow();
+  }
+}
 
 async function fetchProfileData() {
   try {
@@ -119,9 +166,27 @@ async function fetchProfileData() {
 
 onMounted(() => {
   fetchProfileData();
+  // Add keyboard event listeners
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
+});
+
+onBeforeUnmount(() => {
+  stopSlideshow();
+  window.removeEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
 });
 </script>
 
 <style scoped>
-/* Ajoutez ici des styles supplémentaires si nécessaire */
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
+}
 </style>

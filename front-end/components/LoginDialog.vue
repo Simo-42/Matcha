@@ -79,9 +79,10 @@ async function authentification() {
 
     if (response.data.profile_complete == true) {
       console.log("Profile is complete");
+      dialog.value = false;
       showAnimation.value = true;
       setTimeout(() => {
-        navigateTo("/connected");
+        navigateTo("/browsing_page");
       }, 2000);
     } else {
       console.log("response.data.profile_complete", response.data.profile_complete);

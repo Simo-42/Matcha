@@ -1,11 +1,14 @@
 <template>
   <div>
-    <header />
-    <my_profil />
+    <Header/>
+    <My_profil />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import My_profil from "~/components/My_profil.vue";
+import Header from "~/components/Header.vue";
+</script>
 
 <style scoped>
 html,

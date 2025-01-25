@@ -6,15 +6,17 @@
 	font-size: 8vw;
 	line-height: 1.18;
 	font-weight: 800;
-	background: linear-gradient(90deg, #000, #00cf07, #000);
+	background: linear-gradient(90deg, #000, #AD77B6, #000);
 	background-repeat: no-repeat;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: rgba(255, 255, 255, 0);
+	-webkit-text-stroke: 1px white;
+	/* border: color 2px white; */
 }
 
 
 .custom-btn {
-	background-color: #4CAF50;
+	background-color: #AD77B6;
 	color: white;
 	padding: 10px 20px;
 	transition: background-color 0.3s ease;

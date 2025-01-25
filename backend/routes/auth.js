@@ -13,6 +13,9 @@ router.post("/register", async (req, res) => {
 	if (!email || !password || !username || !firstname || !lastname || !age) {
 			return res.status(400).json({ error: "All fields are required." });
 	}
+
+	// Check if username starts with capital letter
+	
 	// Hachage du mot de passe
 	const hashed_password = await bcrypt.hash(password, 10);
 	const info = {
@@ -25,7 +28,7 @@ router.post("/register", async (req, res) => {
 	};
 	
 	
-
+	
 	try {
 		// Vérifier si cet email est déjà enregistré dans la DB
 		if ((await userQueries.check_mail_user_exist(email)) == true) {
@@ -34,6 +37,7 @@ router.post("/register", async (req, res) => {
 			return res.status(400).json({ error: "This username is already taken." });
 		}
 
+
 		const user = await userQueries.createUser(info);
 		if (!user) {
 			return res.status(500).json({ error: "Error creating user" });
@@ -41,6 +45,7 @@ router.post("/register", async (req, res) => {
 
 		await send_email(email, user.id);
 
+		if (username)
 		res.status(201).json({
 			message: "User registered successfully. Please check your email to verify your account.",
 		});
