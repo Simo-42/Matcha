@@ -4,6 +4,4 @@
 	</div>
 </template>
 
-<script setup>
-import RegisterDialog from "~/components/RegisterDialog.vue";
-</script>
+<script setup></script>
