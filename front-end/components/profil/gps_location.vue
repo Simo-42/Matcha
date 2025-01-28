@@ -128,7 +128,7 @@ const submit_location = async () => {
         const response = await axios.post(
             "http://localhost:3005/api/after_auth/profil/location",
             {
-                location: city.value,
+                location: location_input.value,
             },
             {
                 withCredentials: true,
@@ -138,7 +138,7 @@ const submit_location = async () => {
 
         showAnimation.value = true;
         setTimeout(() => {
-            router.push("/usermod");
+            router.push("/settings");
         }, 3000);
     } catch (error) {
         message.value = error.response.data.error || "Registration failed";

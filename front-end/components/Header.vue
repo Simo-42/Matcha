@@ -1,44 +1,45 @@
 <template>
-  <nav class="p-4" style="background-color: #ad77b6">
-    <div class="container mx-auto flex justify-between items-center">
-      <nuxt-link to="/browsing_page" class="text-white text-lg font-semibold"
-        >PurpleMatch</nuxt-link
-      >
-      <div class="hidden md:flex space-x-4">
+  <div class="p-4 flex " style="background-color: #ad77b6">
+    <nav class="ml-4 flex justify-between items-center">
+      <nuxt-link to="/browsing_page" class="text-white text-2xl font-semibold"
+        >PurpleMatch</nuxt-link> 
+    </nav>
+    <header class="ml-8 container mq-auto flex justify-between items-center">
+      <div class="md:flex space-x-4">
         <nuxt-link
           to="/browsing_page"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >Browsing profil</nuxt-link
         >
-        <nuxt-link
-          to="/usermod"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
-          >Modify your Profil</nuxt-link
-        >
-        <nuxt-link
+        <!-- <nuxt-link
           to="/visitors"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >Visitors</nuxt-link
-        >
+        > -->
         <nuxt-link
           to="/match"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >Matchs</nuxt-link
         >
-        <nuxt-link
+        <!-- <nuxt-link
           to="/Likes"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >Likes Pages</nuxt-link
-        >
-        <nuxt-link
+        > -->
+        <!-- <nuxt-link
           to="/test"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >Notification</nuxt-link
-        >
+        > -->
         <nuxt-link
           to="/my_profil"
-          class="text-white px-3 py-2 rounded-md text-sm font-medium"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
           >My profil</nuxt-link
+        >
+        <nuxt-link
+          to="/settings"
+          class="text-white px-3 py-2 rounded-md text-base font-medium"
+          >Settings</nuxt-link
         >
         <button
           @click="logout"
@@ -47,6 +48,7 @@
           Logout
         </button>
       </div>
+    </header>
       <div class="md:hidden">
         <button @click="toggleMenu" class="text-white focus:outline-none">
           <svg
@@ -66,52 +68,6 @@
         </button>
       </div>
     </div>
-    <div v-if="isMenuOpen" class="md:hidden">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <nuxt-link
-          to="/browsing_page"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Browsing profil</nuxt-link
-        >
-        <nuxt-link
-          to="/usermod"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Modify your Profil</nuxt-link
-        >
-        <nuxt-link
-          to="/visitors"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Visitors</nuxt-link
-        >
-        <nuxt-link
-          to="/match"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Matchs</nuxt-link
-        >
-        <nuxt-link
-          to="/Likes"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Likes Pages</nuxt-link
-        >
-        <nuxt-link
-          to="/test"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >Notification</nuxt-link
-        >
-        <nuxt-link
-          to="/my_profil"
-          class="text-white block px-3 py-2 rounded-md text-base font-medium"
-          >My profil</nuxt-link
-        >
-        <button
-          @click="logout"
-          class="text-white hover:bg-red-700 block px-3 py-2 rounded-md text-base font-medium"
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-  </nav>
 </template>
 
 <script setup lang="ts">

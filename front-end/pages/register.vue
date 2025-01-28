@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<RegisterForm />
+		<RegisterDialog />
 	</div>
 </template>
 
 <script setup>
-import RegisterForm from "~/components/RegisterForm.vue";
+import RegisterDialog from "~/components/RegisterDialog.vue";
 </script>

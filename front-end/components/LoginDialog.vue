@@ -77,6 +77,12 @@ async function authentification() {
       }
     );
 
+    // Check if email is verified
+    if (response.data.needsVerification) {
+      message.value = "Please verify your email. Verification email has been resent.";
+      return;
+    }
+
     if (response.data.profile_complete == true) {
       console.log("Profile is complete");
       dialog.value = false;
@@ -94,7 +100,11 @@ async function authentification() {
       }, 2000);
     }
   } catch (error) {
-    message.value = error.response?.data?.error || "Authentication failed";
+    if (error.response?.data?.error?.includes("Email not verified")) {
+      message.value = "Email not verified. Please check your inbox for verification email.";
+    } else {
+      message.value = error.response?.data?.error || "Authentication failed";
+    }
   }
 }
 </script>

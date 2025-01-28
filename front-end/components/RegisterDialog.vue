@@ -167,7 +167,7 @@ async function register() {
     const response = await axios.post(
       "http://localhost:3005/api/auth/register",
       {
-        username: capitalizeFirstLetter(username.value),
+        username: username.value,
         password: password.value,
         email: email.value,
         firstname: capitalizeFirstLetter(firstname.value),

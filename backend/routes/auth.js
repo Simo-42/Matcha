@@ -13,9 +13,6 @@ router.post("/register", async (req, res) => {
 	if (!email || !password || !username || !firstname || !lastname || !age) {
 			return res.status(400).json({ error: "All fields are required." });
 	}
-
-	// Check if username starts with capital letter
-	
 	// Hachage du mot de passe
 	const hashed_password = await bcrypt.hash(password, 10);
 	const info = {
@@ -26,9 +23,6 @@ router.post("/register", async (req, res) => {
 		lastname: lastname,
 		age: age,
 	};
-	
-	
-	
 	try {
 		// Vérifier si cet email est déjà enregistré dans la DB
 		if ((await userQueries.check_mail_user_exist(email)) == true) {
@@ -37,7 +31,7 @@ router.post("/register", async (req, res) => {
 			return res.status(400).json({ error: "This username is already taken." });
 		}
 
-
+		console.log("User info : ", info);
 		const user = await userQueries.createUser(info);
 		if (!user) {
 			return res.status(500).json({ error: "Error creating user" });
@@ -120,7 +114,7 @@ router.get("/verify/:id", async (req, res) => {
 		const result = await pool.query(query, values); // fais la requete
 
 		if (result.rows.length > 0) {
-			res.redirect(`http://localhost:3000/verify/${userId}`);
+			res.redirect(`http://localhost:3000/auth`);
 		} else {
 			res.status(400).send("Email verification failed");
 		}

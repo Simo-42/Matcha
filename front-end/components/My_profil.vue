@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-sm bg-white border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10">
+  <div class="max-w-sm  border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10" style="background-color:#ad77b6;">
     <div class="relative h-96">
       <!-- Image slider -->
       <div class="h-full w-full relative flex items-center justify-center" tabindex="0">
@@ -27,41 +27,39 @@
     </div>
 
     <div class="p-6">
-      <div class="flex flex-row space-between">
-        <h2 class="text-2xl font-bold text-gray-900">
+      <div class="flex flex-row space-between ">
+        <h2 class="text-2xl font-bold text-indigo-200">
           {{ firstname }} {{ lastname }}
+          <h2 class="text-center">{{ age }} ans</h2>
         </h2>
-        <h2 class="text-2xl font-bold text-gray-900">{{ age }}</h2>
-        
-        <div class="">
-          <div class="flex items-center">
-            <span class="text-gray-600 font-medium">Gender:</span>
-            <span class="ml-2 text-gray-800">{{ gender }}</span>
+        <div class="pl-8">
+          <div class="items-center">
+            <span class="text-indigo-200 font-medium">Gender:</span>
+            <span class="ml-2 text-white">{{ gender }}</span>
           </div>
-          <div class="flex items-center mt-2">
-            <span class="text-gray-600 font-medium">Preference:</span>
-            <span class="ml-2 text-gray-800">{{ sexual_preference }}</span>
+          <div class="items-center mt-2">
+            <span class="text-indigo-200 font-medium">Preference:</span>
+            <span class="ml-2 text-white">{{ sexual_preference }}</span>
           </div>
-          <div class="flex items-center mt-2">
-            <span class="text-gray-600 font-medium">Location:</span>
-            <span class="ml-2 text-gray-800">{{ location }}</span>
+          <div class="items-center mt-2">
+            <span class="text-indigo-200 font-medium">Location:</span>
+            <span class="ml-2 text-white">{{ location }}</span>
           </div>
         </div>
       </div>
 
-      <span class="text-gray-600 font-medium">My Biography:</span>
       <p
-        class="text-gray-600 mt-4 bg-gray-100 p-4 rounded-lg border border-gray-300">
+        class="text-white mt-4 bg-fuchsia-400 p-4 rounded-lg border border-gray-300">
         {{ biography }}
       </p>
 
       <div class="mt-4">
-        <h3 class="text-lg font-bold text-gray-900">Interests</h3>
+        <h3 class="text-lg font-bold text-indigo-200">Interests</h3>
         <div class="flex flex-wrap mt-2">
           <span
             v-for="(interest, index) in interests"
             :key="index"
-            class="bg-indigo-200 text-indigo-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
+            class="bg-fuchsia-400 text-white rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
             {{ interest }}
           </span>
         </div>
@@ -113,7 +111,7 @@ function prevSlide() {
 
 function startSlideshow() {
   if (!slideInterval) {
-    slideInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+    slideInterval = setInterval(nextSlide, 2000); // Change slide every 3 seconds
   }
 }
 
@@ -121,15 +119,6 @@ function stopSlideshow() {
   if (slideInterval) {
     clearInterval(slideInterval);
     slideInterval = null;
-  }
-}
-
-function toggleAutoplay() {
-  isPlaying.value = !isPlaying.value;
-  if (isPlaying.value) {
-    startSlideshow();
-  } else {
-    stopSlideshow();
   }
 }
 
@@ -142,6 +131,7 @@ async function fetchProfileData() {
       }
     );
 
+    console.log("Profile data:", response.data.result);
     const data = response.data.result;
     firstname.value = data.firstname;
     lastname.value = data.lastname;
@@ -158,7 +148,7 @@ async function fetchProfileData() {
       ? data.interests
       : JSON.parse(data.interests);
 
-    console.log("La valuer de photos", photos.value); // Ligne de débogage pour vérifier les URLs des photos
+    // console.log("La valuer de photos", photos.value); // Ligne de débogage pour vérifier les URLs des photos
   } catch (error) {
     console.error("Error fetching profile data:", error);
   }
@@ -166,6 +156,7 @@ async function fetchProfileData() {
 
 onMounted(() => {
   fetchProfileData();
+  startSlideshow(); // new
   // Add keyboard event listeners
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') prevSlide();
