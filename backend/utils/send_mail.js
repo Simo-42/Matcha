@@ -20,7 +20,7 @@ const send_email = async (email, user_id) => {
     from: process.env.MAIL_VERIF, // Adresse email de l'expéditeur
     to: email, // Adresse email du destinataire (utilisateur)
     subject: "Account Verification",
-    text: `Please verify your account by clicking the link: http://localhost:3005/api/auth/verify/${user_id}`,
+    text: `Please verify your account by clicking the link: http://localhost:3005/api/auth/verify/${user_id}?type=popup`,
   };
 
   return new Promise((resolve, reject) => {

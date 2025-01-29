@@ -1,12 +1,12 @@
 <template>
   <div>
-    <header />
+    <Header />
     <gps />
   </div>
 </template>
 
 <script setup>
-import header from "~/components/Header.vue";
+import Header from "~/components/Header.vue";
 import gps from "~/components/profil/gps_location.vue";
 definePageMeta({
   middleware: ["auth"],

@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-4">
+  <div v-if="!showAnimation" class="pa-4">
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn
@@ -48,7 +48,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <LottieAnimation v-if="showAnimation" :animationData="animationData" />
+  </div>
+  <div v-else class="fixed inset-0 flex items-center justify-center bg-white z-50">
+    <LottieAnimation :animationData="animationData" />
   </div>
 </template>
 

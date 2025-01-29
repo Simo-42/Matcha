@@ -121,7 +121,7 @@ router.get("/profil/spec_info", authenticateToken, async (req, res) => {
 router.post("/profil/location", authenticateToken, async (req, res) => {
   const { location } = req.body;
   const userId = req.user.id; // Utilisez `req.user` pour accéder aux informations de l'utilisateur
-  console.log("User ID:", req.user.id); // Assurez-vous que le middleware `authenticateToken` fonctionne correctement
+  console.log("User ID:", req.user.id,); // Assurez-vous que le middleware `authenticateToken` fonctionne correctement
 
   try {
     const user = await userQueries.insert_location(userId, location);

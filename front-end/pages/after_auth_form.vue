@@ -1,6 +1,3 @@
-import header from "~/components/Header.vue";
-import After_auth_form from "~/components/After_auth_form.vue";
-
 <template>
   <div>
     <Header />
@@ -10,6 +7,7 @@ import After_auth_form from "~/components/After_auth_form.vue";
 
 <script setup>
 import Header from '~/components/Header.vue';
+import After_auth_form from "~/components/After_auth_form.vue";
 
 definePageMeta({
   middleware: ["auth"],

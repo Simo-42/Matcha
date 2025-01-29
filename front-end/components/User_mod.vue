@@ -1,14 +1,10 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen bg-[#8e6196] items-center justify-center">
     <!-- Barre de navigation latérale -->
-    <nav class="w-1/4 max-w-xs bg-white p-6 shadow-lg">
+    <nav class="w-1/4 max-w-xs p-6 shadow-2xl mb-48">
       <ul class="space-y-4">
         <li>
-          <NuxtLink
-            to="/gps"
-            class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
-            Localisation
-          </NuxtLink>
+          <Gps_location/>
         </li>
         <li>
           <NuxtLink
@@ -38,13 +34,21 @@
             Security
           </NuxtLink>
         </li>
+        <li>
+          <Logout/>
+        </li>
       </ul>
     </nav>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Gps_location from './profil/gps_location.vue';
+
+</script>
 
 <style scoped>
-/* Styles supplémentaires */
+/* .bg_color {
+  background-color: #8e6196;
+} */
 </style>

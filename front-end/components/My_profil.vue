@@ -1,7 +1,6 @@
 <template>
-  <div class="max-w-sm  border border-gray-500 rounded-lg shadow-md overflow-hidden mx-auto mt-10" style="background-color:#ad77b6;">
+  <div class="max-w-sm border border-gray-500 rounded-lg shadow-2xl shadow-white overflow-hidden mx-auto mt-10" style="background-color:#ad77b6;">
     <div class="relative h-96">
-      <!-- Image slider -->
       <div class="h-full w-full relative flex items-center justify-center" tabindex="0">
         <img
           v-for="(photo, index) in photos.filter((photo) => photo)"

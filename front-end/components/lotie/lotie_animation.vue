@@ -1,55 +1,56 @@
 <template>
-	<div
-		ref="lottieContainer"
-		class="lottie-animation"></div>
+  <div id="loading-indicator">
+    <div class="lds-hourglass"></div>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import lottie from "lottie-web";
-
-const props = defineProps({
-	animationData: {
-		type: Object,
-		required: true,
-	},
-	loop: {
-		type: Boolean,
-		default: true,
-	},
-	autoplay: {
-		type: Boolean,
-		default: true,
-	},
-});
-
-const lottieContainer = ref(null);
-	// @ts-ignore
-let lottieInstance = null;
-
-onMounted(() => {
-	if (lottieContainer.value) {
-		lottieInstance = lottie.loadAnimation({
-			container: lottieContainer.value,
-			renderer: "svg",
-			loop: props.loop,
-			autoplay: props.autoplay,
-			animationData: props.animationData,
-		});
-	}
-});
-
-onBeforeUnmount(() => {
-	// @ts-ignore
-	if (lottieInstance) {
-		lottieInstance.destroy(); // Clean up Lottie instance when the component is unmounted
-	}
-});
-</script>
-
 <style scoped>
-.lottie-animation {
-	width: 20%;
-	height: 20%;
+#loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ad77b6;
+  z-index: 9999;
 }
+
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 6px;
+  box-sizing: border-box;
+  border: 26px solid #333;
+  border-color: #F1D2DC transparent #F1D2DC transparent; 
+  animation: lds-hourglass 1.2s infinite;
+}
+
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
+
+
 </style>
