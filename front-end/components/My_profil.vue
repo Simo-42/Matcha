@@ -29,8 +29,8 @@
       <div class="flex flex-row space-between ">
         <h2 class="text-2xl font-bold text-indigo-200">
           {{ firstname }} {{ lastname }}
-          <h2 class="text-center">{{ age }} ans</h2>
         </h2>
+        <h2 class="text-center">{{ age }} ans</h2>
         <div class="pl-8">
           <div class="items-center">
             <span class="text-indigo-200 font-medium">Gender:</span>

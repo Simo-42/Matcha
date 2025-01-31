@@ -123,7 +123,7 @@ const showAnimation = ref(false);
 const isError = ref(false);
 
 function capitalizeFirstLetter(string) {
-  if (typeof string !== 'string' || !string) return string;
+  if (typeof string !== "string" || !string) return string;
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -135,6 +135,10 @@ function isEmailValid(email) {
 function isPasswordValid(password) {
   const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/;
   return regex.test(password);
+}
+function isAgeValid(age) {
+  const regex = /^[0-9]{2,3}$/;
+  return regex.test(age);
 }
 
 async function register() {
@@ -157,11 +161,24 @@ async function register() {
     return;
   }
 
-  if (age.value < 18) {
-	message.value = "You must be at least 18 years old to register";
-	isError.value = true;
-	return;
+  if (!isAgeValid(age.value)) {
+    message.value = "Please enter only numbers in age field";
+    isError.value = true;
+    return;
   }
+
+  if (age.value < 18) {
+    message.value = "You must be at least 18 years old to register";
+    isError.value = true;
+    return;
+  }
+
+  if (age.value > 100) {
+    message.value = "Please enter a valid age";
+    isError.value = true;
+    return;
+  }
+
 
   try {
     const response = await axios.post(
