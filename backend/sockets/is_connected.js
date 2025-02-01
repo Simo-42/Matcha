@@ -29,4 +29,17 @@ module.exports = (io, socket) => {
       console.error("Error during disconnection status update:", error);
     }
   });
+
+  socket.on("formSubmitted", async (data) => {
+    let res  = data.message;
+    if (res === "Profile updated")
+      io.emit("UserModal good", { message : "Profile updated successful" });
+    else if (res === "Profile error")
+      io.emit("UserModal error", { message : "Error during profile update, retry later." });
+  });
+
+
+
+
 };
+

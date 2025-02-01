@@ -7,11 +7,7 @@
           <Gps_location/>
         </li>
         <li>
-          <NuxtLink
-            to="/profil_mod"
-            class="block text-lg font-semibold text-gray-700 hover:text-indigo-600">
-            Profil
-          </NuxtLink>
+          <UserModal/>
         </li>
         <li>
           <NuxtLink
@@ -44,6 +40,7 @@
 
 <script setup lang="ts">
 import Gps_location from './profil/gps_location.vue';
+import UserModal from './UserModal.vue';
 
 </script>
 

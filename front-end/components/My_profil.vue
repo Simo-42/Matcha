@@ -95,7 +95,6 @@ const interests = ref<string[]>([]);
 const location = ref<string>("");
 
 const currentSlide = ref(0);
-const isPlaying = ref(false);
 let slideInterval: NodeJS.Timeout | null = null;
 
 function nextSlide() {
@@ -129,8 +128,6 @@ async function fetchProfileData() {
         withCredentials: true,
       }
     );
-
-    console.log("Profile data:", response.data.result);
     const data = response.data.result;
     firstname.value = data.firstname;
     lastname.value = data.lastname;

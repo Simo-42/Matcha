@@ -1,17 +1,15 @@
 <template>
   <div>
     <Header />
-    <start_to_swipe />
+    <CardSwipe />
   </div>
 </template>
 
 <script setup>
-import Header from "~/components/Header.vue";
-import start_to_swipe from "~/components/Start_to_swipe.vue";
+import CardSwipe from '~/components/CardSwipe.vue';
+import Header from '~/components/Header.vue';
 
 definePageMeta({
   middleware: ["auth"],
 });
-
-// import start_to_swipe from '~/components/Start_to_swipe.vue';
 </script>
