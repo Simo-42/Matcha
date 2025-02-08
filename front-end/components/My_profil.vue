@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-sm border border-gray-500 rounded-lg shadow-2xl shadow-white overflow-hidden mx-auto mt-10" style="background-color:#ad77b6;">
+  <div class="bg_profil  max-w-sm border border-gray-500 rounded-lg shadow-2xl shadow-black overflow-hidden mx-auto mt-10">
     <div class="relative h-96">
       <div class="h-full w-full relative flex items-center justify-center" tabindex="0">
         <img
@@ -176,4 +176,12 @@ onBeforeUnmount(() => {
 .opacity-100 {
   opacity: 1;
 }
+
+.bg_profil {
+  height: 100%;
+	background: linear-gradient(to right, rgb(51, 3, 105), rgb(138, 0, 80));
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: background;
+}
+
 </style>

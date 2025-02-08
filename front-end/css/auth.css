@@ -1,24 +1,16 @@
-.auth {
-	height: 100%;
-	background-image: url("../public/img/PurpleMatch.jpg");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-}
 
-.auth p {
+#auth p {
 	font-size: 8vw;
 	line-height: 1.18;
 	font-weight: 800;
-	background: linear-gradient(90deg, #000, #AD77B6, #000);
+	background: linear-gradient(90deg, #181818, rgb(170, 0, 99), #000);
 	background-repeat: no-repeat;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: rgba(255, 255, 255, 0);
 	-webkit-text-stroke: 1px white;
-	/* border: color 2px white; */
 }
 
-
+  
 .custom-btn {
 	background-color: #AD77B6;
 	color: white;

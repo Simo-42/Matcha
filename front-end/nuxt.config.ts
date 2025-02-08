@@ -18,6 +18,6 @@ export default defineNuxtConfig({
     build: {
         transpile: ["vuetify"], // Transpilation pour Nuxt
     },
-    plugins: ["~/plugins/socket.js", "~/plugins/vuetify.js"],
-    css:  ["/css/main.css", "vuetify/styles", "@mdi/font/css/materialdesignicons.min.css"],
+    plugins: ["~/plugins/socket.js", "~/plugins/vuetify.js", "~/plugins/backgroundEffect.ts"],
+    css:  ["/css/main.css", "vuetify/styles", "@mdi/font/css/materialdesignicons.min.css", "leaflet/dist/leaflet.css"],
 });

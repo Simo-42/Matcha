@@ -1,4 +1,5 @@
 <template>
+  <!-- <FloatingHearts /> -->
   <div class="pa-4">
     <v-dialog v-model="dialog" max-width="600">
       <template v-slot:activator="{ props: activatorProps }">
@@ -109,6 +110,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import FloatingHearts from "./FloatingHearts.vue";
 
 const dialog = ref(false);
 const age = ref("");

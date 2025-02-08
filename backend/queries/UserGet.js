@@ -37,7 +37,7 @@ async function get_profil_spec_by_id(id) {
 
     const res = await pool.query(query, values);
     if (res.rows.length > 0) {
-      console.log("User profile specs:", res.rows[0]);
+      // console.log("User profile specs:", res.rows[0]);
       return res.rows[0]; // Retourne les informations spécifiques de l'utilisateur
     } else {
       console.log("User does not exist");
@@ -59,10 +59,10 @@ async function get_profil_personal_by_id(id) {
 
     const res = await pool.query(query, values);
     if (res.rows.length > 0) {
-      console.log("User profile specs:", res.rows[0]);
+      // console.log("User profile specs:", res.rows[0]);
       return res.rows[0]; // Retourne les informations spécifiques de l'utilisateur
     } else {
-      console.log("User does not exist");
+      // console.log("User does not exist");
       return false;
     }
   } catch (err) {
@@ -80,10 +80,10 @@ async function get_profil_complete(id) {
     const values = [id];
     const res = await pool.query(query, values);
     if (res.rows.length > 0) {
-      console.log("User profile specs:", res.rows[0]);
+      // console.log("User profile specs:", res.rows[0]);
       return res.rows[0].profil_complete; // Retourne les informations spécifiques de l'utilisateur
     } else {
-      console.log("User does not exist");
+      // console.log("User does not exist");
       return false;
     }
   } catch (err) {
@@ -121,7 +121,7 @@ async function get_user_pics(id) {
     const values = [id];
     const res = await pool.query(query, values);
     if (res.rows.length > 0) {
-      console.log("User profile specs:", res.rows[0]);
+      // console.log("User profile specs:", res.rows[0]);
       return res.rows[0].photos;
     } else {
       console.log("User does not exist");

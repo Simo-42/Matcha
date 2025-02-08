@@ -37,14 +37,10 @@ async function logout() {
     await axios.post("http://localhost:3005/api/jwt/logout");
     console.log("logout");
     $socket.disconnect();
-    router.push("/auth");
+    router.push("/");
   } catch (error) {
     console.error("Failed to log out:", error);
   }
-}
-
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
 }
 
 onMounted(async () => {

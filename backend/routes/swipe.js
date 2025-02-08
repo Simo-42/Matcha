@@ -76,7 +76,7 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
       }),
     );
     filteredProfiles = filterAndSortProfiles(profiles, searchCriteria);
-
+    console.log("Filtered profiles:", filteredProfiles);
     // Retourner les profils filtrés
     res.status(200).json({ profiles: filteredProfiles });
   } catch (error) {
@@ -152,8 +152,9 @@ const filterAndSortProfiles = (profiles, searchCriteria) => {
 
 router.post("/like_profil", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  const { status, likedUserId } = req.body;
+  const { status, liked_user_id } = req.body;  // Changé de likedUserId à liked_user_id
   console.log("Like status:", status);
+  console.log("Liked user ID:", liked_user_id); // Modifié ici aussi
   console.log("Like profil API called");
 
   try {
@@ -161,19 +162,19 @@ router.post("/like_profil", authenticateToken, async (req, res) => {
     let match_result = false;
 
     if (status === "like") {
-      resultat = await userQueries.UserLikeProfiles(userId, likedUserId);
-      await userQueries.addGetFameRating(likedUserId, 3);
+      resultat = await userQueries.UserLikeProfiles(userId, liked_user_id); // Modifié ici
+      await userQueries.addGetFameRating(liked_user_id, 3); // Modifié ici
       console.log("Resultat:", resultat);
 
-      match_result = await userQueries.checkMatch(userId, likedUserId);
+      match_result = await userQueries.checkMatch(userId, liked_user_id);
       if (match_result === true) {
-        await userQueries.CreateMatch(userId, likedUserId);
+        await userQueries.CreateMatch(userId, liked_user_id);
         console.log("Match found");
       }
 
       res.status(201).json({ resultat, match: match_result });
     } else if (status === "dislike") {
-      resultat = await userQueries.UserDislikeProfiles(userId, likedUserId);
+      resultat = await userQueries.UserDislikeProfiles(userId, liked_user_id);
       console.log("Resultat:", resultat);
 
       res.status(201).json({ resultat, match: false });

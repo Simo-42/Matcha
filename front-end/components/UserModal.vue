@@ -3,7 +3,7 @@
     <!-- Button to open user_form modal -->
     <button
       @click="showUserForm = true"
-      class="block text-lg font-semibold text-gray-700 hover:text-indigo-600"
+      class="block text-lg font-semibold text-white hover:text-indigo-600"
     >
       Modify Profil
     </button>

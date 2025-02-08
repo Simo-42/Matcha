@@ -2,7 +2,7 @@
   <div>
     <button
       @click="showModal = true"
-      class="block text-lg font-semibold text-gray-700 hover:text-indigo-600"
+      class="block text-lg font-semibold text-white hover:text-indigo-600"
     >
       Modify Location
     </button>
@@ -22,7 +22,7 @@
           Put Your Location
         </h2>
 
-        <p v-if="city" class="text-center text-gray-700 mb-6">
+        <p v-if="city" class="text-center text-white mb-6">
           Your current location is: <br />
           <span class="font-semibold">{{ city }}</span>
         </p>
@@ -47,13 +47,14 @@
             Search Location
           </button>
         </div>
-
+        <client-only>
         <LeafletMap
           v-if="mapVisible"
           :latitude="latitude"
           :longitude="longitude"
           class="mb-4 rounded-lg shadow-lg"
         />
+        </client-only>
 
         <p v-if="errorMessage" class="text-red-500 text-center mt-4">
           {{ errorMessage }}
@@ -74,6 +75,7 @@
 
 <script setup>
 import axios from "axios";
+import { client } from "process";
 import { ref } from "vue";
 import LeafletMap from "~/components/profil/lefletmap.vue";
 
@@ -150,25 +152,22 @@ const search_location = async () => {
 
 const submit_location = async () => {
     try {
-      console.log("location_input.value", location_input.value);
-    const response = await axios.post(
-      "http://localhost:3005/api/after_auth/profil/location",
-      {
-        location: location_input.value,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-    message.value = response.message;
-    showModal = false;
-    mapVisible.value = false;
-    consolo.log("error", error);
-
+        const response = await axios.post(
+            "http://localhost:3005/api/after_auth/profil/location",
+            {
+                location: location_input.value,
+            },
+            {
+                withCredentials: true,
+            }
+        );
+        
+        message.value = response.data.message;
+        showModal.value = false;
+        mapVisible.value = false;
     } catch (error) {
-        consolo.log("error");
-        message.value = error.response.data.error || "Registration failed";
-  }
+        message.value = error.response?.data?.error || "Failed to update location";
+    }
 };
 </script>
 

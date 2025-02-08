@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 flex " style="background-color: #ad77b6">
+  <div class="p-4 flex shadow-2xl">
     <nav class="ml-4 flex justify-between items-center">
       <nuxt-link to="/browsing_page" class="text-white text-2xl font-semibold"
         >PurpleMatch</nuxt-link
