@@ -10,6 +10,7 @@ async function getHeterosexualWomenProfiles(userId) {
 		const values = ["Woman", "Heterosexual", userId];
 
 		const res = await pool.query(query, values);
+		console.log("resrows", res.rows);
 		return res.rows; // Retourne tous les profils féminins hétérosexuels, sauf celui de l'utilisateur actuel
 	} catch (err) {
 		console.error("Error executing query", err.stack);

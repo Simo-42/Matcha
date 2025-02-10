@@ -77,7 +77,7 @@ async function submitForm() {
       }
     );
     message.value = response.data.message;
-    navigateTo("/age");
+    navigateTo("/pictures");
   } catch (error) {
     console.log(message.value);
     console.log(error);

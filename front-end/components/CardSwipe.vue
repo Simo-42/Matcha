@@ -29,7 +29,10 @@
     </div>
 
     <!-- Profile Cards -->
-    <div v-if="profiles.length === 0" class="text-2xl text-gray-600">
+    <div
+      v-if="profiles.length === 0"
+      class="text-2xl text-white font-bold p-10"
+    >
       No more profiles to show
     </div>
 
@@ -56,7 +59,10 @@
               <img
                 v-for="(photo, photoIndex) in profile.photos"
                 :key="photoIndex"
-                :src="`http://localhost:3005${photo}`"
+                :src="
+                  `http://localhost:3005${photo}` ??
+                  'public/img/default-profile.jpg'
+                "
                 :class="{
                   'opacity-100': currentSlide === photoIndex,
                   'opacity-0': currentSlide !== photoIndex,
@@ -65,14 +71,18 @@
                 alt="Profile picture"
               />
               <!-- Indicateurs de slide -->
-              <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+              <div
+                class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2"
+              >
                 <button
                   v-for="(photo, photoIndex) in profile.photos"
                   :key="photoIndex"
                   @click="currentSlide = photoIndex"
                   :class="[
                     'w-2 h-2 rounded-full transition-all duration-300',
-                    currentSlide === photoIndex ? 'bg-white w-4' : 'bg-white/50'
+                    currentSlide === photoIndex
+                      ? 'bg-white w-4'
+                      : 'bg-white/50',
                   ]"
                 ></button>
               </div>
@@ -80,42 +90,44 @@
             <div class="p-4">
               <div class="flex justify-between items-center mb-2">
                 <h2 class="text-xl font-bold">
-                  {{ profile.firstname }}, {{ profile.age }}
+                  {{ profile.firstname }}, {{ profile.age }},
+                  {{ profile.location }}
                 </h2>
                 <span class="text-sm text-gray-500"
-                  >Fame: {{ profile.fame_rating }}</span
+                  >Fame: {{ profile.fame_rating ?? 0 }}</span
                 >
               </div>
               <p class="text-gray-600 mb-2">{{ profile.biography }}</p>
-              <!-- <div class="flex flex-wrap gap-2">
-                <span v-for="interest in profile.interests" :key="interest"
+              <div class="flex flex-wrap gap-2">
+                <p>Interet :</p>
+                <span
+                  v-for="interest in cleanInterests(profile.interests)"
+                  :key="interest"
                   class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full"
                 >
                   {{ interest }}
                 </span>
-              </div> -->
+              </div>
+              <div
+                v-if="profiles.length > 0"
+                class="pt-8 bottom-[-70px] left-0 right-0 flex justify-center space-x-8"
+              >
+                <button
+                  @click="handleDislike"
+                  class="bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600"
+                >
+                  ✕
+                </button>
+                <button
+                  @click="handleLike"
+                  class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600"
+                >
+                  ♥
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div
-        v-if="profiles.length > 0"
-        class="absolute bottom-[-70px] left-0 right-0 flex justify-center space-x-8"
-      >
-        <button
-          @click="handleDislike"
-          class="bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600"
-        >
-          ✕
-        </button>
-        <button
-          @click="handleLike"
-          class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600"
-        >
-          ♥
-        </button>
       </div>
     </div>
   </div>
@@ -145,7 +157,9 @@ let slideInterval = null;
 
 function nextSlide() {
   if (profiles.value[currentIndex.value]?.photos) {
-    currentSlide.value = (currentSlide.value + 1) % profiles.value[currentIndex.value].photos.length;
+    currentSlide.value =
+      (currentSlide.value + 1) %
+      profiles.value[currentIndex.value].photos.length;
   }
 }
 
@@ -181,7 +195,7 @@ async function fetchProfiles() {
     );
     profiles.value = response.data.profiles;
     // console.log("Profiles fetched:", profiles.value.length, "------");
-    // console.log("Profile value", profiles.value[0]); // Modifié ici
+    console.log("Profile value", profiles.value[0]); // Modifié ici
     currentIndex.value = 0;
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -202,15 +216,18 @@ async function handleLike() {
       "http://localhost:3005/api/swipe/like_profil",
       {
         status: "like",
-        liked_user_id: currentProfile.id  // Changé de liked_user_id à liked_user_id
+        liked_user_id: currentProfile.id, // Changé de liked_user_id à liked_user_id
       },
       {
         withCredentials: true,
       }
     );
-    
+
     if (response.data.match) {
-      alert("It's a match!");
+      $socket.emit("newMatch", {
+        userId: currentProfile.id,
+        matchedUserId: response.data.matchedUserId,
+      });
     }
     await nextProfile();
   } catch (error) {
@@ -227,7 +244,7 @@ async function handleDislike() {
       "http://localhost:3005/api/swipe/like_profil",
       {
         status: "dislike",
-        liked_user_id: currentProfile.id
+        liked_user_id: currentProfile.id,
       },
       {
         withCredentials: true,
@@ -310,9 +327,9 @@ onMounted(() => {
   fetchProfiles();
   startSlideshow();
   // Ajouter les écouteurs d'événements clavier
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') prevSlide();
-    if (e.key === 'ArrowRight') nextSlide();
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prevSlide();
+    if (e.key === "ArrowRight") nextSlide();
   });
 });
 
@@ -326,11 +343,23 @@ watch(currentIndex, (newIndex) => {
 // Ajouter cleanup
 onBeforeUnmount(() => {
   stopSlideshow();
-  window.removeEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') prevSlide();
-    if (e.key === 'ArrowRight') nextSlide();
+  window.removeEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") prevSlide();
+    if (e.key === "ArrowRight") nextSlide();
   });
 });
+
+const cleanInterests = (interests) => {
+  if (typeof interests === "string") {
+    try {
+      return JSON.parse(interests).map((interest) => interest.replace("#", ""));
+    } catch (e) {
+      console.error("Error parsing interests:", e);
+      return [];
+    }
+  }
+  return interests || [];
+};
 </script>
 
 <style scoped>

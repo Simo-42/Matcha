@@ -89,6 +89,13 @@ const message = ref("");
 const showModal = ref(false);
 const showSubmit = ref(false);
 
+
+function capitalizeFirstLetter(string) {
+  if (typeof string !== "string" || !string) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
 const get_Location = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -155,7 +162,7 @@ const submit_location = async () => {
         const response = await axios.post(
             "http://localhost:3005/api/after_auth/profil/location",
             {
-                location: location_input.value,
+                location: capitalizeFirstLetter(location_input.value),
             },
             {
                 withCredentials: true,
@@ -165,6 +172,7 @@ const submit_location = async () => {
         message.value = response.data.message;
         showModal.value = false;
         mapVisible.value = false;
+        navigateTo("/browsing_page");
     } catch (error) {
         message.value = error.response?.data?.error || "Failed to update location";
     }

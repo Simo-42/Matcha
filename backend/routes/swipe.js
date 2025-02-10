@@ -38,46 +38,46 @@ const getProfilesByGenderAndPreference = {
 
 router.get("/profil_to_match", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  console.log("Get user pics API called, userId:", userId);
-  const searchCriteria = req.query; // Récupérer les critères de recherche depuis les paramètres de requête
-  console.log("Search criteria blabla :", searchCriteria);
+  const searchCriteria = req.query;
   try {
-    // Récupérer les informations du profil de l'utilisateur actuel
     const user = await userQueries.get_profil_spec_by_id(userId);
-    // console.log("User profile retrieved:", user);
-
     if (!user) {
-      console.log("User not found");
       return res.status(404).json({ error: "User not found" });
     }
+
     const key = `${user.gender}_${user.sexual_preference}`;
     const getProfilesFunction = getProfilesByGenderAndPreference[key];
 
     if (!getProfilesFunction) {
-      console.log(
-        `No profiles found for gender ${user.gender} and preference ${user.sexual_preference}`,
-      );
       return res.status(204).json({
         error: `No profiles found for gender ${user.gender} and preference ${user.sexual_preference}`,
       });
     }
 
-    const allProfilesLiked = await userQueries.GetAllProfilesLikes(userId);
+    // 1. Récupérer tous les profils potentiels
     let profiles = await getProfilesFunction(userId);
-    const likedProfileIds = allProfilesLiked.map((profile) => profile.id);
 
-    let filteredProfiles = profiles.filter(
-      (profile) => !likedProfileIds.includes(profile.id),
+    // 2. Récupérer les profils déjà likés ou dislikés
+    const allProfilesLiked = await userQueries.GetAllProfilesLikes(userId);
+    const likedProfileIds = new Set(
+      allProfilesLiked.map((profile) => profile.id)
     );
 
+    // 3. Filtrer les profils non interagis
+    let filteredProfiles = profiles.filter(
+      (profile) => !likedProfileIds.has(profile.id)
+    );
+
+    // 4. Ajouter les photos aux profils filtrés
     await Promise.all(
       filteredProfiles.map(async (profile) => {
-        profile.photos = await userQueries.get_user_pics(profile.id); // Ajouter les photos pour chaque profil
-      }),
+        profile.photos = await userQueries.get_user_pics(profile.id);
+      })
     );
-    filteredProfiles = filterAndSortProfiles(profiles, searchCriteria);
-    console.log("Filtered profiles:", filteredProfiles);
-    // Retourner les profils filtrés
+
+    // 5. Appliquer les critères de recherche sur les profils filtrés
+    filteredProfiles = filterAndSortProfiles(filteredProfiles, searchCriteria);
+
     res.status(200).json({ profiles: filteredProfiles });
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -88,26 +88,26 @@ router.get("/profil_to_match", authenticateToken, async (req, res) => {
 const filterAndSortProfiles = (profiles, searchCriteria) => {
   const { age_gap, fame_rating_gap, interests, location_gap, sort_by } =
     searchCriteria;
-  console.log("Search criteria age gapppp \n :", searchCriteria.age_gap);
-  console.log("Profiles before age gap :", profiles);
+  //console.log("Search criteria age gapppp \n :", searchCriteria.age_gap);
+  // //console.log("Profiles before age gap :", profiles);
 
   // Filtrage des profils en fonction des critères fournis
   if (age_gap) {
-    console.log("Age gap :", age_gap);
+    //console.log("Age gap :", age_gap);
     const [age_min, age_max] = age_gap.split("-").map(Number);
     profiles = profiles.filter((profile) => {
       const profileAge = Number(profile.age);
-      console.log(`Profile age: ${profile.age}`);
+      //console.log(`Profile age: ${profile.age}`);
       return profileAge >= age_min && profileAge <= age_max;
     });
-    console.log("Profiles after age gap :", profiles);
+    // //console.log("Profiles after age gap :", profiles);
   }
 
   if (fame_rating_gap) {
     const [fame_min, fame_max] = fame_rating_gap.split("-").map(Number);
     profiles = profiles.filter(
       (profile) =>
-        profile.fame_rating >= fame_min && profile.fame_rating <= fame_max,
+        profile.fame_rating >= fame_min && profile.fame_rating <= fame_max
     );
   }
 
@@ -135,10 +135,10 @@ const filterAndSortProfiles = (profiles, searchCriteria) => {
           return b.fame_rating - a.fame_rating; // Tri par "fame rating" décroissant
         case "interests":
           const aCommonInterests = interests.filter((interest) =>
-            a.interests.includes(interest),
+            a.interests.includes(interest)
           ).length;
           const bCommonInterests = interests.filter((interest) =>
-            b.interests.includes(interest),
+            b.interests.includes(interest)
           ).length;
           return bCommonInterests - aCommonInterests;
         default:
@@ -152,10 +152,10 @@ const filterAndSortProfiles = (profiles, searchCriteria) => {
 
 router.post("/like_profil", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  const { status, liked_user_id } = req.body;  // Changé de likedUserId à liked_user_id
-  console.log("Like status:", status);
-  console.log("Liked user ID:", liked_user_id); // Modifié ici aussi
-  console.log("Like profil API called");
+  const { status, liked_user_id } = req.body; // Changé de likedUserId à liked_user_id
+  //console.log("Like status:", status);
+  //console.log("Liked user ID:", liked_user_id); // Modifié ici aussi
+  //console.log("Like profil API called");
 
   try {
     let resultat;
@@ -164,23 +164,23 @@ router.post("/like_profil", authenticateToken, async (req, res) => {
     if (status === "like") {
       resultat = await userQueries.UserLikeProfiles(userId, liked_user_id); // Modifié ici
       await userQueries.addGetFameRating(liked_user_id, 3); // Modifié ici
-      console.log("Resultat:", resultat);
+      //console.log("Resultat:", resultat);
 
       match_result = await userQueries.checkMatch(userId, liked_user_id);
       if (match_result === true) {
         await userQueries.CreateMatch(userId, liked_user_id);
-        console.log("Match found");
+        //console.log("Match found");
       }
 
       res.status(201).json({ resultat, match: match_result });
     } else if (status === "dislike") {
       resultat = await userQueries.UserDislikeProfiles(userId, liked_user_id);
-      console.log("Resultat:", resultat);
+      //console.log("Resultat:", resultat);
 
       res.status(201).json({ resultat, match: false });
     }
   } catch (error) {
-    console.log("Error liking profile:", error);
+    console.error("Error liking profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -188,20 +188,20 @@ router.post("/like_profil", authenticateToken, async (req, res) => {
 router.post("/match", authenticateToken, async (req, res) => {
   const { matchedUserId } = req.body;
   const userId = req.user.id;
-  console.log("Match API called");
+  //console.log("Match API called");
 
   try {
     const isMatch = await userQueries.checkMatch(userId, matchedUserId);
 
     if (isMatch === true) {
-      console.log("Match found");
+      //console.log("Match found");
       return res.status(200).json({ message: "Match found" });
     } else {
-      console.log("No match found");
+      //console.log("No match found");
       return res.status(404).json({ message: "No match found" });
     }
   } catch (error) {
-    console.log("Error checking match:", error);
+    console.error("Error checking match:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -216,9 +216,9 @@ router.post("/report_fake_profil", authenticateToken, async (req, res) => {
     await userQueries.UserFakeProfile(profile_id);
 
     res.status(201).json({ message: "User reported as fake profile" });
-    console.log("User reported as fake profile");
+    //console.log("User reported as fake profile");
   } catch (error) {
-    console.log("Error liking profile:", error);
+    console.error("Error liking profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -226,7 +226,7 @@ router.post("/report_fake_profil", authenticateToken, async (req, res) => {
 router.post("/set_profile_visited", authenticateToken, async (req, res) => {
   const userId = req.user.id;
   const { userIdTo } = req.body;
-  console.log("Set profile visited API called");
+  //console.log("Set profile visited API called");
   if (userId === userIdTo) {
     return res
       .status(400)
@@ -237,13 +237,13 @@ router.post("/set_profile_visited", authenticateToken, async (req, res) => {
     const visit = await userQueries.SetProfileVisited(userId, userIdTo);
 
     if (!visit) {
-      console.log("Error visiting profile");
+      //console.log("Error visiting profile");
       return res.status(500).json({ error: "Internal server error" });
     }
 
     res.status(201).json({ message: "Profile has been visited successfully" });
   } catch (error) {
-    console.log("Error liking profile:", error);
+    console.error("Error liking profile:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -255,7 +255,7 @@ router.get("/get_profile_visitors", authenticateToken, async (req, res) => {
     const visitors = await userQueries.GetProfileVisitors(userId);
     res.status(200).json({ visitors });
   } catch (error) {
-    console.log("Error getting profile visitors:", error);
+    console.error("Error getting profile visitors:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -272,7 +272,7 @@ router.get("/get_user_match", authenticateToken, async (req, res) => {
     }
     res.status(200).json({ UserMatchs });
   } catch (error) {
-    console.log("Error getting profile visitors:", error);
+    console.error("Error getting profile visitors:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });

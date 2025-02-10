@@ -2,16 +2,16 @@ const pool = require("../db.js"); // Importez la connexion depuis db.js
 
 // userQueries.js
 async function createUser(userInfo) {
-  const { email, password, username, firstname, lastname } = userInfo;
+  const { email, password, username, firstname, lastname, age } = userInfo;
 
   try {
     const query = `
-			INSERT INTO users (email, password, username, firstname, lastname, fame_rating, fake_account)
-			VALUES ($1, $2, $3, $4, $5, $6, $7)
+			INSERT INTO users (email, password, username, firstname, lastname, age, fame_rating, fake_account)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 			RETURNING *`;
 
     // Les valeurs à insérer dans la requête SQL
-    const values = [email, password, username, firstname, lastname, 0, 0];
+    const values = [email, password, username, firstname, lastname, age, 0, 0];
 
     // Exécution de la requête SQL
     const res = await pool.query(query, values);
